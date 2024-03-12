@@ -63,12 +63,12 @@ const Topic: React.FC = () => {
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
-        rowSelection={
-          {
-            // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-            // defaultSelectedRowKeys: [1],
-          }
-        }
+        // rowSelection={
+        //   {
+        //     // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+        //     // defaultSelectedRowKeys: [1],
+        //   }
+        // }
         dateFormatter="string"
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>

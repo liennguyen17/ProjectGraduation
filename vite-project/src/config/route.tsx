@@ -35,7 +35,7 @@ export const workplace: RouteObject | MenuDataItem = {
     {
       name: "Đăng nhập",
       path: "login",
-      element: "123",
+      element: "Ô nô không ra giữa nữa rồi",
       // element: <LoginPage />,
     },
     {
