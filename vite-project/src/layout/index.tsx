@@ -24,13 +24,13 @@ const Layout: React.FC = () => {
         location={{
           pathname,
         }}
-        avatarProps={{
-          render(props, defaultDom) {
-            return <>My name is Lien</>;
-          },
-          size: "large",
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
-        }}
+        // avatarProps={{
+        //   render(props, defaultDom) {
+        //     return <>My name is Lien</>;
+        //   },
+        //   size: "large",
+        //   src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+        // }}
         menuFooterRender={(props) => {
           if (props?.collapsed) return undefined;
           return <MenuFooter />;

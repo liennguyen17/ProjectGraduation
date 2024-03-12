@@ -13,6 +13,15 @@ import {
 import Layout from "../layout";
 import NotFound from "../pages/404";
 import NotAuthorized from "../pages/403";
+import ModalFormStudent from "../pages/Student/components/ModalFormStudent";
+import DrawerStudent from "../pages/Student/components/DrawerStudent";
+import Student from "../pages/Student";
+import DrawerNews from "../pages/News/components/DrawerNews";
+import User from "../pages/User";
+import Teacher from "../pages/Teacher";
+import News from "../pages/News";
+import Topic from "../pages/Topic";
+import Login from "../pages/Login";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -24,80 +33,90 @@ export const workplace: RouteObject | MenuDataItem = {
   element: <Layout />,
   children: [
     {
-      name: "Quản lý sinh viên",
-      path: "cms",
+      name: "Đăng nhập",
+      path: "login",
+      element: "123",
+      // element: <LoginPage />,
+    },
+    {
+      name: "Quản lý người dùng",
+      path: "users",
       icon: <ReadOutlined />,
       // element: <PostPage />,
       children: [
         {
-          name: "sinh viên",
-          path: "posts",
+          name: "User",
+          path: "user",
           icon: <ReadOutlined />,
-          element: <div>123</div>,
+          element: <User />,
+          // element: <Student />,
         },
+
         {
-          name: "sinh viên",
-          path: "category",
+          name: "Giảng viên quản lý",
+          path: "teacher",
           icon: <ClusterOutlined />,
-          element: <div>123</div>,
+          element: <ModalFormStudent />,
         },
         {
-          name: "sinh viên",
-          path: "banner",
+          name: "Giảng viên hướng dẫn",
+          path: "teacher",
           icon: <NotificationOutlined />,
-          element: <div>123</div>,
+          element: <Teacher />,
+          // element: <ModalFormNews />,
         },
         {
-          name: "sinh viên",
-          path: "media",
+          name: "Sinh viên",
+          path: "student",
           icon: <ClusterOutlined />,
-          element: <div>123</div>,
+          element: <Student />,
+          // element: <StudentsForm />,
         },
       ],
     },
     {
-      name: "Quản lý giảng viên",
-      path: "recruitment",
+      name: "Quản lý tin tức",
+      path: "news",
       icon: <FileDoneOutlined />,
-      element: <>giảng viên</>,
+      element: <News />,
     },
     {
-      name: "Quản lý Bài viết KLTN",
-      path: "candidate-management",
+      name: "Quản lý khóa luận tốt nghiệp",
+      path: "graduation-thesis",
       icon: <FileDoneOutlined />,
-      element: <>recruitment</>,
+      // element: <>recruitment</>,
       children: [
         {
-          name: "Bộ môn CNPM",
-          path: "candidate",
+          name: "Đề tài",
+          path: "topic",
           icon: <SolutionOutlined />,
-          element: <div>sinh viên</div>,
+          element: <Topic />,
         },
         {
           name: "Bộ môn CNPM",
           path: "member",
           icon: <TeamOutlined />,
-          element: <div>sinh viên</div>,
+          element: <></>,
         },
       ],
     },
     {
-      name: "Quản lý người dùng",
+      name: "Quản lý tin tức",
       path: "user-management",
       icon: <FileDoneOutlined />,
-      element: <></>,
+      // element: <></>,
       children: [
         {
-          name: "Người dùng",
-          path: "user",
+          name: "Tin tức sinh viên",
+          path: "news",
           icon: <ReadOutlined />,
-          element: <div>sinh viên</div>,
+          element: <DrawerStudent />,
         },
         {
-          name: "Vai trò",
+          name: "Tin tức",
           path: "permission",
           icon: <FolderOpenOutlined />,
-          element: <div>sinh viên</div>,
+          element: <DrawerNews />,
         },
       ],
     },
@@ -130,7 +149,7 @@ export const routes: MenuDataItem[] | RouteObject[] = [
     children: [
       {
         path: "login",
-        element: <div>login</div>,
+        element: <Login />,
       },
     ],
   },
