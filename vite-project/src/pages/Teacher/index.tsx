@@ -4,7 +4,8 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useRef } from "react";
-import { data, dataSource2 } from "../Student/components/columTableStudent";
+import { data, dataSource2 } from "../Student/components/demo";
+// import { data, dataSource2 } from "../Student/components/columTableStudent";
 
 const Teacher: React.FC = () => {
   const actionRef = useRef<ActionType>();

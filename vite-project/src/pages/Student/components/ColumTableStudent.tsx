@@ -3,45 +3,60 @@ import {
   DeleteOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import React from "react";
 
-export const colums = () => {
+export const columStudent = () => {
   return [
     {
-      title: "Tiêu đề",
-      dataIndex: "title",
+      title: "Họ và tên",
+      dataIndex: "name",
+      // hideInTable: true, //ẩn trên bảng
     },
     {
-      title: "Nội dung",
-      dataIndex: "description",
+      title: "Tên đăng nhập",
+      dataIndex: "username",
     },
     {
-      title: "File đính kèm",
-      dataIndex: "file",
-      hideInSearch: true,
-    },
-    {
-      title: "Năm",
-      dataIndex: "year",
+      title: "Email",
+      dataIndex: "email",
     },
     {
       title: "Bộ môn",
       dataIndex: "subject",
     },
     {
+      title: "Vai trò",
+      dataIndex: "role",
+      hideInSearch: true, //ẩn ở tìm kiếm
+      width: "100px",
+      hideInTable: true,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "dob",
+      hideInSearch: true,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createAt",
       hideInSearch: true,
+      width: "100px",
     },
     {
       title: "Ngày cập nhật",
       dataIndex: "updateAt",
       hideInSearch: true,
+      width: "100px",
     },
     {
       title: "Hành động",
       hideInSearch: true,
       //   width: 100,
-      render: (_, record) => (
+      render: () => (
         <div>
           <SolutionOutlined
             style={{ fontSize: "22px", color: "#65ddc7", marginRight: "13px" }}

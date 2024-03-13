@@ -4,28 +4,38 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 
-export const colums = () => {
+export const columUser = () => {
   return [
     {
-      title: "Tiêu đề",
-      dataIndex: "title",
-    },
-    {
-      title: "Nội dung",
-      dataIndex: "description",
-    },
-    {
-      title: "File đính kèm",
-      dataIndex: "file",
+      title: "Họ và tên",
+      dataIndex: "name",
+      // hideInTable: true,
       hideInSearch: true,
     },
     {
-      title: "Năm",
-      dataIndex: "year",
+      title: "Tên đăng nhập",
+      dataIndex: "username",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
     },
     {
       title: "Bộ môn",
       dataIndex: "subject",
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role",
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "dob",
+      hideInSearch: true,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
     },
     {
       title: "Ngày tạo",

@@ -1,11 +1,12 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import type { ActionType } from "@ant-design/pro-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { data, dataSource2 } from "./components/columTableStudent";
-import ModalStudentForm from "./components/ModalStudentForm";
+
 import ModalNewsForm from "../News/components/ModalNewsForm";
+import { StudentGetListApi } from "../../service/api";
+import { columStudent } from "./components/ColumTableStudent";
 // const actionRef = useRef<ActionType>();
 
 const Student: React.FC = () => {
@@ -17,6 +18,18 @@ const Student: React.FC = () => {
     console.log(1);
     setIsModalOpen(true);
   };
+  const [studentData, setStudentData] = useState([]);
+  useEffect(() => {
+    const dataStudent = async () => {
+      try {
+        const res = await StudentGetListApi();
+        setStudentData(res);
+      } catch (error) {
+        console.error("Loi lay du lieu: ", error);
+      }
+    };
+    dataStudent();
+  }, []);
 
   return (
     <PageContainer
@@ -29,28 +42,12 @@ const Student: React.FC = () => {
     >
       {/* <FormStudent /> */}
       <ProTable
-        dataSource={dataSource2}
-        columns={data}
+        dataSource={studentData}
+        columns={columStudent()}
         actionRef={actionRef}
         formRef={formRef}
-        //
-        // bordered
-
-        // tableAlertRender={({
-        //   // selectedRowKeys,
-        //   selectedRows,
-        //   // onCleanSelected,
-        // }) => {
-        //   return (
-        //     showTableAlert && (
-        //       <Space size={24}>
-        //         <span>Đã chọn {selectedRows.length} mục</span>
-        //       </Space>
-        //     )
-        //   );
-        // }}
         cardBordered
-        headerTitle="Danh sách người dùng"
+        headerTitle="Danh sách tất cả sinh viên"
         size="small"
         tableLayout="auto"
         rowKey="id" //truyen id
@@ -68,7 +65,7 @@ const Student: React.FC = () => {
         options={{
           search: {
             placeholder: "Nhập từ khoá để tìm kiếm...",
-            style: { width: 500 },
+            style: { width: 300 },
           },
           density: false,
           setting: false,

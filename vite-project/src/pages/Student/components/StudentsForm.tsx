@@ -1,5 +1,4 @@
 import {
-  FooterToolbar,
   ProForm,
   ProFormInstance,
   ProFormSelect,
@@ -8,17 +7,10 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
-import { Button, Card, Col, Divider, Row } from "antd";
+import { Card, Col, Divider, Row } from "antd";
 import Paragraph from "antd/es/skeleton/Paragraph";
 import Editor from "../../Editor";
-import {
-  EditOutlined,
-  FireOutlined,
-  GithubOutlined,
-  GlobalOutlined,
-  HomeOutlined,
-  PrinterOutlined,
-} from "@ant-design/icons";
+import { GlobalOutlined } from "@ant-design/icons";
 import { useRef } from "react";
 
 interface PostsFormProps {

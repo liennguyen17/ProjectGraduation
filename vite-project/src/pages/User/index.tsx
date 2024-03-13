@@ -3,12 +3,35 @@ import {
   PageContainer,
   ProTable,
 } from "@ant-design/pro-components";
-import { useRef } from "react";
-import { data, dataSource2 } from "../Student/components/columTableStudent";
+import { useEffect, useRef, useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { UserGetListApi } from "../../service/api";
+import { columUser } from "./components/ColunTableUsers";
+import { Button } from "antd";
+import ModalFormUser from "./components/ModalFormUser";
+// import "./styles.css";
 
 const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
+  const [userData, setUserData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  useEffect(() => {
+    const dataUser = async () => {
+      try {
+        const res = await UserGetListApi();
+        setUserData(res);
+      } catch (error) {
+        console.error("Loi lay du lieu: ", error);
+      }
+    };
+    dataUser();
+  }, []);
 
   return (
     <PageContainer
@@ -20,8 +43,8 @@ const User: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={dataSource2}
-        columns={data}
+        dataSource={userData}
+        columns={columUser()}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
@@ -40,7 +63,7 @@ const User: React.FC = () => {
         options={{
           search: {
             placeholder: "Nhập từ khoá để tìm kiếm...",
-            style: { width: 500 },
+            style: { width: 300 },
           },
           density: false,
           setting: true,
@@ -59,7 +82,17 @@ const User: React.FC = () => {
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
         dateFormatter="string"
+        rowSelection={{}}
+        toolBarRender={() => [
+          <Button type="primary" key="primary" onClick={showModal}>
+            <PlusOutlined /> Tạo người dùng
+          </Button>,
+        ]}
       ></ProTable>
+      <ModalFormUser
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </PageContainer>
   );
 };

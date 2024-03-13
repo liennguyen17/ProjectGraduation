@@ -19,7 +19,7 @@ export const data = [
   },
   {
     title: "Vai trò",
-    dataIndex: "role_id",
+    dataIndex: "role",
   },
   {
     title: "Ngày sinh",
@@ -32,12 +32,12 @@ export const data = [
   },
   {
     title: "Ngày tạo",
-    dataIndex: "create_at",
+    dataIndex: "createAt",
     hideInSearch: true,
   },
   {
     title: "Ngày cập nhật",
-    dataIndex: "update_at",
+    dataIndex: "updateAt",
     hideInSearch: true,
   },
 ];
