@@ -10,15 +10,15 @@ import "./styles.css";
 const Login: React.FC = () => {
   return (
     <ProConfigProvider hashed={false}>
-      <Row>
+      <Row style={{ backgroundColor: "#f4f4f4" }}>
         <Col xs={0} lg={18} xl={18} md={18}>
           <div
             style={{
-              //   backgroundImage: "url(/images/trangchuu.webp)",
-              backgroundColor: "#62d6c9",
+              backgroundImage: "url(/images/trangchuu.webp)",
+              // backgroundColor: "#62d6c9",
               height: "100vh",
-              //   backgroundSize: "cover",
-              //   backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           ></div>
         </Col>

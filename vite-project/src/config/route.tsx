@@ -33,6 +33,15 @@ export const workplace: RouteObject | MenuDataItem = {
   element: <Layout />,
   children: [
     {
+<<<<<<< HEAD
+=======
+      name: "Đăng nhập",
+      path: "login",
+      element: "Ô nô không ra giữa nữa rồi",
+      // element: <LoginPage />,
+    },
+    {
+>>>>>>> 1707fabce9ba066f41e3500b44be2d6a9917f96b
       name: "Quản lý người dùng",
       path: "users",
       icon: <ReadOutlined />,
