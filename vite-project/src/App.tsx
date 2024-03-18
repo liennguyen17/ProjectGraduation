@@ -18,8 +18,8 @@ function MyApp() {
       locale={viVN}
       theme={{
         token: {
-          colorPrimary: "rgba(67, 242, 207, 0.959)",
-          colorLink: "rgb(55, 244, 206))",
+          colorPrimary: "rgba(41, 212, 178, 0.959)",
+          colorLink: "rgb(49, 209, 172))",
         },
       }}
     >

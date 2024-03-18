@@ -6,18 +6,19 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { data, dataSource2 } from "../Student/components/demo";
 import { columTeacher } from "./components/ColumTeacher";
-import { TeacherGetListApi } from "../../service/api";
+import { ManageGetListApi, TeacherGetListApi } from "../../service/api";
+import { columManage } from "./components/ColumManager";
 // import { data, dataSource2 } from "../Student/components/columTableStudent";
 
-const Teacher: React.FC = () => {
+const Manage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  const [teacherData, setTeacherData] = useState([]);
+  const [manageData, setManageData] = useState([]);
   useEffect(() => {
     const data = async () => {
       try {
-        const res = await TeacherGetListApi();
-        setTeacherData(res);
+        const res = await ManageGetListApi();
+        setManageData(res);
       } catch (error) {
         console.error("Loi lay du lieu: ", error);
       }
@@ -35,12 +36,12 @@ const Teacher: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={teacherData}
-        columns={columTeacher()}
+        dataSource={manageData}
+        columns={columManage()}
         rowSelection={{}}
         actionRef={actionRef}
         cardBordered
-        headerTitle="Danh sách giảng viên hướng dẫn"
+        headerTitle="Danh sách giảng viên quản lý"
         size="small"
         tableLayout="auto"
         rowKey="id"
@@ -81,4 +82,4 @@ const Teacher: React.FC = () => {
     </PageContainer>
   );
 };
-export default Teacher;
+export default Manage;

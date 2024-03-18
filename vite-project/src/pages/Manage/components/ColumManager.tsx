@@ -1,19 +1,18 @@
-import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Space } from "antd";
+import React from "react";
 
-export const columUser = () => {
+export const columManage = () => {
   return [
     {
       title: "ID",
       dataIndex: "id",
       hideInTable: true,
-      hideInSearch: true,
     },
     {
       title: "Họ và tên",
       dataIndex: "name",
-      // hideInTable: true,
-      // hideInSearch: true,
+      // hideInTable: true, //ẩn trên bảng
     },
     {
       title: "Tên đăng nhập",
@@ -30,6 +29,9 @@ export const columUser = () => {
     {
       title: "Vai trò",
       dataIndex: "role",
+      hideInSearch: true, //ẩn ở tìm kiếm
+      width: "100px",
+      // hideInTable: true,
     },
     {
       title: "Ngày sinh",
@@ -44,11 +46,13 @@ export const columUser = () => {
       title: "Ngày tạo",
       dataIndex: "createAt",
       hideInSearch: true,
+      width: "100px",
     },
     {
       title: "Ngày cập nhật",
       dataIndex: "updateAt",
       hideInSearch: true,
+      width: "100px",
     },
     {
       title: "Hành động",

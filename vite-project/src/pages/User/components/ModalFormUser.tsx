@@ -22,9 +22,10 @@ const ModalFormUser: React.FC<ModalUserFormProps> = ({
       onOk={handleOk}
       onCancel={handleCancel}
       destroyOnClose
+      width={900}
+      title="Tạo người dùng"
     >
       <FormUser />
-      {/* <StudentsForm /> */}
     </Modal>
   );
 };

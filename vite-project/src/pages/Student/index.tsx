@@ -58,9 +58,6 @@ const Student: React.FC = () => {
             paddingBlock: 12,
           },
         }}
-        // cardProps={{
-        //   bodyStyle: { padding: 4 },
-        // }}
         scroll={{ x: "max-content", y: "calc(100vh - 260px)" }}
         options={{
           search: {
@@ -77,91 +74,20 @@ const Student: React.FC = () => {
             paddingInline: 12,
           },
         }}
-        // toolbar={{
-        //   menu: {
-        //     type: "tab",
-        //     onChange: (activeKey: any) => {
-        //       actionRef.current?.clearSelected?.();
-        //       actionRef.current?.reload?.();
-        //       // setSelectedRows([]);
-        //       setActiveTab(activeKey);
-        //     },
-        //     items: [
-        //       {
-        //         label: (
-        //           <>
-        //             <FontAwesomeIcon icon={faEye} /> Hiển thị
-        //           </>
-        //         ),
-        //         key: "ACTIVE",
-        //       },
-        //       // {
-        //       //   label: <><FontAwesomeIcon icon={faHourglass} /> Chờ duyệt</>,
-        //       //   key: 'pending',
-        //       // },
-        //       {
-        //         label: (
-        //           <>
-        //             <FontAwesomeIcon icon={faEyeSlash} />
-        //             {/* <FontAwesomeIcon icon="fa-brands fa-twitter" /> */}
-        //             Không hiển thị
-        //           </>
-        //         ),
-        //         key: "DRAFT",
-        //       },
-        //     ],
-        //   },
-        // }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={showModal}
-            // loading
-            // ghost
-            // danger
-            // onClick={() => {
-            //   setModalFormUserVisible(true);
-            // }}
-            // disabled={!access?.['USER_MANAGEMENT.CREATE_USER']}
-          >
-            <PlusOutlined /> Tạo người dùng
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Button type="primary" key="primary" onClick={showModal}>
+        //     <PlusOutlined /> Tạo người dùng
+        //   </Button>,
+        // ]}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
+        rowSelection={{}}
         dateFormatter="string"
-        // //check list hien thi trống
-        // tableViewRender={(props, dom) => {
-        //   // if (props.dataSource?.length === 0 && !props.loading)
-        //   return <Empty imageStyle={{ height: 50 }} />;
-        //   // return <div>123</div>;
-        // }}
-        // tableRender={(_, dom) => {
-        //   return (
-        //     <div
-        //       style={{
-        //         display: 'flex',
-        //         width: '100%',
-        //       }}
-      >
-        {/* <ModalStudentForm
-          modalProps={{
-            // open: modalPostsFormOpen,
-            destroyOnClose: true,
-            style: { maxWidth: 1440 },
-          }}
-        ></ModalStudentForm> */}
-
-        {/* <ModalStudentForm
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        /> */}
-      </ProTable>
+      ></ProTable>
       <ModalNewsForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

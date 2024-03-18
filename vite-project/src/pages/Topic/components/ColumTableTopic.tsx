@@ -3,24 +3,13 @@ import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 export const dataTopic = [
   {
+    title: "ID",
+    dataIndex: "id",
+    hideInTable: true,
+  },
+  {
     title: "Tên đề tài",
-    dataIndex: "name_topic",
-    // width: "20%",
-    // render: () => {
-    //   return (
-    //     // <div></div>
-    //   )
-    // }
-  },
-  {
-    title: "Sinh viên thực hiện",
-    dataIndex: "student_id",
-    // width: "15%",
-  },
-  {
-    title: "Giáo viên hướng dẫn",
-    dataIndex: "teacher_id",
-    // width: "10%",
+    dataIndex: "nameTopic",
   },
   {
     title: "Trạng thái",
@@ -28,49 +17,79 @@ export const dataTopic = [
     // width: "10%",
   },
   {
+    title: "Sinh viên thực hiện",
+    dataIndex: ["student", "name"],
+  },
+  {
+    title: "Giáo viên hướng dẫn",
+    dataIndex: ["teacher", "name"],
+  },
+
+  {
     title: "Điểm giáo viên hướng dẫn",
     dataIndex: "instructor",
-    // width: "10%",
+    align: "center",
+    width: "10%",
   },
   {
     title: "Điểm giáo viên phản biện",
     dataIndex: "reviewer",
-    // width: "10%",
+    align: "center",
+    width: "10%",
   },
   {
     title: "Điểm thành viên hội đồng thứ nhất",
-    dataIndex: "board_members_1",
-    // width: "10%",
+    dataIndex: "boardMembers1",
+    align: "center",
+    width: "10%",
   },
   {
     title: "Điểm thành viên hội đồng thứ hai",
-    dataIndex: "board_members_2",
-    // width: "10%",
+    dataIndex: "boardMembers2",
+    align: "center",
+    width: "10%",
   },
   {
     title: "Điểm thành viên hội đồng thứ ba",
-    dataIndex: "board_members_3",
+    dataIndex: "boardMembers3",
+    align: "center",
     width: "10%",
   },
   {
     title: "Ngày tạo",
-    dataIndex: "create_at",
+    dataIndex: "createAt",
+    align: "center",
   },
   {
     title: "Ngày cập nhật",
-    dataIndex: "update_at",
+    dataIndex: "updateAt",
+    align: "center",
   },
-  // {
-  //   title: "Thao tác",
-  //   dataIndex: "operation",
-  //   render: (_, record) => (
-  //     <Space>
-  //       <Button type="link" icon={<EyeOutlined />} onClick={() => handleView(record)}>Xem</Button>
-  //       <Button type="link" icon={<EditOutlined />} onClick={() => handleEdit(record)}>Sửa</Button>
-  //       <Button type="link" icon={<DeleteOutlined />} onClick={() => handleDelete(record)}>Xóa</Button>
-  //     </Space>
-  //   ),
-  // },
+  {
+    title: "Thao tác",
+    dataIndex: "operation",
+    align: "center",
+    render: () => (
+      <Space>
+        <Button
+          ghost
+          type="link"
+          icon={<EyeOutlined />}
+          // onClick={() => handleView(record)}
+        ></Button>
+        <Button
+          type="link"
+          icon={<EditOutlined />}
+          // onClick={() => handleEdit(record)}
+        ></Button>
+        <Button
+          type="link"
+          icon={<DeleteOutlined />}
+          //onClick={() => handleDelete(record)}
+        ></Button>
+      </Space>
+    ),
+  },
 ];
 
 export const dataSource = [

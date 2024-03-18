@@ -4,48 +4,36 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import ModalNewsForm from "./components/ModalNewsForm";
-import { NewGetListApi } from "../../service/newsGetList";
-import { colums } from "./components/ColumNews";
+import { NotificationGetListApi } from "../../service/api";
+import { Button } from "antd";
+import { dataNotification } from "./components/ColumTableNotification";
+// import "./styles.css";
 
-const News: React.FC = () => {
+const Notification: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
+  const [notificationData, setNotificationData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newsData, setNewsData] = useState([]);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const res = await NewGetListApi();
-  //     // setNewsData(res);
-  //     console.log("list news:: ", res);
-  //     return res;
-  //   };
-
-  //   getData();
-  // }, []);
-
   useEffect(() => {
-    const getData = async () => {
+    const datasetNotification = async () => {
       try {
-        const res = await NewGetListApi();
-        console.log("list news:: ", res);
-        setNewsData(res);
+        const res = await NotificationGetListApi();
+        setNotificationData(res);
       } catch (error) {
-        console.error("loi lay du lieu:", error);
+        console.error("Loi lay du lieu: ", error);
       }
     };
-    getData();
+    datasetNotification();
   }, []);
 
   return (
     <PageContainer
-      subTitle="Quản lý tin tức"
       childrenContentStyle={{
         paddingInline: 12,
         paddingBlock: 4,
@@ -54,42 +42,38 @@ const News: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={newsData}
-        columns={colums()}
+        dataSource={notificationData}
+        columns={dataNotification}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
-        headerTitle="Danh sách tin tức"
+        headerTitle="Danh sách tất cả người dùng"
         size="small"
         tableLayout="auto"
+        rowKey="id"
         search={{
           labelWidth: "auto",
           filterType: "query",
           style: {
-            paddingBlock: 12,
+            // paddingBlock: 12,
           },
         }}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content", y: "calc(100vh - 260px)" }}
         options={{
           search: {
-            placeholder: "Nhập từ khóa tìm kiếm...",
-            style: { width: 400 },
+            placeholder: "Nhập từ khoá để tìm kiếm...",
+            style: { width: 300 },
           },
           density: false,
           setting: true,
         }}
         cardProps={{
           bodyStyle: {
-            paddingBottom: 0,
-            paddingTop: 0,
+            paddingBottom: 30,
+            paddingTop: 20,
             paddingInline: 12,
           },
         }}
-        toolBarRender={() => [
-          <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo tin tức
-          </Button>,
-        ]}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
@@ -98,12 +82,17 @@ const News: React.FC = () => {
         }}
         dateFormatter="string"
         rowSelection={{}}
+        toolBarRender={() => [
+          <Button type="primary" key="primary" onClick={showModal}>
+            <PlusOutlined /> Tạo người dùng
+          </Button>,
+        ]}
       ></ProTable>
-      <ModalNewsForm
+      {/* <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      />
+      /> */}
     </PageContainer>
   );
 };
-export default News;
+export default Notification;

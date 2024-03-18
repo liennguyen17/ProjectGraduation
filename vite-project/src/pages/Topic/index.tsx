@@ -3,21 +3,37 @@ import {
   PageContainer,
   ProTable,
 } from "@ant-design/pro-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dataSource, dataTopic } from "./components/ColumTableTopic";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ModalTopicForm from "./components/ModalTopicForm";
+import { TopicGetListApi } from "../../service/api";
+import "./styles.css";
 
 const Topic: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [topicData, setTopicData] = useState([]);
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    const data = async () => {
+      try {
+        const res = await TopicGetListApi();
+        setTopicData(res);
+      } catch (error) {
+        console.error("Loi lay du lieu: ", error);
+      }
+    };
+    data();
+  }, []);
   return (
     <PageContainer
+      // subTitle="Quản lý đề tài khóa luận tốt nghiệp"
       childrenContentStyle={{
         paddingInline: 12,
         paddingBlock: 4,
@@ -26,7 +42,7 @@ const Topic: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={dataSource}
+        dataSource={topicData}
         columns={dataTopic}
         actionRef={actionRef}
         formRef={formRef}
@@ -70,6 +86,7 @@ const Topic: React.FC = () => {
         //   }
         // }
         dateFormatter="string"
+        rowSelection={{}}
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo tin đề tài

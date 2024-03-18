@@ -23,7 +23,10 @@ const Login: React.FC = () => {
           ></div>
         </Col>
         <Col xs={24} lg={6} xl={6} md={6}>
-          <LoginForm subTitle="Hệ thống quản lý Khóa Luận Tốt Nghiệp">
+          <LoginForm
+            subTitle="Hệ thống quản lý Khóa Luận Tốt Nghiệp"
+            logo="/images/logo-fita.png"
+          >
             <Tabs centered>
               <Tabs.TabPane tab={"Đăng nhập tài khoản"} />
             </Tabs>

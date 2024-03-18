@@ -1,23 +1,57 @@
-import {
-  EditOutlined,
-  DeleteOutlined,
-  SolutionOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { ProColumns } from "@ant-design/pro-components";
+import { Button, Space } from "antd";
 
-export const colums = () => {
+interface NewsRecord {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  image: string;
+
+  file: string;
+  year: number;
+  subject: string;
+  createAt: Date;
+  updateAt: Date;
+}
+
+export const colums = (): ProColumns<NewsRecord>[] => {
   return [
     {
       title: "Tiêu đề",
       dataIndex: "title",
     },
     {
-      title: "Nội dung",
+      title: "Mô tả",
       dataIndex: "description",
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "content",
+      hideInTable: true,
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "image",
+      hideInSearch: true,
+      render: (text, record: NewsRecord) => (
+        <img
+          src={record.image as string}
+          alt="Ảnh tin tức"
+          style={{ width: "100px" }}
+        />
+      ),
     },
     {
       title: "File đính kèm",
       dataIndex: "file",
       hideInSearch: true,
+      render: (_, record: NewsRecord) => (
+        <a href={record.file} target="_blank" rel="noopener noreferrer">
+          File đính kèm
+        </a>
+      ),
     },
     {
       title: "Năm",
@@ -40,22 +74,26 @@ export const colums = () => {
     {
       title: "Hành động",
       hideInSearch: true,
-      //   width: 100,
-      render: (_, record) => (
-        <div>
-          <SolutionOutlined
-            style={{ fontSize: "22px", color: "#65ddc7", marginRight: "13px" }}
-            //   onClick={() => handleAdd()}
-          />
-          <EditOutlined
-            style={{ fontSize: "22px", color: "#3eb0e8", marginRight: "13px" }}
+      align: "center",
+      render: () => (
+        <Space>
+          <Button
+            ghost
+            type="link"
+            icon={<EyeOutlined />}
+            // onClick={() => handleView(record)}
+          ></Button>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
             // onClick={() => handleEdit(record)}
-          />
-          <DeleteOutlined
-            style={{ fontSize: "22px", color: "#fc755a" }}
-            // onClick={() => handleDelete(record)}
-          />
-        </div>
+          ></Button>
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            //onClick={() => handleDelete(record)}
+          ></Button>
+        </Space>
       ),
     },
   ];

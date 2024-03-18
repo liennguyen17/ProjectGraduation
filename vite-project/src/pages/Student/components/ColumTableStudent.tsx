@@ -1,12 +1,14 @@
-import {
-  EditOutlined,
-  DeleteOutlined,
-  SolutionOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button, Space } from "antd";
 import React from "react";
 
 export const columStudent = () => {
   return [
+    {
+      title: "ID",
+      dataIndex: "id",
+      hideInTable: true,
+    },
     {
       title: "Họ và tên",
       dataIndex: "name",
@@ -29,7 +31,7 @@ export const columStudent = () => {
       dataIndex: "role",
       hideInSearch: true, //ẩn ở tìm kiếm
       width: "100px",
-      hideInTable: true,
+      // hideInTable: true,
     },
     {
       title: "Ngày sinh",
@@ -55,22 +57,26 @@ export const columStudent = () => {
     {
       title: "Hành động",
       hideInSearch: true,
-      //   width: 100,
+      align: "center",
       render: () => (
-        <div>
-          <SolutionOutlined
-            style={{ fontSize: "22px", color: "#65ddc7", marginRight: "13px" }}
-            //   onClick={() => handleAdd()}
-          />
-          <EditOutlined
-            style={{ fontSize: "22px", color: "#3eb0e8", marginRight: "13px" }}
+        <Space>
+          <Button
+            ghost
+            type="link"
+            icon={<EyeOutlined />}
+            // onClick={() => handleView(record)}
+          ></Button>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
             // onClick={() => handleEdit(record)}
-          />
-          <DeleteOutlined
-            style={{ fontSize: "22px", color: "#fc755a" }}
-            // onClick={() => handleDelete(record)}
-          />
-        </div>
+          ></Button>
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            //onClick={() => handleDelete(record)}
+          ></Button>
+        </Space>
       ),
     },
   ];

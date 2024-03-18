@@ -4,24 +4,24 @@ import { RouteObject } from "react-router-dom";
 import {
   ClusterOutlined,
   FileDoneOutlined,
-  FolderOpenOutlined,
   NotificationOutlined,
   ReadOutlined,
-  SolutionOutlined,
   TeamOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 import Layout from "../layout";
 import NotFound from "../pages/404";
 import NotAuthorized from "../pages/403";
-import ModalFormStudent from "../pages/Student/components/ModalFormStudent";
-import DrawerStudent from "../pages/Student/components/DrawerStudent";
 import Student from "../pages/Student";
-import DrawerNews from "../pages/News/components/DrawerNews";
 import User from "../pages/User";
 import Teacher from "../pages/Teacher";
 import News from "../pages/News";
 import Topic from "../pages/Topic";
 import Login from "../pages/Login";
+import Manage from "../pages/Manage";
+import Notification from "../pages/Notification";
+import Home from "../pages/Home";
+import NewsDetailPage from "../pages/Home/NewDetail";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -33,15 +33,7 @@ export const workplace: RouteObject | MenuDataItem = {
   element: <Layout />,
   children: [
     {
-<<<<<<< HEAD
-=======
-      name: "Đăng nhập",
-      path: "login",
-      element: "Ô nô không ra giữa nữa rồi",
-      // element: <LoginPage />,
-    },
-    {
->>>>>>> 1707fabce9ba066f41e3500b44be2d6a9917f96b
+      // >>>>>>> 1707fabce9ba066f41e3500b44be2d6a9917f96b
       name: "Quản lý người dùng",
       path: "users",
       icon: <ReadOutlined />,
@@ -57,9 +49,9 @@ export const workplace: RouteObject | MenuDataItem = {
 
         {
           name: "Giảng viên quản lý",
-          path: "teacher",
+          path: "manage",
           icon: <ClusterOutlined />,
-          element: <ModalFormStudent />,
+          element: <Manage />,
         },
         {
           name: "Giảng viên hướng dẫn",
@@ -83,6 +75,18 @@ export const workplace: RouteObject | MenuDataItem = {
       icon: <FileDoneOutlined />,
       element: <News />,
     },
+    // {
+    //   name: "Quản lý đề tài",
+    //   path: "topics",
+    //   icon: <FileDoneOutlined />,
+    //   element: <Topic />,
+    // },
+    {
+      name: "Quản lý thông báo",
+      path: "notification",
+      icon: <FileDoneOutlined />,
+      element: <Notification />,
+    },
     {
       name: "Quản lý khóa luận tốt nghiệp",
       path: "graduation-thesis",
@@ -96,33 +100,33 @@ export const workplace: RouteObject | MenuDataItem = {
           element: <Topic />,
         },
         {
-          name: "Bộ môn CNPM",
-          path: "member",
+          name: "Phê duyệt đề tài",
+          path: "file",
           icon: <TeamOutlined />,
-          element: <></>,
+          element: <>o no</>,
         },
       ],
     },
-    {
-      name: "Quản lý tin tức",
-      path: "user-management",
-      icon: <FileDoneOutlined />,
-      // element: <></>,
-      children: [
-        {
-          name: "Tin tức sinh viên",
-          path: "news",
-          icon: <ReadOutlined />,
-          element: <DrawerStudent />,
-        },
-        {
-          name: "Tin tức",
-          path: "permission",
-          icon: <FolderOpenOutlined />,
-          element: <DrawerNews />,
-        },
-      ],
-    },
+    // {
+    //   name: "Quản lý tin tức",
+    //   path: "user-management",
+    //   icon: <FileDoneOutlined />,
+    //   // element: <></>,
+    //   children: [
+    //     {
+    //       name: "Tin tức sinh viên",
+    //       path: "news",
+    //       icon: <ReadOutlined />,
+    //       element: <DrawerStudent />,
+    //     },
+    //     {
+    //       name: "Tin tức",
+    //       path: "permission",
+    //       icon: <FolderOpenOutlined />,
+    //       element: <DrawerNews />,
+    //     },
+    //   ],
+    // },
   ],
 };
 
@@ -131,6 +135,16 @@ export const routes: MenuDataItem[] | RouteObject[] = [
     path: "*",
     name: "404",
     element: <NotFound />,
+  },
+  {
+    path: "/home",
+    name: "Trang chủ",
+    element: <Home />,
+  },
+  {
+    path: "/news/:id",
+    name: "Chi tiết tin tức",
+    element: <NewsDetailPage />,
   },
   {
     path: "/error",
