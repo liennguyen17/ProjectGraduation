@@ -99,8 +99,8 @@ const Home = () => {
           itemLayout="horizontal"
           renderItem={(item: News) => (
             <Card
-              bodyStyle={{ padding: "5px" }}
-              headStyle={{ backgroundColor: "#000" }}
+              // bodyStyle={{ padding: "5px" }}
+              // headStyle={{ backgroundColor: "#000" }}
               title={item.title}
             >
               <img className="news-image" src={item.image} alt={item.title} />
