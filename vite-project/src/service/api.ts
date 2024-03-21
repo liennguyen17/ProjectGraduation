@@ -241,3 +241,26 @@ export async function LoginApi(username: string, password: string) {
     console.error("Error:", error);
   }
 }
+
+export async function MasterDataApi() {
+  const requestData = {};
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/master-data/filter",
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

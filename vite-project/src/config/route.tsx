@@ -25,7 +25,7 @@ import NewsDetailPage from "../pages/Home/NewDetail";
 import RegistrationTopic from "../pages/RegisterTopic";
 import TopicApproval from "../pages/TopicApproval";
 import AllTopic from "../pages/AllTopic";
-import AllTopics from "../pages/AllTopic/demo";
+import MasterData from "../pages/MasterData";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -111,6 +111,13 @@ export const workplace: RouteObject | MenuDataItem = {
           element: <AllTopic />,
         },
       ],
+    },
+    {
+      name: "Master Data",
+      path: "master-data",
+      icon: <FileDoneOutlined />,
+      element: <MasterData />,
+      // element: <MyComponent />,
     },
     {
       name: "Đăng ký đề tài",

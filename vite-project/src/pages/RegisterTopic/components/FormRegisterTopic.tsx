@@ -83,6 +83,19 @@ const FormRegisterTopic: React.FC = () => {
             required
           />
         </Col>
+        <Col span={12}>
+          <ProFormSelect
+            label="Kỳ học"
+            name="subject"
+            placeholder="Vui lòng chọn kỳ học"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn kỳ học!",
+              },
+            ]}
+          />
+        </Col>
       </Row>
     </ProForm>
   );

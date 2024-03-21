@@ -6,25 +6,24 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import ModalNewsForm from "./components/ModalNewsForm";
-import { NewGetListApi } from "../../service/newsGetList";
-import { colums } from "./components/ColumNews";
+import { MasterDataApi } from "../../service/api";
+import { columsMasterData } from "./components/ColumMasterData";
 
-const News: React.FC = () => {
+const MasterData: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newsData, setNewsData] = useState([]);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  //   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState([]);
+  //   const showModal = () => {
+  //     setIsModalOpen(true);
+  //   };
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await NewGetListApi();
+        const res = await MasterDataApi();
         console.log("list news:: ", res);
-        setNewsData(res);
+        setData(res);
       } catch (error) {
         console.error("loi lay du lieu:", error);
       }
@@ -34,7 +33,7 @@ const News: React.FC = () => {
 
   return (
     <PageContainer
-      subTitle="Quản lý tin tức"
+      subTitle="Quản lý master data"
       childrenContentStyle={{
         paddingInline: 12,
         paddingBlock: 4,
@@ -43,13 +42,13 @@ const News: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={newsData}
-        columns={colums()}
+        dataSource={data}
+        columns={columsMasterData()}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
         cardBordered
-        headerTitle="Danh sách tin tức"
+        headerTitle="Danh sách"
         size="small"
         tableLayout="auto"
         search={{
@@ -76,8 +75,12 @@ const News: React.FC = () => {
           },
         }}
         toolBarRender={() => [
-          <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo tin tức
+          <Button
+            type="primary"
+            key="primary"
+            //   onClick={showModal}
+          >
+            <PlusOutlined /> Tạo
           </Button>,
         ]}
         pagination={{
@@ -89,11 +92,11 @@ const News: React.FC = () => {
         dateFormatter="string"
         rowSelection={{}}
       ></ProTable>
-      <ModalNewsForm
+      {/* <ModalNewsForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      />
+      /> */}
     </PageContainer>
   );
 };
-export default News;
+export default MasterData;
