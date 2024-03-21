@@ -9,6 +9,7 @@ import {
 import { Col, DatePicker, Row } from "antd";
 import { useRef } from "react";
 import Editor from "../../Editor";
+import { appInfo } from "../../../config/appInfo";
 
 interface NewFormProps {
   onCancel?: () => void;
@@ -105,7 +106,7 @@ const NewsForm: React.FC<NewFormProps> = ({
               name: "file",
               listType: "picture-card",
             }}
-            action="http://localhost:8080/file/upload"
+            action={`${appInfo.apiUrl}/file/upload`}
             extra="Upload file lên"
           />
         </Col>

@@ -1,10 +1,11 @@
 import { message } from "antd";
 import axios from "axios";
+import { appInfo } from "../config/appInfo";
 
 export async function UserGetListApi() {
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/filter",
+      "https://38a2-118-70-132-104.ngrok-free.app",
       {},
       {
         headers: {
@@ -30,7 +31,7 @@ export async function StudentGetListApi() {
   };
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/filter",
+      `${appInfo.apiUrl}/users/filter`,
       requestData,
       {
         headers: {
@@ -56,7 +57,7 @@ export async function TeacherGetListApi() {
   };
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/filter",
+      `${appInfo.apiUrl}/users/filter`,
       requestData,
       {
         headers: {
@@ -82,7 +83,7 @@ export async function ManageGetListApi() {
   };
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/filter",
+      `${appInfo.apiUrl}/users/filter`,
       requestData,
       {
         headers: {
@@ -105,7 +106,7 @@ export async function TopicGetListApi() {
   const requestData = {};
   try {
     const res = await axios.post(
-      "http://localhost:8080/topic/filter",
+      `${appInfo.apiUrl}/users/filter`,
       requestData,
       {
         headers: {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NewsItem } from "./types";
+import { appInfo } from "../config/appInfo";
 
 // export async function NewGetListApi() {
 //   try {
@@ -57,9 +58,10 @@ import { NewsItem } from "./types";
 // }
 
 export async function NewGetListApi() {
+
   try {
     const res = await axios.post(
-      "http://localhost:8080/news/filter",
+      `${appInfo.apiUrl}/news/filter`,
       {},
       {
         headers: {
