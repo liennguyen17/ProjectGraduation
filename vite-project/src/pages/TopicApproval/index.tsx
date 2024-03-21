@@ -4,14 +4,13 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { dataSource, dataTopic } from "./components/ColumTableTopic";
+
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import ModalTopicForm from "./components/ModalTopicForm";
 import { TopicGetListApi } from "../../service/api";
-import "./styles.css";
+import { dataTopicApproval } from "./components/ColumTableTopicApproval";
 
-const Topic: React.FC = () => {
+const TopicApproval: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,12 +42,12 @@ const Topic: React.FC = () => {
     >
       <ProTable
         dataSource={topicData}
-        columns={dataTopic}
+        columns={dataTopicApproval}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
         cardBordered
-        headerTitle="Danh sách đề tài khóa luận tốt nghiệp"
+        headerTitle="Danh sách đơn đăng ký đề tài khóa luận tốt nghiệp"
         tableLayout="auto"
         search={{
           labelWidth: "auto",
@@ -62,7 +61,7 @@ const Topic: React.FC = () => {
         options={{
           search: {
             placeholder: "Nhập từ khóa tìm kiếm...",
-            style: { width: 400 },
+            style: { width: "40%" },
           },
           density: false,
           setting: true,
@@ -88,11 +87,11 @@ const Topic: React.FC = () => {
           </Button>,
         ]}
       ></ProTable>
-      <ModalTopicForm
+      {/* <ModalTopicForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      />
+      /> */}
     </PageContainer>
   );
 };
-export default Topic;
+export default TopicApproval;

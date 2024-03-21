@@ -19,6 +19,10 @@ export const columTeacher = () => {
       dataIndex: "username",
     },
     {
+      title: "Mã giảng viên",
+      dataIndex: "userCode",
+    },
+    {
       title: "Email",
       dataIndex: "email",
     },

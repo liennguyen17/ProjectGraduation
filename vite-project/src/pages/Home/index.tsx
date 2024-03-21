@@ -99,7 +99,7 @@ const Home = () => {
           itemLayout="horizontal"
           renderItem={(item: News) => (
             <Card
-              // bodyStyle={{ padding: "5px" }}
+              // bodyStyle={{ padding: "5px", margin: "5px", width: "300px" }}
               // headStyle={{ backgroundColor: "#000" }}
               title={item.title}
             >
@@ -107,7 +107,11 @@ const Home = () => {
               <p className="news-description">Mô tả: {item.description}</p>
               <p>Bộ môn: {item.subject}</p>
               <p>Năm bảo vệ: {item.year}</p>
-              <Button type="primary" onClick={() => handleViewDetail(item.id)}>
+              <Button
+                style={{ marginTop: "5px" }}
+                type="primary"
+                onClick={() => handleViewDetail(item.id)}
+              >
                 Xem chi tiết
               </Button>
             </Card>

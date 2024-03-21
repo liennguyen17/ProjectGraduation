@@ -58,6 +58,7 @@ const News: React.FC = () => {
         columns={colums()}
         actionRef={actionRef}
         formRef={formRef}
+        rowKey="id"
         cardBordered
         headerTitle="Danh sách tin tức"
         size="small"

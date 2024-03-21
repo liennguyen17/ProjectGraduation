@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 
 export async function UserGetListApi() {
@@ -182,5 +183,61 @@ export async function getNewsDetail(id: number) {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+
+export async function ForgotPassword(email: string) {
+  const requestData = {
+    email: email,
+  };
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/users/forgot/password",
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data;
+      // message.success(res.data.data);
+    } else {
+      // message.error(
+      //   res.data.error || "Có lỗi xảy ra khi thực hiện chức năng quên mật khẩu"
+      // );
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    message.error("Có lỗi xảy ra khi kết nối đến máy chủ");
+  }
+}
+
+export async function LoginApi(username: string, password: string) {
+  const requestData = {
+    username: username,
+    password: password,
+  };
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/auth/login",
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(res.data);
+
+    if (res.data.success) {
+      return res.data;
+    } else {
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
 }

@@ -19,8 +19,12 @@ export const columStudent = () => {
       dataIndex: "username",
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Mã sinh viên",
+      dataIndex: "userCode",
+    },
+    {
+      title: "Lớp",
+      dataIndex: "className",
     },
     {
       title: "Bộ môn",

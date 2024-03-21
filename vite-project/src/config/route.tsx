@@ -22,6 +22,10 @@ import Manage from "../pages/Manage";
 import Notification from "../pages/Notification";
 import Home from "../pages/Home";
 import NewsDetailPage from "../pages/Home/NewDetail";
+import RegistrationTopic from "../pages/RegisterTopic";
+import TopicApproval from "../pages/TopicApproval";
+import AllTopic from "../pages/AllTopic";
+import AllTopics from "../pages/AllTopic/demo";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -75,12 +79,7 @@ export const workplace: RouteObject | MenuDataItem = {
       icon: <FileDoneOutlined />,
       element: <News />,
     },
-    // {
-    //   name: "Quản lý đề tài",
-    //   path: "topics",
-    //   icon: <FileDoneOutlined />,
-    //   element: <Topic />,
-    // },
+
     {
       name: "Quản lý thông báo",
       path: "notification",
@@ -94,39 +93,32 @@ export const workplace: RouteObject | MenuDataItem = {
       // element: <>recruitment</>,
       children: [
         {
-          name: "Đề tài",
+          name: "Phê duyệt đề tài",
+          path: "approval",
+          icon: <TeamOutlined />,
+          element: <TopicApproval />,
+        },
+        {
+          name: "Điểm đề tài",
           path: "topic",
           icon: <SolutionOutlined />,
           element: <Topic />,
         },
         {
-          name: "Phê duyệt đề tài",
-          path: "file",
-          icon: <TeamOutlined />,
-          element: <>o no</>,
+          name: "Tổng quan đề tài",
+          path: "topics",
+          icon: <SolutionOutlined />,
+          element: <AllTopic />,
         },
       ],
     },
-    // {
-    //   name: "Quản lý tin tức",
-    //   path: "user-management",
-    //   icon: <FileDoneOutlined />,
-    //   // element: <></>,
-    //   children: [
-    //     {
-    //       name: "Tin tức sinh viên",
-    //       path: "news",
-    //       icon: <ReadOutlined />,
-    //       element: <DrawerStudent />,
-    //     },
-    //     {
-    //       name: "Tin tức",
-    //       path: "permission",
-    //       icon: <FolderOpenOutlined />,
-    //       element: <DrawerNews />,
-    //     },
-    //   ],
-    // },
+    {
+      name: "Đăng ký đề tài",
+      path: "register-topic",
+      icon: <FileDoneOutlined />,
+      element: <RegistrationTopic />,
+      // element: <MyComponent />,
+    },
   ],
 };
 

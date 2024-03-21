@@ -68,7 +68,7 @@ const NewsDetailPage = () => {
           <div>
             <h1>{newsDetail.title}</h1>
             {/* <img src={newsDetail.image} alt={newsDetail.title} /> */}
-            <h2>Mô tả: {newsDetail.description}</h2>
+            {/* <h2>Mô tả: {newsDetail.description}</h2> */}
             <div dangerouslySetInnerHTML={{ __html: newsDetail.content }} />
             {/* <p>{newsDetail.content}</p> */}
             <h4>Sinh viên thuộc bộ môn: {newsDetail.subject}</h4>
