@@ -26,6 +26,8 @@ import RegistrationTopic from "../pages/RegisterTopic";
 import TopicApproval from "../pages/TopicApproval";
 import AllTopic from "../pages/AllTopic";
 import MasterData from "../pages/MasterData";
+import DisplayUser from "../pages/Notification/components/DisplayNotification";
+import DisplayNotification from "../pages/Notification/components/DisplayNotification";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -124,6 +126,13 @@ export const workplace: RouteObject | MenuDataItem = {
       path: "register-topic",
       icon: <FileDoneOutlined />,
       element: <RegistrationTopic />,
+      // element: <MyComponent />,
+    },
+    {
+      name: "Thông báo",
+      path: "notification-user",
+      icon: <FileDoneOutlined />,
+      element: <DisplayNotification />,
       // element: <MyComponent />,
     },
   ],
