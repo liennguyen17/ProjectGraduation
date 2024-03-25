@@ -1,15 +1,13 @@
-import { PageContainer, ProList } from "@ant-design/pro-components";
-import { useEffect, useState } from "react";
+import {
+  PageContainer,
+  ProDescriptions,
+  ProList,
+} from "@ant-design/pro-components";
+import { Key, useEffect, useState } from "react";
 
 import { TopicGetListApi } from "../../service/api";
-import { Button, Space, Typography } from "antd";
-
-type ExpandedRowRender<T> = (
-  record: T,
-  index: number,
-  indent: number,
-  expanded: boolean
-) => React.ReactNode;
+import { Space, Tag } from "antd";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 interface dataAllTopic {
   id: number;
@@ -39,6 +37,7 @@ interface dataAllTopic {
   phoneInstructorInternshipFacility: string;
   instructor: number;
   reviewer: number;
+  semester: string;
   boardMembers1: number;
   boardMembers2: number;
   boardMembers3: number;
@@ -47,9 +46,8 @@ interface dataAllTopic {
 }
 
 const AllTopic: React.FC = () => {
-  const { Title, Paragraph, Text, Link } = Typography;
-  const [topicData, setTopicData] = useState([]);
-
+  const [dataTopic, setTopicData] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<readonly Key[]>([]);
   useEffect(() => {
     const data = async () => {
       try {
@@ -62,30 +60,6 @@ const AllTopic: React.FC = () => {
     data();
   }, []);
 
-  const expandedRowRender: ExpandedRowRender<dataAllTopic> = (
-    record: dataAllTopic
-  ) => {
-    return (
-      <Typography>
-        <Paragraph>
-          <ul>
-            <li>
-              <span>Đề tài: {record.nameTopic}</span>
-            </li>
-          </ul>
-        </Paragraph>
-      </Typography>
-      // <Space direction="vertical">
-      //   <div>Trạng thái: {record.status}</div>
-      //   <div>Điểm giáo viên hướng dẫn: {record.instructor}</div>
-      //   <div>Điểm giáo viên phản biện: {record.reviewer}</div>
-      //   <div>Điểm thành viên hội đồng thứ nhất: {record.boardMembers1}</div>
-      //   <div>Điểm thành viên hội đồng thứ hai: {record.boardMembers2}</div>
-      //   <div>Điểm thành viên hội đồng thứ ba: {record.boardMembers3}</div>
-      // </Space>
-    );
-  };
-
   return (
     <PageContainer
       // subTitle="Quản lý đề tài khóa luận tốt nghiệp"
@@ -96,45 +70,145 @@ const AllTopic: React.FC = () => {
       title={false}
       footer={[]}
     >
-      <ProList
-        rowKey="id"
-        headerTitle="Danh sách chi tiết tất cả đề tài"
-        dataSource={topicData}
+      <ProList<dataAllTopic>
+        dataSource={dataTopic}
+        search={{
+          filterType: "query",
+        }}
+        headerTitle="Danh sách đề tài khóa luận tốt nghiệp"
+        expandable={{
+          expandedRowKeys,
+          onExpandedRowsChange: setExpandedRowKeys,
+        }}
         metas={{
           title: {
             dataIndex: "nameTopic",
+            title: "Tên đề tài",
           },
-          description: (record: dataAllTopic) => (
-            <Typography>
-              <Paragraph>
-                <ul>
-                  <li>
-                    <span>Đề tài: {record.nameTopic}</span>
-                  </li>
-                  <li>
-                    <span>Trạng thái: {record.status}</span>
-                  </li>
-                  {/* Thêm các mục khác tương tự */}
-                </ul>
-              </Paragraph>
-            </Typography>
-          ),
-        }}
-        expandable={{
-          expandedRowRender: expandedRowRender,
-          rowExpandable: () => true,
-          defaultExpandAllRows: false,
-        }}
-        toolBarRender={() => [
-          <Button key="3" type="primary">
-            Tạo mới
-          </Button>,
-        ]}
-        pagination={{
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} trên ${total} mục`,
+          subTitle: {
+            dataIndex: "semester",
+            title: "kỳ học",
+
+            render: (_, entity: dataAllTopic) => {
+              return (
+                <Space size={0}>
+                  <Tag color="blue">{entity.departmentManagement}</Tag>
+                  <Tag color="#5BD8A6">{entity.semester}</Tag>
+                </Space>
+              );
+            },
+            valueEnum: {
+              all: { text: "全部", status: "Default" },
+              open: {
+                text: "未解决",
+                status: "Error",
+              },
+              closed: {
+                text: "已解决",
+                status: "Success",
+              },
+            },
+          },
+          description: {
+            search: false,
+            render(_, entity: dataAllTopic) {
+              return (
+                <>
+                  <ProDescriptions
+                    column={2}
+                    dataSource={entity}
+                    itemLayout="horizontal"
+                    columns={[
+                      {
+                        title: "Sinh viên",
+                        key: "id",
+                        dataIndex: ["student", "name"],
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Mã sinh viên",
+                        key: "userCode",
+                        dataIndex: ["student", "userCode"],
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Giáo viên hướng dẫn",
+                        dataIndex: ["teacher", "name"],
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Mã giáo viên hướng dẫn",
+                        dataIndex: ["teacher", "userCode"],
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Đề tài khóa luận tốt nghiệp",
+                        dataIndex: "nameTopic",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Tên cơ sở thực tập",
+                        dataIndex: "nameInternshipFacility",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Cán bộ hướng dẫn tại cơ sở thực tập",
+                        dataIndex: "menterInternshipFacility",
+                        ellipsis: true,
+                      },
+                      {
+                        title:
+                          "Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập",
+                        dataIndex: "phoneInstructorInternshipFacility",
+                        ellipsis: true,
+                      },
+
+                      {
+                        title: "Kỳ học",
+                        dataIndex: "semester",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Bộ môn quản lý",
+                        dataIndex: "departmentManagement",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Điểm giáo viên hướng dẫn",
+                        dataIndex: "instructor",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Điểm giáo viên phản biện",
+                        dataIndex: "reviewer",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Điểm thành viên hội đồng thứ nhất",
+                        dataIndex: "boardMembers1",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Điểm thành viên hội đồng thứ hai",
+                        dataIndex: "boardMembers2",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Điểm thành viên hội đồng thứ ba",
+                        dataIndex: "boardMembers3",
+                        ellipsis: true,
+                      },
+                      {
+                        title: "Kết quả tổng điểm KLTN",
+                        dataIndex: "boardMembers3",
+                        ellipsis: true,
+                      },
+                    ]}
+                  ></ProDescriptions>
+                </>
+              );
+            },
+          },
         }}
       ></ProList>
     </PageContainer>

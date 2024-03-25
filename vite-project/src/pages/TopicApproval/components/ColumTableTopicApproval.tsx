@@ -6,11 +6,13 @@ export const dataTopicApproval = [
     title: "ID",
     dataIndex: "id",
     hideInTable: true,
+    hideInSearch: true,
   },
   {
     title: "Trạng thái",
     dataIndex: "status",
     // width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Họ tên sinh viên",
@@ -55,22 +57,26 @@ export const dataTopicApproval = [
     dataIndex: "menterInternshipFacility",
     // align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập",
     dataIndex: "phoneInstructorInternshipFacility",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Ngày tạo",
     dataIndex: "createAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Ngày cập nhật",
     dataIndex: "updateAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Thao tác",

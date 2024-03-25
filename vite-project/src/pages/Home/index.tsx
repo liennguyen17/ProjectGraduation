@@ -1,8 +1,8 @@
-import { Input, Button, Card, Typography } from "antd";
+import { Input, Button, Typography, Tag } from "antd";
 import "./styles.css"; // Import file CSS riêng
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { NewGetListApi } from "../../service/newsGetList";
 import { NewsFilterApi } from "../../service/api";
 
@@ -63,7 +63,7 @@ const Home = () => {
   const { Title } = Typography;
   return (
     <PageContainer
-      style={{ textAlign: "center", fontSize: "30px" }}
+      // style={{ textAlign: "center", fontSize: "30px" }}
       extra={[
         <Button onClick={handleLoginClick} type="primary">
           Đăng nhập
@@ -80,14 +80,21 @@ const Home = () => {
             className="search-input"
             placeholder="Tìm kiếm bài khóa luận tốt nghiệp..."
             enterButton
-            style={{ width: 400 }}
+            style={{ width: "45%" }}
             onSearch={handleSearch}
           />
         </div>
-        <Title level={4} style={{ marginBottom: "50px" }}>
+        <Title
+          level={4}
+          style={{
+            marginBottom: "50px",
+            textAlign: "center",
+            // fontSize: "25px",
+          }}
+        >
           Danh sách khóa luận tốt nghiệp
         </Title>
-        <ProList
+        <ProList<News>
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,
@@ -95,27 +102,60 @@ const Home = () => {
               `${range[0]}-${range[1]} trên ${total} mục`,
           }}
           dataSource={selectedNewsData}
-          grid={{ gutter: [32, 24], column: 3 }}
-          itemLayout="horizontal"
-          renderItem={(item: News) => (
-            <Card
-              // bodyStyle={{ padding: "5px", margin: "5px", width: "300px" }}
-              // headStyle={{ backgroundColor: "#000" }}
-              title={item.title}
-            >
-              <img className="news-image" src={item.image} alt={item.title} />
-              <p className="news-description">Mô tả: {item.description}</p>
-              <p>Bộ môn: {item.subject}</p>
-              <p>Năm bảo vệ: {item.year}</p>
-              <Button
-                style={{ marginTop: "5px" }}
-                type="primary"
-                onClick={() => handleViewDetail(item.id)}
-              >
-                Xem chi tiết
-              </Button>
-            </Card>
-          )}
+          itemLayout="vertical"
+          metas={{
+            title: {
+              dataIndex: "title",
+              title: "title",
+              render: (dom: ReactNode) => {
+                return dom;
+              },
+            },
+            description: {
+              dataIndex: "description",
+              render: (dom, entity: News) => {
+                return (
+                  <>
+                    <Tag>{entity.subject}</Tag>
+                    <Tag>{entity.year}</Tag>
+                  </>
+                );
+              },
+            },
+
+            extra: {
+              dataIndex: "image",
+              render: (dom, entity: News) => {
+                console.log("image", entity);
+                // <img width={272} alt="logo" src={entity.image} />
+                return (
+                  <img
+                    // width="100%"
+                    width={272}
+                    alt="logo"
+                    src={entity.image}
+                  />
+                );
+              },
+            },
+            content: {
+              dataIndex: "description",
+              render: (dom: ReactNode) => {
+                return dom;
+              },
+            },
+            actions: {
+              render: (_, entity: News) => [
+                <Button
+                  style={{ marginTop: "5px" }}
+                  type="primary"
+                  onClick={() => handleViewDetail(entity.id)}
+                >
+                  Xem chi tiết
+                </Button>,
+              ],
+            },
+          }}
         />
 
         {searchKeyword !== "" && searchResults.length === 0 && (

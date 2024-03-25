@@ -5,7 +5,7 @@ import { appInfo } from "../config/appInfo";
 export async function UserGetListApi() {
   try {
     const res = await axios.post(
-      "https://38a2-118-70-132-104.ngrok-free.app",
+      "http://localhost:8080/users/filter",
       {},
       {
         headers: {
@@ -29,6 +29,7 @@ export async function StudentGetListApi() {
     // keywords: "STUDENT",
     role: "STUDENT",
   };
+  console.log("appInfo.apiUrl", appInfo.apiUrl);
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
@@ -106,7 +107,7 @@ export async function TopicGetListApi() {
   const requestData = {};
   try {
     const res = await axios.post(
-      `${appInfo.apiUrl}/users/filter`,
+      `${appInfo.apiUrl}/topic/filter`,
       requestData,
       {
         headers: {
@@ -129,7 +130,7 @@ export async function NotificationGetListApi() {
   const requestData = {};
   try {
     const res = await axios.post(
-      "http://localhost:8080/notifications/filter",
+      `${appInfo.apiUrl}/notifications/filter`,
       requestData,
       {
         headers: {
@@ -153,15 +154,11 @@ export async function NewsFilterApi(keywords: string) {
     keywords: keywords,
   };
   try {
-    const res = await axios.post(
-      "http://localhost:8080/news/filter",
-      requestData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await axios.post(`${appInfo.apiUrl}/news/filter`, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (res.data?.success) {
       return res.data.data.items;
     } else {
@@ -175,7 +172,7 @@ export async function NewsFilterApi(keywords: string) {
 
 export async function getNewsDetail(id: number) {
   try {
-    const res = await axios.get(`http://localhost:8080/news/${id}`);
+    const res = await axios.get(`${appInfo.apiUrl}/news/${id}`);
     if (res.data?.success) {
       return res.data.data;
     } else {
@@ -193,7 +190,7 @@ export async function ForgotPassword(email: string) {
   };
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/forgot/password",
+      `${appInfo.apiUrl}/users/forgot/password`,
       requestData,
       {
         headers: {
@@ -222,15 +219,11 @@ export async function LoginApi(username: string, password: string) {
     password: password,
   };
   try {
-    const res = await axios.post(
-      "http://localhost:8080/auth/login",
-      requestData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await axios.post(`${appInfo.apiUrl}/auth/login`, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     console.log(res.data);
 
     if (res.data.success) {
@@ -247,7 +240,7 @@ export async function MasterDataApi() {
   const requestData = {};
   try {
     const res = await axios.post(
-      "http://localhost:8080/master-data/filter",
+      `${appInfo.apiUrl}/master-data/filter`,
       requestData,
       {
         headers: {
@@ -259,6 +252,21 @@ export async function MasterDataApi() {
       return res.data.data.items;
     } else {
       throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getTopicDetail(id: number) {
+  try {
+    // const res = await axios.get(`${appInfo.apiUrl}/topic/${id}`);
+    const res = await axios.get(`${appInfo.apiUrl}/topic/${id}`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Failed to fetch news detail");
     }
   } catch (error) {
     console.error(error);

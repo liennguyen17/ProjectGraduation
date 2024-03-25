@@ -45,33 +45,19 @@ const DisplayNotification: React.FC = () => {
       <ProList<Notification>
         dataSource={notificationData}
         search={{
-          filterType: "light",
+          filterType: "query",
         }}
         headerTitle="Danh sách thông báo "
-        request={async () => {
-          // try{
-          const res = await NotificationGetListApi();
-          return res;
-          // }
-        }}
+        // request={async () => {
+        //   // try{
+        //   const res = await NotificationGetListApi();
+        //   return res;
+        //   // }
+        // }}
         expandable={{
           expandedRowKeys,
           onExpandedRowsChange: setExpandedRowKeys,
         }}
-        // metas={{
-        //   title: {
-        //     dataIndex: "title",
-        //   },
-        //   description: {
-        //     dataIndex: "description",
-        //   },
-        //   actions: {
-        //     render: (text, row) => [<a>xem chi tiet</a>, <a>tong quan</a>],
-        //     search: false,
-        //   },
-        //   status: {},
-
-        // }}
         metas={{
           title: {
             dataIndex: "title",

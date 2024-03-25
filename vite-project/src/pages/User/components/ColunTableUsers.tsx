@@ -10,6 +10,12 @@ export const columUser = () => {
       hideInSearch: true,
     },
     {
+      title: "Học kỳ",
+      dataIndex: "semester",
+      hideInTable: true,
+      // hideInSearch: true,
+    },
+    {
       title: "Họ và tên",
       dataIndex: "name",
       // hideInTable: true,

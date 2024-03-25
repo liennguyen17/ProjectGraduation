@@ -6,6 +6,7 @@ export const dataTopic = [
     title: "ID",
     dataIndex: "id",
     hideInTable: true,
+    hideInSearch: true,
   },
   {
     title: "Tên đề tài",
@@ -30,44 +31,53 @@ export const dataTopic = [
     dataIndex: "instructor",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Điểm giáo viên phản biện",
     dataIndex: "reviewer",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Điểm thành viên hội đồng thứ nhất",
     dataIndex: "boardMembers1",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Điểm thành viên hội đồng thứ hai",
     dataIndex: "boardMembers2",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Điểm thành viên hội đồng thứ ba",
     dataIndex: "boardMembers3",
     align: "center",
     width: "10%",
+    hideInSearch: true,
   },
   {
     title: "Ngày tạo",
     dataIndex: "createAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Ngày cập nhật",
     dataIndex: "updateAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Thao tác",
     dataIndex: "operation",
+    hideInSearch: true,
+
     align: "center",
     render: () => (
       <Space>

@@ -28,6 +28,8 @@ import AllTopic from "../pages/AllTopic";
 import MasterData from "../pages/MasterData";
 import DisplayUser from "../pages/Notification/components/DisplayNotification";
 import DisplayNotification from "../pages/Notification/components/DisplayNotification";
+import DisplayNew from "../pages/News/components/DisplayNew";
+import ResultTopic from "../pages/Topic/components/ResultTopic";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -134,6 +136,20 @@ export const workplace: RouteObject | MenuDataItem = {
       icon: <FileDoneOutlined />,
       element: <DisplayNotification />,
       // element: <MyComponent />,
+    },
+    {
+      name: "Tin tức",
+      path: "new-user",
+      icon: <FileDoneOutlined />,
+      element: <DisplayNew />,
+      // element: <>dlkjlahd</>,
+    },
+    {
+      name: "Kết quả KLTN",
+      path: "result",
+      icon: <FileDoneOutlined />,
+      element: <ResultTopic />,
+      // element: <>dlkjlahd</>,
     },
   ],
 };
