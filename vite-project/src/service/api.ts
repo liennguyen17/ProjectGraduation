@@ -5,7 +5,7 @@ import { appInfo } from "../config/appInfo";
 export async function UserGetListApi() {
   try {
     const res = await axios.post(
-      "http://localhost:8080/users/filter",
+      `${appInfo.apiUrl}/users/filter`,
       {},
       {
         headers: {
@@ -267,6 +267,34 @@ export async function getTopicDetail(id: number) {
       return res.data.data;
     } else {
       throw new Error("Failed to fetch news detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getUserDetail(id: number) {
+  try {
+    // const res = await axios.get(`${appInfo.apiUrl}/topic/${id}`);
+    const res = await axios.get(`${appInfo.apiUrl}/users/${id}`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Failed to fetch users detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function getListComment() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/comments/all`);
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Failed to fetch comment detail");
     }
   } catch (error) {
     console.error(error);

@@ -117,7 +117,6 @@ const AllTopic: React.FC = () => {
                   <ProDescriptions
                     column={2}
                     dataSource={entity}
-                    itemLayout="horizontal"
                     columns={[
                       {
                         title: "Sinh viên",

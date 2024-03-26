@@ -95,15 +95,15 @@ const ResultTopic: React.FC = () => {
               dataIndex: "boardMembers3",
               ellipsis: true,
             },
-            {
-              title: "操作",
-              valueType: "option",
-              render: () => [
-                <a target="_blank" rel="noopener noreferrer" key="link">
-                  Điểm của đơn vị thực tập <ArrowRightOutlined />
-                </a>,
-              ],
-            },
+            // {
+            //   title: "操作",
+            //   valueType: "option",
+            //   render: () => [
+            //     <a target="_blank" rel="noopener noreferrer" key="link">
+            //       Điểm của đơn vị thực tập <ArrowRightOutlined />
+            //     </a>,
+            //   ],
+            // },
           ]}
         >
           <ProDescriptions.Item></ProDescriptions.Item>

@@ -6,7 +6,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { UserGetListApi } from "../../service/api";
-import { columUser } from "./components/ColunTableUsers";
+import { columUser } from "./components/ColumnTableUsers";
 import { Button } from "antd";
 import ModalFormUser from "./components/ModalFormUser";
 // import "./styles.css";

@@ -26,10 +26,12 @@ import RegistrationTopic from "../pages/RegisterTopic";
 import TopicApproval from "../pages/TopicApproval";
 import AllTopic from "../pages/AllTopic";
 import MasterData from "../pages/MasterData";
-import DisplayUser from "../pages/Notification/components/DisplayNotification";
 import DisplayNotification from "../pages/Notification/components/DisplayNotification";
 import DisplayNew from "../pages/News/components/DisplayNew";
 import ResultTopic from "../pages/Topic/components/ResultTopic";
+import Comment from "../pages/Comment";
+import DrawerFile from "../pages/Comment/components/DrawerDiary";
+import DrawerDiary from "../pages/Comment/components/DrawerDiary";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -142,14 +144,26 @@ export const workplace: RouteObject | MenuDataItem = {
       path: "new-user",
       icon: <FileDoneOutlined />,
       element: <DisplayNew />,
-      // element: <>dlkjlahd</>,
     },
     {
       name: "Kết quả KLTN",
       path: "result",
       icon: <FileDoneOutlined />,
       element: <ResultTopic />,
+    },
+    {
+      name: "Hành động",
+      path: "action",
+      icon: <FileDoneOutlined />,
+      element: <Comment />,
       // element: <>dlkjlahd</>,
+    },
+    {
+      name: "demo",
+      path: "demo",
+      icon: <FileDoneOutlined />,
+      // element: <DrawerDiary />,
+      element: <>dlkjlahd</>,
     },
   ],
 };

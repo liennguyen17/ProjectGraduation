@@ -16,22 +16,6 @@ interface NewsRecord {
   updateAt: Date;
 }
 
-const data = {
-  nameTopic: "Xây dựng hệ thống quản lý khóa luận tốt nghiệp",
-  status: "pending",
-  departmentManagement: "CMPM",
-  nameInternshipFacility: "Công ty TNHH công nghệ Mai A",
-  menterInternshipFacility: "Nguyễn Văn Nam",
-  phoneInstructorInternshipFacility: "0945778409",
-  instructor: 9.0,
-  reviewer: 8.0,
-  boardMembers1: 7.0,
-  boardMembers2: 9.0,
-  boardMembers3: 8.0,
-  createAt: "11/03/2024",
-  updateAt: "11/03/2024",
-};
-
 export const colums = (): ProColumns<NewsRecord>[] => {
   return [
     {

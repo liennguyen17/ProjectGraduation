@@ -1,7 +1,25 @@
 import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
+import { useState } from "react";
 
-export const columUser = () => {
+interface UserRecord {
+  id: number;
+  name: string;
+  username: string;
+  dob: string;
+  address: string;
+  email: string;
+  phone: string;
+  subject: string;
+  role: string;
+  userCode: string;
+  className: string;
+  createAt: string;
+  updateAt: string;
+}
+
+export const columUser = (): ProColumns<UserRecord>[] => {
   return [
     {
       title: "ID",
@@ -14,6 +32,7 @@ export const columUser = () => {
       dataIndex: "semester",
       hideInTable: true,
       // hideInSearch: true,
+      // renderFormItem:(_,)
     },
     {
       title: "Họ và tên",
