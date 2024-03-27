@@ -170,20 +170,6 @@ export async function NewsFilterApi(keywords: string) {
   }
 }
 
-export async function getNewsDetail(id: number) {
-  try {
-    const res = await axios.get(`${appInfo.apiUrl}/news/${id}`);
-    if (res.data?.success) {
-      return res.data.data;
-    } else {
-      throw new Error("Failed to fetch news detail");
-    }
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
 export async function ForgotPassword(email: string) {
   const requestData = {
     email: email,
@@ -259,6 +245,22 @@ export async function MasterDataApi() {
   }
 }
 
+export async function getListComment() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/comments/all`);
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Failed to fetch comment detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// -------------------------------------------
+
 export async function getTopicDetail(id: number) {
   try {
     // const res = await axios.get(`${appInfo.apiUrl}/topic/${id}`);
@@ -288,13 +290,14 @@ export async function getUserDetail(id: number) {
     throw error;
   }
 }
-export async function getListComment() {
+
+export async function getNewsDetail(id: number) {
   try {
-    const res = await axios.get(`${appInfo.apiUrl}/comments/all`);
+    const res = await axios.get(`${appInfo.apiUrl}/news/${id}`);
     if (res.data?.success) {
-      return res.data.data.items;
+      return res.data.data;
     } else {
-      throw new Error("Failed to fetch comment detail");
+      throw new Error("Loi goi api");
     }
   } catch (error) {
     console.error(error);

@@ -9,12 +9,23 @@ import { PlusOutlined } from "@ant-design/icons";
 import ModalNewsForm from "./components/ModalNewsForm";
 import { NewGetListApi } from "../../service/newsGetList";
 import { colums } from "./components/ColumNews";
+import DrawerNews from "./components/DrawerNews";
+import DrawerNew from "./components/DrawerNew";
 
 const News: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newsData, setNewsData] = useState([]);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onClose = () => {
+    setOpenDrawer(false);
+  };
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -79,6 +90,9 @@ const News: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo tin tức
           </Button>,
+          <Button type="primary" key="primary" onClick={showDrawer}>
+            demo drawer
+          </Button>,
         ]}
         pagination={{
           defaultPageSize: 10,
@@ -93,6 +107,7 @@ const News: React.FC = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
+      <DrawerNew onClose={onClose} open={openDrawer} />
     </PageContainer>
   );
 };

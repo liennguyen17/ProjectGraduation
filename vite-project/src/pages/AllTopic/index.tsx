@@ -115,7 +115,7 @@ const AllTopic: React.FC = () => {
               return (
                 <>
                   <ProDescriptions
-                    column={2}
+                    // column={2}
                     dataSource={entity}
                     columns={[
                       {
@@ -140,11 +140,11 @@ const AllTopic: React.FC = () => {
                         dataIndex: ["teacher", "userCode"],
                         ellipsis: true,
                       },
-                      {
-                        title: "Đề tài khóa luận tốt nghiệp",
-                        dataIndex: "nameTopic",
-                        ellipsis: true,
-                      },
+                      // {
+                      //   title: "Đề tài khóa luận tốt nghiệp",
+                      //   dataIndex: "nameTopic",
+                      //   ellipsis: true,
+                      // },
                       {
                         title: "Tên cơ sở thực tập",
                         dataIndex: "nameInternshipFacility",

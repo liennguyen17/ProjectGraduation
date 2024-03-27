@@ -26,10 +26,25 @@ export const colums = (): ProColumns<NewsRecord>[] => {
     {
       title: "Tiêu đề",
       dataIndex: "title",
+      width: "100px",
     },
     {
       title: "Mô tả",
       dataIndex: "description",
+      width: "350px",
+      // width: "20%",
+      // ellipsis: true,
+      //   render: (text, entity) => (
+      //     <span
+      //       style={{
+      //         overflow: "hidden",
+      //         textOverflow: "ellipsis",
+      //         whiteSpace: "nowrap",
+      //       }}
+      //     >
+      //       {entity.description}
+      //     </span>
+      //   ),
     },
     {
       title: "Nội dung",
@@ -80,7 +95,7 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: () => (
+      render: (text, entity) => (
         <Space>
           <Button
             ghost

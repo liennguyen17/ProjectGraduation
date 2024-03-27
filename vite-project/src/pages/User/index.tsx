@@ -9,6 +9,7 @@ import { UserGetListApi } from "../../service/api";
 import { columUser } from "./components/ColumnTableUsers";
 import { Button } from "antd";
 import ModalFormUser from "./components/ModalFormUser";
+import DrawerUser from "./components/DrawerUser";
 // import "./styles.css";
 
 const User: React.FC = () => {
@@ -16,6 +17,15 @@ const User: React.FC = () => {
   const formRef = useRef<any>();
   const [userData, setUserData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onClose = () => {
+    setOpenDrawer(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -87,12 +97,16 @@ const User: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo người dùng
           </Button>,
+          <Button type="primary" key="primary" onClick={showDrawer}>
+            demo drawer
+          </Button>,
         ]}
       ></ProTable>
       <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
+      <DrawerUser onClose={onClose} open={openDrawer} />
     </PageContainer>
   );
 };
