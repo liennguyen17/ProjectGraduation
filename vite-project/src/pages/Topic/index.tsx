@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { dataSource, dataTopic } from "./components/ColumTableTopic";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import ModalTopicForm from "./components/ModalTopicForm";
+import ModalTopicForm from "../TopicApproval/components/ModalTopicForm";
 import { TopicGetListApi } from "../../service/api";
 import "./styles.css";
 
@@ -82,16 +82,16 @@ const Topic: React.FC = () => {
         }}
         dateFormatter="string"
         rowSelection={{}}
-        toolBarRender={() => [
-          <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo đề tài
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Button type="primary" key="primary" onClick={showModal}>
+        //     <PlusOutlined /> Tạo đề tài
+        //   </Button>,
+        // ]}
       ></ProTable>
-      <ModalTopicForm
+      {/* <ModalTopicForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      />
+      /> */}
     </PageContainer>
   );
 };

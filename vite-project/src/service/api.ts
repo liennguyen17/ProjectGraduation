@@ -304,3 +304,17 @@ export async function getNewsDetail(id: number) {
     throw error;
   }
 }
+
+export async function getNotificationsDetail(id: number) {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/notifications/${id}`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Loi goi api");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

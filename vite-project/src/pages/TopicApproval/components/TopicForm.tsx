@@ -12,11 +12,7 @@ interface TopicFormProps {
   onSuccess?: () => void;
   initiateData?: any;
 }
-const TopicForm: React.FC<TopicFormProps> = ({
-  onCancel,
-  onSuccess,
-  initiateData,
-}) => {
+const TopicForm: React.FC<TopicFormProps> = ({}) => {
   const formRef = useRef<ProFormInstance>();
   return (
     <ProForm formRef={formRef} grid>

@@ -9,6 +9,7 @@ import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TopicGetListApi } from "../../service/api";
 import { dataTopicApproval } from "./components/ColumTableTopicApproval";
+import ModalTopicForm from "./components/ModalTopicForm";
 
 const TopicApproval: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -61,7 +62,7 @@ const TopicApproval: React.FC = () => {
         options={{
           search: {
             placeholder: "Nhập từ khóa tìm kiếm...",
-            style: { width: "40%" },
+            style: { width: 300 },
           },
           density: false,
           setting: true,
@@ -87,10 +88,10 @@ const TopicApproval: React.FC = () => {
           </Button>,
         ]}
       ></ProTable>
-      {/* <ModalTopicForm
+      <ModalTopicForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      /> */}
+      />
     </PageContainer>
   );
 };

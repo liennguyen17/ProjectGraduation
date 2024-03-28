@@ -1,4 +1,9 @@
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  DownloadOutlined,
+} from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
 
@@ -69,7 +74,7 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       hideInSearch: true,
       render: (_, record: NewsRecord) => (
         <a href={record.file} target="_blank" rel="noopener noreferrer">
-          File đính kèm
+          <DownloadOutlined /> File đính kèm
         </a>
       ),
     },

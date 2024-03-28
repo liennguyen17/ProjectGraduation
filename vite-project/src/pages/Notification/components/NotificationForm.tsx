@@ -1,64 +1,57 @@
 import {
   ProForm,
-  ProFormDatePicker,
   ProFormInstance,
-  ProFormSelect,
   ProFormText,
+  ProFormTextArea,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
-import { Col, Row } from "antd";
+import { Notification } from "../../../service/types";
 import { useRef } from "react";
+import { Col, Row } from "antd";
 import Editor from "../../Editor";
 import { appInfo } from "../../../config/appInfo";
 
-interface NewFormProps {
+interface FormProps {
   onCancel?: () => void;
   onSuccess?: () => void;
-  initiateData?: any;
+  initiateData?: Notification;
 }
-const NewsForm: React.FC<NewFormProps> = ({ initiateData }) => {
+
+const NotificationForm: React.FC<FormProps> = ({ initiateData }) => {
   const formRef = useRef<ProFormInstance>();
   return (
-    <ProForm
-      formRef={formRef}
-      grid
-      // submitter={{
-      //   searchConfig: {
-      //     submitText: "Xác nhận",
-      //   },
-      //   resetButtonProps: false,
-      // }}
-    >
+    <ProForm formRef={formRef} grid>
       <Row style={{ flex: 1 }} gutter={16}>
         <Col span={12}>
           <ProFormText
-            label="Tiêu đề"
+            label="Tên thông báo"
             name="title"
-            placeholder="Nhập tiêu đề bài viết"
+            placeholder="Nhập tên thông báo"
             required
             rules={[
               {
                 required: true,
-                message: "Tiêu đề không được bỏ trống",
+                message: "Tên thông báo không được bỏ trống",
               },
               {
                 max: 200,
-                message: "Tiêu đề không vượt quá 200 ký tự",
+                message: "Tên thông báo không vượt quá 200 ký tự",
               },
             ]}
           />
         </Col>
         <Col span={12}>
-          <ProFormSelect
-            label="Bộ môn"
-            name="subject"
-            placeholder="Vui lòng chọn"
+          <ProFormTextArea
+            // colProps={{ span: 18 }}
+            name="description"
+            placeholder="Nhập mô tả"
+            label="Mô tả"
           />
         </Col>
         <Col span={24}>
           <ProForm.Item
             label="Nội dung"
-            name="description"
+            name="content"
             rules={[
               { required: true, message: "Vui lòng không bỏ trống" },
               {
@@ -77,22 +70,6 @@ const NewsForm: React.FC<NewFormProps> = ({ initiateData }) => {
             />
           </ProForm.Item>
         </Col>
-        {/* <Col span={12}>
-          <ProFormDatePicker label="Ngày tạo" />
-          <ProFormDatePicker label="Ngày cập nhật" />
-        </Col> */}
-        <Col span={8}>
-          {/* <ProFormText label="Năm" placeholder="Nhập năm" /> */}
-          {/* <DatePicker picker="year" style={{ width: "100%" }} /> */}
-          <ProFormDatePicker.Year
-            name="dateYear"
-            label="Năm làm khóa luận"
-            // style={{ width: "100%" }}
-            fieldProps={{
-              style: { width: "100%" }, // Chỉnh chiều rộng của input
-            }}
-          />
-        </Col>
         <Col span={8}>
           <ProFormUploadButton
             name="file"
@@ -110,4 +87,4 @@ const NewsForm: React.FC<NewFormProps> = ({ initiateData }) => {
     </ProForm>
   );
 };
-export default NewsForm;
+export default NotificationForm;

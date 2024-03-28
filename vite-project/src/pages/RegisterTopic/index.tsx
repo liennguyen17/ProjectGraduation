@@ -7,27 +7,18 @@ import {
   HeartTwoTone,
   SmileTwoTone,
 } from "@ant-design/icons";
+import ModalResultTopic from "./components/ModalResultTopic";
 
 const RegistrationTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
-  // const [visibleModal1, setVisibleModal1] = useState(false);
-  // const [visibleModal2, setVisibleModal2] = useState(false);
-  // const [visibleModal3, setVisibleModal3] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+  };
 
-  // const handleOpenModal1 = () => {
-  //   setVisibleModal1(true);
-  // };
-
-  // const handleOpenModal2 = () => {
-  //   setVisibleModal2(true);
-  // };
-
-  // const handleOpenModal3 = () => {
-  //   setVisibleModal3(true);
-  // };
   const { Paragraph, Text } = Typography;
   return (
     <PageContainer
@@ -89,7 +80,7 @@ const RegistrationTopic = () => {
             </ul>
           </Paragraph>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button type="primary" onClick={showModal}>
+            <Button type="primary" onClick={showModal1}>
               Xem kết quả <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
           </div>
@@ -118,84 +109,22 @@ const RegistrationTopic = () => {
               {/* <li></li> */}
             </ul>
           </Paragraph>
-          {/* <Button type="primary" onClick={handleOpenModal3}>
-          Gửi đơn <HeartTwoTone twoToneColor="#eb2f96" />
-        </Button> */}
+
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button type="primary" onClick={showModal}>
               Gửi đơn <HeartTwoTone twoToneColor="#eb2f96" />
             </Button>
           </div>
         </Card>
-
-        {/* <Modal
-          title="Modal 1"
-          visible={visibleModal1}
-          onCancel={() => setVisibleModal1(false)}
-          footer={[
-            <Button key="cancel" onClick={() => setVisibleModal1(false)}>
-              Cancel
-            </Button>,
-            <Button
-              key="ok"
-              type="primary"
-              onClick={() => setVisibleModal1(false)}
-            >
-              OK
-            </Button>,
-          ]}
-        >
-          Modal content 1
-        </Modal>
-
-        <Modal
-          title="Modal 2"
-          visible={visibleModal2}
-          onCancel={() => setVisibleModal2(false)}
-          footer={[
-            <Button key="cancel" onClick={() => setVisibleModal2(false)}>
-              Cancel
-            </Button>,
-            <Button
-              key="ok"
-              type="primary"
-              onClick={() => setVisibleModal2(false)}
-            >
-              OK
-            </Button>,
-          ]}
-        >
-          Modal content 2
-        </Modal>
-
-        <Modal
-          title="Modal 3"
-          visible={visibleModal3}
-          onCancel={() => setVisibleModal3(false)}
-          footer={[
-            <Button key="cancel" onClick={() => setVisibleModal3(false)}>
-              Cancel
-            </Button>,
-            <Button
-              key="ok"
-              type="primary"
-              onClick={() => setVisibleModal3(false)}
-            >
-              OK
-            </Button>,
-          ]}
-        >
-          Modal content 3
-        </Modal> */}
       </div>
-
-      {/* <Button type="primary" key="primary" onClick={showModal}>
-        Tạo đơn đăng ký
-      </Button> */}
 
       <ModalFormTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+      />
+      <ModalResultTopic
+        isModalOpen={isModalOpen1}
+        setIsModalOpen={setIsModalOpen1}
       />
     </PageContainer>
   );

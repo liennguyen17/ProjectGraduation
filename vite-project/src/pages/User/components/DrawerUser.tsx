@@ -27,11 +27,12 @@ const DrawerUser: React.FC<DrawerProps> = ({ open, onClose }) => {
       title="Thông tin người dùng"
       onClose={() => onClose(false)}
       visible={open}
-      width={"50%"}
+      width={"40%"}
     >
       <ProDescriptions
         dataSource={userData}
-        // column={1}
+        // layout="vertical"
+        column={2}
         columns={[
           {
             title: "Họ và tên",

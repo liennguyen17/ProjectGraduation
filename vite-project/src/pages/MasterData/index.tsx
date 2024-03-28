@@ -8,15 +8,16 @@ import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { MasterDataApi } from "../../service/api";
 import { columsMasterData } from "./components/ColumMasterData";
+import ModalMasterData from "./components/ModalMasterData";
 
 const MasterData: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  //   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
-  //   const showModal = () => {
-  //     setIsModalOpen(true);
-  //   };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -75,11 +76,7 @@ const MasterData: React.FC = () => {
           },
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            //   onClick={showModal}
-          >
+          <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo
           </Button>,
         ]}
@@ -92,10 +89,10 @@ const MasterData: React.FC = () => {
         dateFormatter="string"
         rowSelection={{}}
       ></ProTable>
-      {/* <ModalNewsForm
+      <ModalMasterData
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      /> */}
+      />
     </PageContainer>
   );
 };

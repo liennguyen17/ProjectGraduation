@@ -1,5 +1,11 @@
 import { Button, Space } from "antd";
-import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+} from "@ant-design/icons";
+import { Notification } from "../../../service/types";
 
 export const dataNotification = [
   {
@@ -22,6 +28,12 @@ export const dataNotification = [
   {
     title: "File đính kèm",
     dataIndex: "file",
+    hideInSearch: true,
+    render: (_, record: Notification) => (
+      <a href={record.file} target="_blank" rel="noopener noreferrer">
+        <DownloadOutlined /> File đính kèm
+      </a>
+    ),
   },
   {
     title: "Trạng thái đọc",

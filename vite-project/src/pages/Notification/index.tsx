@@ -8,6 +8,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { NotificationGetListApi } from "../../service/api";
 import { Button } from "antd";
 import { dataNotification } from "./components/ColumTableNotification";
+import DrawerNotification from "./components/DrawerNotification";
+import ModalNotificationForm from "./components/ModalNotificationForm";
 // import "./styles.css";
 
 const Notification: React.FC = () => {
@@ -15,6 +17,15 @@ const Notification: React.FC = () => {
   const formRef = useRef<any>();
   const [notificationData, setNotificationData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onClose = () => {
+    setOpenDrawer(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -84,7 +95,10 @@ const Notification: React.FC = () => {
         rowSelection={{}}
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo người dùng
+            <PlusOutlined /> Tạo thông báo
+          </Button>,
+          <Button type="primary" key="primary" onClick={showDrawer}>
+            demo drawer
           </Button>,
         ]}
       ></ProTable>
@@ -92,6 +106,11 @@ const Notification: React.FC = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       /> */}
+      <ModalNotificationForm
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+      <DrawerNotification onClose={onClose} open={openDrawer} />
     </PageContainer>
   );
 };

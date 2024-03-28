@@ -1,6 +1,5 @@
-import { Button, Modal } from "antd";
-import { useState } from "react";
-import StudentsForm from "../../student/components/StudentsForm";
+import { Modal } from "antd";
+
 import NewsForm from "./NewsForm";
 
 interface ModalNewFormProps {

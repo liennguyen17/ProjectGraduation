@@ -30,8 +30,7 @@ import DisplayNotification from "../pages/Notification/components/DisplayNotific
 import DisplayNew from "../pages/News/components/DisplayNew";
 import ResultTopic from "../pages/Topic/components/ResultTopic";
 import Comment from "../pages/Comment";
-import DrawerFile from "../pages/Comment/components/DrawerDiary";
-import DrawerDiary from "../pages/Comment/components/DrawerDiary";
+import NotificationDetail from "../pages/Notification/components/NotificationDetail";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -158,13 +157,13 @@ export const workplace: RouteObject | MenuDataItem = {
       element: <Comment />,
       // element: <>dlkjlahd</>,
     },
-    {
-      name: "demo",
-      path: "demo",
-      icon: <FileDoneOutlined />,
-      // element: <DrawerDiary />,
-      element: <>dlkjlahd</>,
-    },
+    // {
+    //   name: "demo",
+    //   path: "demo",
+    //   icon: <FileDoneOutlined />,
+    //   // element: <DrawerDiary />,
+    //   element: <>dlkjlahd</>,
+    // },
   ],
 };
 
@@ -183,6 +182,11 @@ export const routes: MenuDataItem[] | RouteObject[] = [
     path: "/news/:id",
     name: "Chi tiết tin tức",
     element: <NewsDetailPage />,
+  },
+  {
+    path: "/notifications/:id",
+    name: "Thông báo",
+    element: <NotificationDetail />,
   },
   {
     path: "/error",

@@ -115,8 +115,9 @@ const AllTopic: React.FC = () => {
               return (
                 <>
                   <ProDescriptions
-                    // column={2}
+                    column={2}
                     dataSource={entity}
+                    // layout="vertical"
                     columns={[
                       {
                         title: "Sinh viên",

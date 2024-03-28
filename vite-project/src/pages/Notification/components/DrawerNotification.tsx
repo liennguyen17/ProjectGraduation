@@ -1,33 +1,30 @@
 import { useEffect, useState } from "react";
-import { getNewsDetail } from "../../../service/api";
+import { getNotificationsDetail } from "../../../service/api";
 import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
 import { DownloadOutlined } from "@ant-design/icons";
-interface NewsRecord {
-  id: number;
-  title: string;
-  description: string;
-  content: string;
-  image: string;
+import { Notification } from "../../../service/types";
 
-  file: string;
-  year: number;
-  subject: string;
-  createAt: Date;
-  updateAt: Date;
-}
-
+// interface NotificationRecord {
+//   id: number;
+//   user: string;
+//   title: string;
+//   description: string;
+//   file: string;
+//   isRead: string;
+//   createAt: string;
+//   updateAt: string;
+// }
 interface DrawerProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
 }
-
-const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
+const DrawerNotification: React.FC<DrawerProps> = ({ open, onClose }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     const responseData = async () => {
       try {
-        const response = await getNewsDetail(1);
+        const response = await getNotificationsDetail(1);
         setData(response);
       } catch (error) {
         console.error("Error fetching topic detail:", error);
@@ -43,27 +40,18 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
       visible={open}
       width={"80%"}
     >
-      <ProDescriptions<NewsRecord>
+      <ProDescriptions<Notification>
         column={1}
         dataSource={data}
+        // layout="vertical"
         columns={[
           {
-            title: "Tiêu đề",
+            title: "Tên thông báo",
             key: "title",
             dataIndex: "title",
             // ellipsis: true,
           },
-          {
-            title: "Ảnh",
-            dataIndex: "image",
-            render: (text, record) => (
-              <img
-                src={record.image as string}
-                alt="Ảnh tin tức"
-                style={{ width: "100px" }}
-              />
-            ),
-          },
+
           {
             title: "File đính kèm",
             dataIndex: "file",
@@ -74,18 +62,9 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
             ),
           },
           {
-            title: "Năm",
-            dataIndex: "year",
-          },
-          {
-            title: "Bộ môn",
-            dataIndex: "subject",
-          },
-          {
             title: "Mô tả",
-            key: "description",
             dataIndex: "description",
-            // ellipsis: true,
+            key: "description",
           },
           {
             title: "Nội dung",
@@ -99,14 +78,16 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
             },
           },
           {
+            title: "Người tạo",
+            dataIndex: "user",
+          },
+          {
             title: "Ngày tạo",
             dataIndex: "createAt",
-            // hideInSearch: true,
           },
           {
             title: "Ngày cập nhật",
             dataIndex: "updateAt",
-            // hideInSearch: true,
           },
         ]}
       ></ProDescriptions>
@@ -114,4 +95,4 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
   );
 };
 
-export default DrawerNew;
+export default DrawerNotification;

@@ -1,34 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getNewsDetail } from "../../service/api";
-import { PageContainer } from "@ant-design/pro-components";
-import { Button, Modal } from "antd";
-// import { Image, Spin, Typography } from "antd";
-
-interface News {
-  id: number;
-  title: string;
-  description: string;
-  file: string;
-  image: string;
-  content: string;
-  year: number;
-  subject: string;
-  createAt: string;
-  updateAt: string;
-}
-
-// interface ParamId {
-//   id: string;
-// }
-
-// const { Title, Paragraph } = Typography;
+import { PageContainer, ProSkeleton } from "@ant-design/pro-components";
+import { Button, Divider, Modal } from "antd";
+import { News } from "../../service/types";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const NewsDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  //   const safeId = id ?? "";
   const [newsDetail, setNewsDetail] = useState<News | null>(null);
-  //   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -67,23 +47,37 @@ const NewsDetailPage = () => {
         {newsDetail ? (
           <div>
             <h1>{newsDetail.title}</h1>
-            {/* <img src={newsDetail.image} alt={newsDetail.title} /> */}
-            {/* <h2>Mô tả: {newsDetail.description}</h2> */}
+            <Divider />
             <div dangerouslySetInnerHTML={{ __html: newsDetail.content }} />
-            {/* <p>{newsDetail.content}</p> */}
+            <Divider />
+
+            <h3>
+              Tài liệu tham khảo:{" "}
+              <a onClick={handleDownloadFile}>
+                <DownloadOutlined /> Tài liệu
+              </a>
+              {/* <a
+                href={newsDetail.file}
+                target="_blank"
+                // onClick={handleDownloadFile}
+              >
+                <DownloadOutlined /> Tài liệu
+              </a> */}
+            </h3>
             <h4>Sinh viên thuộc bộ môn: {newsDetail.subject}</h4>
             <h4>Năm bảo vệ: {newsDetail.year}</h4>
             <h4>Ngày tạo bài viết: {newsDetail.createAt}</h4>
             <h4>Ngày cập nhật: {newsDetail.updateAt}</h4>
-            <h4>
-              Tài liệu tham khảo:{" "}
-              <Button type="primary" onClick={handleDownloadFile}>
-                Tải tài liệu
-              </Button>
-            </h4>
           </div>
         ) : (
-          <p>Loading...</p>
+          <div
+            style={{
+              background: "#fafafa",
+              padding: 24,
+            }}
+          >
+            <ProSkeleton type="result" />
+          </div>
         )}
       </div>
       <Modal
