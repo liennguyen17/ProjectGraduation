@@ -25,12 +25,12 @@ import NewsDetailPage from "../pages/Home/NewDetail";
 import RegistrationTopic from "../pages/RegisterTopic";
 import TopicApproval from "../pages/TopicApproval";
 import AllTopic from "../pages/AllTopic";
-import MasterData from "../pages/MasterData";
 import DisplayNotification from "../pages/Notification/components/DisplayNotification";
 import DisplayNew from "../pages/News/components/DisplayNew";
 import ResultTopic from "../pages/Topic/components/ResultTopic";
 import Comment from "../pages/Comment";
 import NotificationDetail from "../pages/Notification/components/NotificationDetail";
+import MasterDatas from "../pages/MasterData";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -121,7 +121,7 @@ export const workplace: RouteObject | MenuDataItem = {
       name: "Master Data",
       path: "master-data",
       icon: <FileDoneOutlined />,
-      element: <MasterData />,
+      element: <MasterDatas />,
       // element: <MyComponent />,
     },
     {

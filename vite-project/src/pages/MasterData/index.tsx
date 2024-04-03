@@ -4,19 +4,26 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { MasterDataApi } from "../../service/api";
+import { MasterDataApi, deleteMasterData } from "../../service/api";
 import { columsMasterData } from "./components/ColumMasterData";
 import ModalMasterData from "./components/ModalMasterData";
+import { MasterData } from "../../service/types";
 
-const MasterData: React.FC = () => {
+const MasterDatas: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<MasterData | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
   const showModal = () => {
     setIsModalOpen(true);
+    setEditingId(null);
+    setSelectedRecord(null);
   };
 
   useEffect(() => {
@@ -24,13 +31,53 @@ const MasterData: React.FC = () => {
       try {
         const res = await MasterDataApi();
         console.log("list news:: ", res);
-        setData(res);
+        setData(res.reverse());
       } catch (error) {
         console.error("loi lay du lieu:", error);
       }
     };
     getData();
   }, []);
+
+  const handleCreateSuccess = async () => {
+    try {
+      const res = await MasterDataApi();
+      setData(res.reverse());
+    } catch (error) {
+      console.error("loi lay du lieu:", error);
+    }
+  };
+
+  const handleEdit = (record: MasterData) => {
+    console.log("Dữ liệu cũ:", record);
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: MasterData) => {
+    console.log("DL xoa::", record);
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.name);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteMasterData([selectedRecord?.id]);
+      console.log("delete::", res);
+      handleCreateSuccess();
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  const columns = columsMasterData({ handleEdit, handleDelete });
 
   return (
     <PageContainer
@@ -44,7 +91,7 @@ const MasterData: React.FC = () => {
     >
       <ProTable
         dataSource={data}
-        columns={columsMasterData()}
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
@@ -92,8 +139,19 @@ const MasterData: React.FC = () => {
       <ModalMasterData
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        handleCreateSuccess={handleCreateSuccess}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
       />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>Bạn có chắc chắn muốn xóa "{recordToDeleteName}" không?</p>
+      </Modal>
     </PageContainer>
   );
 };
-export default MasterData;
+export default MasterDatas;

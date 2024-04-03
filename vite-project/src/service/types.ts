@@ -1,14 +1,14 @@
 export interface News {
-  id: number;
+  id?: number;
   title: string;
   description: string;
-  file: string;
-  image: string;
+  file?: string;
+  image?: string;
   content: string;
   year: number;
   subject: string;
-  createAt: string;
-  updateAt: string;
+  createAt?: string;
+  updateAt?: string;
 }
 
 export interface Notification {

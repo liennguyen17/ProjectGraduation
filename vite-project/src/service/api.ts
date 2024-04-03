@@ -1,6 +1,7 @@
 import { message } from "antd";
 import axios from "axios";
 import { appInfo } from "../config/appInfo";
+import { MasterData, News } from "./types";
 
 export async function UserGetListApi() {
   try {
@@ -223,7 +224,10 @@ export async function LoginApi(username: string, password: string) {
 }
 
 export async function MasterDataApi() {
-  const requestData = {};
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/master-data/filter`,
@@ -318,3 +322,68 @@ export async function getNotificationsDetail(id: number) {
     throw error;
   }
 }
+
+//==========================
+
+export async function createNews(data: News): Promise<News> {
+  try {
+    const res = await axios.post(`${appInfo.apiUrl}/news`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.data?.success) {
+      console.log("data new::", res.data.data);
+      return res.data.data;
+    } else {
+      throw new Error("Failed to create news");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export const createMasterData = async (data) => {
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/master-data`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo MasterData:", error);
+    throw new Error("Có lỗi xảy ra khi tạo MasterData");
+  }
+};
+
+// =========================PUT=================
+
+export const editMasterData = async (data: MasterData) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/master-data`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo MasterData:", error);
+    throw new Error("Có lỗi xảy ra khi tạo MasterData");
+  }
+};
+
+// =================DELETE==================
+export const deleteMasterData = async (ids) => {
+  try {
+    const response = await axios.delete(`${appInfo.apiUrl}/master-data`, {
+      data: {
+        ids: ids,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Có lỗi xảy ra khi xóa Master Data");
+  }
+};

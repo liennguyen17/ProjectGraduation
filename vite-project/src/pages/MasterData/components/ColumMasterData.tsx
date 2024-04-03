@@ -1,14 +1,16 @@
 import { Button, Space } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
+import { MasterData } from "../../../service/types";
 
-interface MasterData {
-  id: number;
-  type: string;
-  code: string;
-  name: string;
+interface ColumnProps {
+  handleEdit: (record: MasterData) => void;
+  handleDelete: (record: MasterData) => void;
 }
-export const columsMasterData = (): ProColumns<MasterData>[] => {
+export const columsMasterData = ({
+  handleEdit,
+  handleDelete,
+}: ColumnProps): ProColumns<MasterData>[] => {
   return [
     {
       title: "ID",
@@ -33,7 +35,7 @@ export const columsMasterData = (): ProColumns<MasterData>[] => {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Space>
           {/* <Button
             ghost
@@ -44,12 +46,12 @@ export const columsMasterData = (): ProColumns<MasterData>[] => {
           <Button
             type="link"
             icon={<EditOutlined />}
-            // onClick={() => handleEdit(record)}
+            onClick={() => handleEdit(record)}
           ></Button>
           <Button
             type="link"
             icon={<DeleteOutlined />}
-            //onClick={() => handleDelete(record)}
+            onClick={() => handleDelete(record)}
           ></Button>
         </Space>
       ),
