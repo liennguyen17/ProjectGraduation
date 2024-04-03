@@ -9,7 +9,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import ModalNewsForm from "./components/ModalNewsForm";
 import { NewGetListApi } from "../../service/newsGetList";
 import { colums } from "./components/ColumNews";
-import DrawerNews from "./components/DrawerNews";
 import DrawerNew from "./components/DrawerNew";
 
 const News: React.FC = () => {

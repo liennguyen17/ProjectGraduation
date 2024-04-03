@@ -25,8 +25,9 @@ const ModalNotificationForm: React.FC<ModalFormProps> = ({
       onCancel={handleCancel}
       destroyOnClose
       width={900}
+      footer={false}
     >
-      <NotificationForm />
+      <NotificationForm handleCancel={handleCancel} />
     </Modal>
   );
 };

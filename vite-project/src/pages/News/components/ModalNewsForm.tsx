@@ -27,13 +27,13 @@ const ModalNewsForm: React.FC<ModalNewFormProps> = ({
       <Modal
         title="Tạo tin tức"
         open={isModalOpen}
-        onOk={handleOk}
+        // onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose
         width={900}
+        footer={false}
       >
-        <NewsForm />
-        {/* <StudentsForm /> */}
+        <NewsForm handleCancel={handleCancel} />
       </Modal>
     </>
   );

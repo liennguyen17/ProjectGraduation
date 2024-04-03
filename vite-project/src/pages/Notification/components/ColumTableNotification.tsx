@@ -20,15 +20,29 @@ export const dataNotification = [
     width: "20%",
   },
   {
-    title: "Nội dung thông báo",
+    title: "Mô tả",
     dataIndex: "description",
+    width: "20%",
+  },
+  {
+    title: "Người tạo",
+    dataIndex: "user",
+    width: "5%",
+  },
+  {
+    title: "Nội dung",
+    dataIndex: "content",
     width: "200px",
-    // ellipsis: true,
+    ellipsis: true,
+    hideInTable: true,
+    hideInSearch: true,
   },
   {
     title: "File đính kèm",
     dataIndex: "file",
     hideInSearch: true,
+    align: "center",
+    width: "10%",
     render: (_, record: Notification) => (
       <a href={record.file} target="_blank" rel="noopener noreferrer">
         <DownloadOutlined /> File đính kèm
@@ -38,22 +52,27 @@ export const dataNotification = [
   {
     title: "Trạng thái đọc",
     dataIndex: "isRead",
+    hideInTable: true,
+    hideInSearch: true,
   },
 
   {
     title: "Ngày tạo",
     dataIndex: "createAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Ngày cập nhật",
     dataIndex: "updateAt",
     align: "center",
+    hideInSearch: true,
   },
   {
     title: "Thao tác",
     dataIndex: "operation",
     align: "center",
+    hideInSearch: true,
     render: () => (
       <Space>
         <Button

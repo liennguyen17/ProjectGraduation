@@ -1,12 +1,10 @@
 import {
   ProForm,
-  ProFormInstance,
   ProFormText,
   ProFormTextArea,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
 import { Notification } from "../../../service/types";
-import { useRef } from "react";
 import { Col, Row } from "antd";
 import Editor from "../../Editor";
 import { appInfo } from "../../../config/appInfo";
@@ -17,10 +15,41 @@ interface FormProps {
   initiateData?: Notification;
 }
 
-const NotificationForm: React.FC<FormProps> = ({ initiateData }) => {
-  const formRef = useRef<ProFormInstance>();
+const NotificationForm: React.FC<FormProps> = ({
+  initiateData,
+  handleCancel,
+}) => {
+  const [formRef] = ProForm.useForm();
+
+  const handleFinish = async (value) => {
+    // const res = await
+  };
+
   return (
-    <ProForm formRef={formRef} grid>
+    <ProForm
+      form={formRef}
+      grid
+      submitter={{
+        resetButtonProps: false,
+        render(props, dom) {
+          return (
+            <>
+              <button
+                style={{
+                  marginRight: 20,
+                }}
+                onClick={handleCancel}
+              >
+                {" "}
+                Hủy
+              </button>
+              {dom}
+            </>
+          );
+        },
+      }}
+      onFinish={handleFinish}
+    >
       <Row style={{ flex: 1 }} gutter={16}>
         <Col span={12}>
           <ProFormText
@@ -52,17 +81,17 @@ const NotificationForm: React.FC<FormProps> = ({ initiateData }) => {
           <ProForm.Item
             label="Nội dung"
             name="content"
-            rules={[
-              { required: true, message: "Vui lòng không bỏ trống" },
-              {
-                max: 50000,
-                message: "Nội dung không vượt quá 5000 ký tự",
-              },
-            ]}
+            // rules={[
+            //   { required: true, message: "Vui lòng không bỏ trống" },
+            //   {
+            //     max: 50000,
+            //     message: "Nội dung không vượt quá 5000 ký tự",
+            //   },
+            // ]}
           >
             <Editor
               onChange={(event, editor) => {
-                formRef.setFieldsValue({
+                formRef?.setFieldsValue({
                   bodyKB: editor.getData(),
                 });
               }}
