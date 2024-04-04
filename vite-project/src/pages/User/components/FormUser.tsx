@@ -1,101 +1,122 @@
 import {
   ProForm,
-  ProFormInstance,
+  ProFormDatePicker,
   ProFormSelect,
   ProFormText,
-  ProFormTextArea,
 } from "@ant-design/pro-components";
-import { Badge, Button, Col, Input, Row, Tooltip } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Button, Col, FormInstance, Row, message } from "antd";
 import { useRef } from "react";
+import "../../../index.css";
+import { UserType } from "../../../service/types";
+import { createUser, editUser } from "../../../service/api";
+interface PropsForm {
+  handleCancel: () => void;
+  handleCreateSuccess: () => Promise<void>;
+  editingId: number | null;
+  initialData: UserType | null;
+}
 
-export default function FormUser() {
-  //   const restFormRef = useRef<ProFormInstance>();
-  //   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const formRef = useRef<ProFormInstance>();
+const FormUser: React.FC<PropsForm> = ({
+  handleCancel,
+  handleCreateSuccess,
+  editingId,
+  initialData,
+}) => {
+  const formRef = useRef<FormInstance<UserType>>();
+  const handleFinish = async (value: UserType) => {
+    console.log("Dữ liệu user trước khi gửi đi:", value);
+    try {
+      if (editingId) {
+        const dataToUpdate = { ...value, id: editingId };
+        const res = await editUser(dataToUpdate);
+        if (res.success) {
+          message.success("Chỉnh sửa user thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi chỉnh sửa user");
+        }
+      } else {
+        const res = await createUser(value);
+        if (res.success) {
+          message.success("Tạo user thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi tạo user");
+        }
+      }
+    } catch (error) {
+      message.error("Có lỗi xảy ra khi tạo/chỉnh sửa user");
+    }
+  };
   return (
     <ProForm
+      initialValues={initialData ? initialData : undefined}
       formRef={formRef}
       grid
       submitter={{
+        resetButtonProps: false,
         searchConfig: {
           submitText: "Xác nhận",
         },
-        resetButtonProps: false,
+        render({ form }, dom) {
+          return (
+            <div className="submitFootbar">
+              <Button
+                // danger
+                onClick={() => handleCancel()}
+              >
+                Đóng
+              </Button>
+              {dom}
+            </div>
+          );
+        },
       }}
-      title="Thêm người dùng"
+      onFinish={handleFinish}
     >
       <Row style={{ flex: 1 }} gutter={16}>
         <Col span={8}>
-          <ProForm.Item label="Tài khoản" required name="username">
-            <Input.Group compact>
-              <Input
-                style={{ width: "calc(100% - 80px)" }}
-                allowClear
-                placeholder="Nhập tài khoản"
-                // disabled
-                name="username"
-                // onKeyDown={}
-                // onChange={}
-                defaultValue="liennguyen"
-                required
-              />
-              <Tooltip title="Lấy dữ liệu">
-                <Button
-                  type="primary"
-                  icon={<SearchOutlined />}
-                  // disabled
-                  // onClick={}
-                >
-                  Tìm
-                </Button>
-              </Tooltip>
-            </Input.Group>
-          </ProForm.Item>
-        </Col>
-        <Col span={8}>
           <ProFormText
-            label="Email"
-            name="email"
-            // disabled
-            rules={[{ max: 100, message: "Vui lòng không nhập quá 100 kí tự" }]}
-          />
-        </Col>
-        <Col span={8}>
-          <ProFormSelect
-            label="Trạng thái"
+            label="Username"
+            name="username"
             required
-            name="usrStatus"
-            allowClear={false}
-            valueEnum={{
-              ACTIVE: { text: <Badge status="success" text="Hoạt động" /> },
-              INACTIVE: {
-                text: <Badge status="error" text="Không hoạt động" />,
+            rules={[
+              {
+                required: true,
+                message: "Tên đăng nhập không được bỏ trống",
               },
-            }}
+            ]}
           />
         </Col>
+
+        <Col span={8}>
+          <ProFormText label="Mã người dùng" name="userCode" />
+        </Col>
+
         <Col span={8}>
           <ProFormText
             label="Họ và tên"
             placeholder="Nhập họ tên"
-            // disabled
+            required
             name="name"
-            rules={[{ max: 500, message: "Vui lòng không nhập quá 500 kí tự" }]}
+            rules={[
+              {
+                required: true,
+                message: "Họ và tên không được bỏ trống",
+              },
+              { max: 500, message: "Vui lòng không nhập quá 500 kí tự" },
+            ]}
           />
         </Col>
         <Col span={8}>
-          <ProFormTextArea
-            label="Bộ môn"
-            name="usrPosition"
-            // disabled
+          <ProFormDatePicker
+            name="dob"
+            label="Ngày sinh"
             fieldProps={{
-              autoSize: {
-                minRows: 1,
-                maxRows: 3,
-              },
+              style: { width: "100%" },
             }}
-            rules={[{ max: 500, message: "Vui lòng không nhập quá 500 kí tự" }]}
           />
         </Col>
         <Col span={8}>
@@ -104,32 +125,43 @@ export default function FormUser() {
             name="phone"
             rules={[
               { max: 15, message: "Vui lòng không nhập quá 15 kí tự" },
-              { required: true, message: "Vui lòng không bỏ trống" },
+              // { required: true, message: "Vui lòng không bỏ trống" },
             ]}
-            required
-            // rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-          />
-        </Col>
-        <Col span={8}>
-          <ProFormText
-            label="Địa chỉ"
-            name="address"
             // required
-            // rules={[
-            //   { required: true, message: 'Vui lòng không bỏ trống' },
-            //   { max: 500, message: 'Vui lòng không nhập quá 500 kí tự' },
-            // ]}
           />
         </Col>
         <Col span={8}>
-          <ProFormSelect
-            label="Nhóm"
-            name="grpCode"
+          <ProFormText label="Địa chỉ" name="address" />
+        </Col>
+        <Col span={8}>
+          <ProFormText label="Email" name="email" />
+        </Col>
+        <Col span={8}>
+          <ProFormSelect label="Bộ môn" name="subject" />
+        </Col>
+        <Col span={8}>
+          <ProFormText label="Lớp" name="className" />
+        </Col>
+        <Col span={8}>
+          <ProFormSelect label="Vai trò" name="role" />
+        </Col>
+        <Col span={8}>
+          <ProFormText.Password
+            width="md"
+            name="password"
+            label="Password"
             required
-            // showSearch
+            rules={[
+              {
+                required: true,
+                message: "Mật khẩu không được bỏ trống",
+              },
+            ]}
+            // hidden={!!editingId}
           />
         </Col>
       </Row>
     </ProForm>
   );
-}
+};
+export default FormUser;

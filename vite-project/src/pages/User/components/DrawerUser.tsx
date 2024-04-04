@@ -2,26 +2,34 @@ import { useEffect, useState } from "react";
 import { getUserDetail } from "../../../service/api";
 import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
+import { UserType } from "../../../service/types";
 
 interface DrawerProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
+  selectedRecord: UserType | null;
 }
 
-const DrawerUser: React.FC<DrawerProps> = ({ open, onClose }) => {
+const DrawerUser: React.FC<DrawerProps> = ({
+  open,
+  onClose,
+  selectedRecord,
+}) => {
   const [userData, setUserData] = useState([]);
   useEffect(() => {
-    const fetchUserDetail = async () => {
-      try {
-        const response = await getUserDetail(1);
-        setUserData(response);
-      } catch (error) {
-        console.error("Error fetching topic detail:", error);
-      }
-    };
+    if (selectedRecord) {
+      const fetchUserDetail = async () => {
+        try {
+          const response = await getUserDetail(selectedRecord.id);
+          setUserData(response);
+        } catch (error) {
+          console.error("Error fetching topic detail:", error);
+        }
+      };
 
-    fetchUserDetail();
-  }, []);
+      fetchUserDetail();
+    }
+  }, [selectedRecord]);
   return (
     <Drawer
       title="Thông tin người dùng"

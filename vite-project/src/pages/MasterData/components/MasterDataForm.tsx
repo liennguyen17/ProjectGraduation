@@ -19,9 +19,9 @@ const MasterDataForm: React.FC<PropsForm> = ({
   initialData,
 }) => {
   // const [formRef] = ProForm.useForm();
-  const formRef = useRef<FormInstance<any>>();
+  const formRef = useRef<FormInstance<MasterData>>();
 
-  const handleFinish = async (value) => {
+  const handleFinish = async (value: MasterData) => {
     try {
       if (editingId) {
         const dataToUpdate = { ...value, id: editingId };

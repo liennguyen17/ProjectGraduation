@@ -10,6 +10,7 @@ import { MasterDataApi, deleteMasterData } from "../../service/api";
 import { columsMasterData } from "./components/ColumMasterData";
 import ModalMasterData from "./components/ModalMasterData";
 import { MasterData } from "../../service/types";
+import { message } from "antd/lib";
 
 const MasterDatas: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -66,6 +67,7 @@ const MasterDatas: React.FC = () => {
     try {
       const res = await deleteMasterData([selectedRecord?.id]);
       console.log("delete::", res);
+      message.success(res.data);
       handleCreateSuccess();
       setIsConfirmDeleteOpen(false);
     } catch (error) {

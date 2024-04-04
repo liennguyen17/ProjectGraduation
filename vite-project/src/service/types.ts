@@ -29,3 +29,20 @@ export interface MasterData {
   code: string;
   name: string;
 }
+
+export interface UserType {
+  id: number;
+  name: string;
+  username: string;
+  password?: string;
+  dob: string;
+  address: string;
+  email: string;
+  phone: string;
+  subject: string;
+  role: string;
+  userCode: string;
+  className: string;
+  createAt: string;
+  updateAt: string;
+}

@@ -5,30 +5,77 @@ import {
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { UserGetListApi } from "../../service/api";
+import { UserGetListApi, deleteUser } from "../../service/api";
 import { columUser } from "./components/ColumnTableUsers";
-import { Button } from "antd";
+import { Button, Modal, message } from "antd";
 import ModalFormUser from "./components/ModalFormUser";
 import DrawerUser from "./components/DrawerUser";
-// import "./styles.css";
+import { UserType } from "../../service/types";
 
 const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [userData, setUserData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  // const [openDrawer, setOpenDrawer] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
 
-  const showDrawer = () => {
-    setOpenDrawer(true);
+  const handleViewDetail = (record: UserType) => {
+    setSelectedRecord(record);
+    setIsDetailVisible(true);
   };
 
-  const onClose = () => {
-    setOpenDrawer(false);
+  const handleCloseDetail = () => {
+    setSelectedRecord(null);
+    setIsDetailVisible(false);
   };
+
+  const handleEdit = (record: UserType) => {
+    console.log("Dữ liệu cũ:", record);
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: UserType) => {
+    console.log("DL xoa::", record);
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.name);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteUser([selectedRecord?.id]);
+      console.log("delete::", res);
+      message.success(res.data);
+      handleCreateSuccess();
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  // const showDrawer = () => {
+  //   setOpenDrawer(true);
+  // };
+
+  // const onClose = () => {
+  //   setOpenDrawer(false);
+  // };
 
   const showModal = () => {
     setIsModalOpen(true);
+    setEditingId(null);
+    setSelectedRecord(null);
   };
 
   useEffect(() => {
@@ -36,12 +83,24 @@ const User: React.FC = () => {
       try {
         const res = await UserGetListApi();
         setUserData(res);
+        // setUserData(res.reverse());
       } catch (error) {
         console.error("Loi lay du lieu: ", error);
       }
     };
     dataUser();
   }, []);
+
+  const handleCreateSuccess = async () => {
+    try {
+      const res = await UserGetListApi();
+      setUserData(res);
+    } catch (error) {
+      console.error("loi lay du lieu:", error);
+    }
+  };
+
+  const columns = columUser({ handleViewDetail, handleEdit, handleDelete });
 
   return (
     <PageContainer
@@ -54,7 +113,7 @@ const User: React.FC = () => {
     >
       <ProTable
         dataSource={userData}
-        columns={columUser()}
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
@@ -97,16 +156,33 @@ const User: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo người dùng
           </Button>,
-          <Button type="primary" key="primary" onClick={showDrawer}>
-            demo drawer
-          </Button>,
+          // <Button type="primary" key="primary" onClick={showDrawer}>
+          //   demo drawer
+          // </Button>,
         ]}
       ></ProTable>
       <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        handleCreateSuccess={handleCreateSuccess}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
       />
-      <DrawerUser onClose={onClose} open={openDrawer} />
+      <DrawerUser
+        // onClose={onClose}
+        // open={openDrawer}
+        open={isDetailVisible}
+        onClose={handleCloseDetail}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>Bạn có chắc chắn muốn xóa "{recordToDeleteName}" không?</p>
+      </Modal>
     </PageContainer>
   );
 };

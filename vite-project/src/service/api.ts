@@ -1,13 +1,17 @@
 import { message } from "antd";
 import axios from "axios";
 import { appInfo } from "../config/appInfo";
-import { MasterData, News } from "./types";
+import { MasterData, News, UserType } from "./types";
 
 export async function UserGetListApi() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
-      {},
+      requestData,
       {
         headers: {
           "Content-Type": "application/json",
@@ -344,7 +348,7 @@ export async function createNews(data: News): Promise<News> {
   }
 }
 
-export const createMasterData = async (data) => {
+export const createMasterData = async (data: MasterData) => {
   try {
     const response = await axios.post(`${appInfo.apiUrl}/master-data`, data, {
       headers: {
@@ -358,11 +362,9 @@ export const createMasterData = async (data) => {
   }
 };
 
-// =========================PUT=================
-
-export const editMasterData = async (data: MasterData) => {
+export const createUser = async (data: UserType) => {
   try {
-    const response = await axios.put(`${appInfo.apiUrl}/master-data`, data, {
+    const response = await axios.post(`${appInfo.apiUrl}/users`, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -374,6 +376,58 @@ export const editMasterData = async (data: MasterData) => {
   }
 };
 
+// =========================PUT=================
+
+// export const editMasterData = async (data: MasterData) => {
+//   try {
+//     const response = await axios.put(`${appInfo.apiUrl}/master-data`, data, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi khi tạo MasterData:", error);
+//     throw new Error("Có lỗi xảy ra khi tạo MasterData");
+//   }
+// };
+
+export const editMasterData = async (data: MasterData) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/master-data`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo MasterData:", error);
+    throw new Error("Có lỗi xảy ra khi tạo MasterData");
+  }
+};
+
+export const editUser = async (data: UserType) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/users`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo user:", error);
+    throw new Error("Có lỗi xảy ra khi tạo user");
+  }
+};
+
 // =================DELETE==================
 export const deleteMasterData = async (ids) => {
   try {
@@ -382,7 +436,33 @@ export const deleteMasterData = async (ids) => {
         ids: ids,
       },
     });
-    return response.data;
+
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(
+        response.data.error.message || response.data.error.errors.message
+      );
+    }
+  } catch (error) {
+    throw new Error("Có lỗi xảy ra khi xóa Master Data");
+  }
+};
+
+export const deleteUser = async (ids) => {
+  try {
+    const response = await axios.delete(`${appInfo.apiUrl}/users`, {
+      data: {
+        ids: ids,
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(
+        response.data.error.message || response.data.error.errors.message
+      );
+    }
   } catch (error) {
     throw new Error("Có lỗi xảy ra khi xóa Master Data");
   }

@@ -1,25 +1,20 @@
 import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
-import { useState } from "react";
+import { UserType } from "../../../service/types";
+import moment from "moment";
 
-interface UserRecord {
-  id: number;
-  name: string;
-  username: string;
-  dob: string;
-  address: string;
-  email: string;
-  phone: string;
-  subject: string;
-  role: string;
-  userCode: string;
-  className: string;
-  createAt: string;
-  updateAt: string;
+interface ColumnProps {
+  handleViewDetail: (record: UserType) => void;
+  handleEdit: (record: UserType) => void;
+  handleDelete: (record: UserType) => void;
 }
 
-export const columUser = (): ProColumns<UserRecord>[] => {
+export const columUser = ({
+  handleViewDetail,
+  handleEdit,
+  handleDelete,
+}: ColumnProps): ProColumns<UserType>[] => {
   return [
     {
       title: "ID",
@@ -60,6 +55,7 @@ export const columUser = (): ProColumns<UserRecord>[] => {
       title: "Ngày sinh",
       dataIndex: "dob",
       hideInSearch: true,
+      render: (_, record) => moment(record.dob).format("DD/MM/YYYY"),
     },
     {
       title: "Số điện thoại",
@@ -79,23 +75,23 @@ export const columUser = (): ProColumns<UserRecord>[] => {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Space>
           <Button
             ghost
             type="link"
             icon={<EyeOutlined />}
-            // onClick={() => handleView(record)}
+            onClick={() => handleViewDetail(record)}
           ></Button>
           <Button
             type="link"
             icon={<EditOutlined />}
-            // onClick={() => handleEdit(record)}
+            onClick={() => handleEdit(record)}
           ></Button>
           <Button
             type="link"
             icon={<DeleteOutlined />}
-            //onClick={() => handleDelete(record)}
+            onClick={() => handleDelete(record)}
           ></Button>
         </Space>
       ),
