@@ -4,47 +4,80 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
-import { Notification } from "../../../service/types";
-import { Col, Row } from "antd";
+import { NotificationType } from "../../../service/types";
+import { Button, Col, FormInstance, Row, message } from "antd";
 import Editor from "../../Editor";
 import { appInfo } from "../../../config/appInfo";
+import { useRef } from "react";
+import { createNotification, editNotifications } from "../../../service/api";
+import "../../../index.css";
 
 interface FormProps {
-  onCancel?: () => void;
-  onSuccess?: () => void;
-  initiateData?: Notification;
+  handleCancel: () => void;
+  handleCreateSuccess: () => Promise<void>;
+  editingId: number | null;
+  initialData: NotificationType | null;
+  initiateData?: NotificationType;
 }
 
 const NotificationForm: React.FC<FormProps> = ({
   initiateData,
   handleCancel,
+  handleCreateSuccess,
+  editingId,
+  initialData,
 }) => {
-  const [formRef] = ProForm.useForm();
+  // const [formRef] = ProForm.useForm();
+  const formRef = useRef<FormInstance<NotificationType>>();
 
-  const handleFinish = async (value) => {
-    // const res = await
+  const handleFinish = async (value: NotificationType) => {
+    try {
+      if (editingId) {
+        const dataToUpdate = { ...value, id: editingId };
+        const res = await editNotifications(dataToUpdate);
+        if (res.success) {
+          message.success("Chỉnh sửa thong bao thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi chỉnh sửa MasterData");
+        }
+      } else {
+        const res = await createNotification(value);
+        if (res.success) {
+          message.success("Tạo thong bao thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi tạo thong bao");
+        }
+      }
+    } catch (error) {
+      message.error("Có lỗi xảy ra khi tạo/chỉnh sửa thong bao");
+    }
   };
 
   return (
     <ProForm
-      form={formRef}
+      formRef={formRef}
+      initialValues={initialData ? initialData : undefined}
       grid
       submitter={{
         resetButtonProps: false,
-        render(props, dom) {
+        searchConfig: {
+          submitText: "Xác nhận",
+        },
+        render({ form }, dom) {
           return (
-            <>
-              <button
-                style={{
-                  marginRight: 20,
-                }}
-                onClick={handleCancel}
+            <div className="submitFootbar">
+              <Button
+                // danger
+                onClick={() => handleCancel()}
               >
-                {" "}
-                Hủy
-              </button>
+                Đóng
+              </Button>
               {dom}
-            </>
+            </div>
           );
         },
       }}

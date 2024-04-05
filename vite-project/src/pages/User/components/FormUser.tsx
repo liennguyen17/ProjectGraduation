@@ -9,6 +9,7 @@ import { useRef } from "react";
 import "../../../index.css";
 import { UserType } from "../../../service/types";
 import { createUser, editUser } from "../../../service/api";
+import { handleFilterMasterData } from "../../../service/utils";
 interface PropsForm {
   handleCancel: () => void;
   handleCreateSuccess: () => Promise<void>;
@@ -50,6 +51,19 @@ const FormUser: React.FC<PropsForm> = ({
       message.error("Có lỗi xảy ra khi tạo/chỉnh sửa user");
     }
   };
+
+  // const handleSubject = async (keywords: string) => {
+  //   try {
+  //     const subject = await MasterDataFilterApi(keywords);
+  //     return subject.map((subject: any) => ({
+  //       label: subject.name,
+  //       value: subject.id,
+  //     }));
+  //   } catch (error) {
+  //     console.error("Loi lay du lieu subject:", error);
+  //     return [];
+  //   }
+  // };
   return (
     <ProForm
       initialValues={initialData ? initialData : undefined}
@@ -137,13 +151,21 @@ const FormUser: React.FC<PropsForm> = ({
           <ProFormText label="Email" name="email" />
         </Col>
         <Col span={8}>
-          <ProFormSelect label="Bộ môn" name="subject" />
+          <ProFormSelect
+            label="Bộ môn"
+            name="subject"
+            request={() => handleFilterMasterData("subject")}
+          />
         </Col>
         <Col span={8}>
           <ProFormText label="Lớp" name="className" />
         </Col>
         <Col span={8}>
-          <ProFormSelect label="Vai trò" name="role" />
+          <ProFormSelect
+            label="Vai trò"
+            name="role"
+            request={() => handleFilterMasterData("role")}
+          />
         </Col>
         <Col span={8}>
           <ProFormText.Password

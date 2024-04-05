@@ -4,29 +4,88 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "antd";
+import { Button, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ModalNewsForm from "./components/ModalNewsForm";
 import { NewGetListApi } from "../../service/newsGetList";
-import { colums } from "./components/ColumNews";
+import { columsNews } from "./components/ColumNews";
 import DrawerNew from "./components/DrawerNew";
+import { NewsType } from "../../service/types";
+import { deleteNews } from "../../service/api";
 
 const News: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newsData, setNewsData] = useState([]);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  // const [openDrawer, setOpenDrawer] = useState(false);
 
-  const showDrawer = () => {
-    setOpenDrawer(true);
+  const [selectedRecord, setSelectedRecord] = useState<NewsType | null>(null);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
+
+  const handleViewDetail = (record: NewsType) => {
+    setSelectedRecord(record);
+    setIsDetailVisible(true);
   };
 
-  const onClose = () => {
-    setOpenDrawer(false);
+  const handleCloseDetail = () => {
+    setSelectedRecord(null);
+    setIsDetailVisible(false);
   };
+
+  const handleCreateSuccess = async () => {
+    try {
+      const res = await NewGetListApi();
+      setNewsData(res);
+    } catch (error) {
+      console.error("loi lay du lieu:", error);
+    }
+  };
+
+  const handleEdit = (record: NewsType) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: NewsType) => {
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.title);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteNews([selectedRecord?.id]);
+      console.log("delete::", res);
+      message.success(res.data);
+      handleCreateSuccess();
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+      message.error("loi xoa");
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+  // const showDrawer = () => {
+  //   setOpenDrawer(true);
+  // };
+
+  // const onClose = () => {
+  //   setOpenDrawer(false);
+  // };
   const showModal = () => {
     setIsModalOpen(true);
+    setEditingId(null);
+    setSelectedRecord(null);
   };
 
   useEffect(() => {
@@ -42,6 +101,8 @@ const News: React.FC = () => {
     getData();
   }, []);
 
+  const columns = columsNews({ handleViewDetail, handleEdit, handleDelete });
+
   return (
     <PageContainer
       subTitle="Quản lý tin tức"
@@ -54,7 +115,7 @@ const News: React.FC = () => {
     >
       <ProTable
         dataSource={newsData}
-        columns={colums()}
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
@@ -89,9 +150,6 @@ const News: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo tin tức
           </Button>,
-          <Button type="primary" key="primary" onClick={showDrawer}>
-            demo drawer
-          </Button>,
         ]}
         pagination={{
           defaultPageSize: 10,
@@ -105,8 +163,25 @@ const News: React.FC = () => {
       <ModalNewsForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        handleCreateSuccess={handleCreateSuccess}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
       />
-      <DrawerNew onClose={onClose} open={openDrawer} />
+      <DrawerNew
+        open={isDetailVisible}
+        onClose={handleCloseDetail}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>
+          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
+        </p>
+      </Modal>
     </PageContainer>
   );
 };

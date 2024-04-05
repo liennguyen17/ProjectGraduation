@@ -1,5 +1,5 @@
-export interface News {
-  id?: number;
+export interface NewsType {
+  id: number;
   title: string;
   description: string;
   file?: string;
@@ -11,7 +11,7 @@ export interface News {
   updateAt?: string;
 }
 
-export interface Notification {
+export interface NotificationType {
   id: number;
   user: null;
   title: string;
@@ -43,6 +43,6 @@ export interface UserType {
   role: string;
   userCode: string;
   className: string;
-  createAt: string;
-  updateAt: string;
+  createAt?: string;
+  updateAt?: string;
 }

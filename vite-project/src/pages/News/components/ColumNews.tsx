@@ -6,27 +6,25 @@ import {
 } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
+import { NewsType } from "../../../service/types";
 
-interface NewsRecord {
-  id: number;
-  title: string;
-  description: string;
-  content: string;
-  image: string;
-
-  file: string;
-  year: number;
-  subject: string;
-  createAt: Date;
-  updateAt: Date;
+interface ColumnProps {
+  handleViewDetail: (record: NewsType) => void;
+  handleDelete: (record: NewsType) => void;
+  handleEdit: (record: NewsType) => void;
 }
 
-export const colums = (): ProColumns<NewsRecord>[] => {
+export const columsNews = ({
+  handleViewDetail,
+  handleEdit,
+  handleDelete,
+}: ColumnProps): ProColumns<NewsType>[] => {
   return [
     {
       title: "ID",
       dataIndex: "id",
       hideInTable: true,
+      hideInSearch: true,
     },
     {
       title: "Tiêu đề",
@@ -37,6 +35,7 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       title: "Mô tả",
       dataIndex: "description",
       width: "350px",
+      hideInSearch: true,
       // width: "20%",
       // ellipsis: true,
       //   render: (text, entity) => (
@@ -55,12 +54,13 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       title: "Nội dung",
       dataIndex: "content",
       hideInTable: true,
+      hideInSearch: true,
     },
     {
       title: "Ảnh",
       dataIndex: "image",
       hideInSearch: true,
-      render: (text, record: NewsRecord) => (
+      render: (text, record) => (
         <img
           src={record.image as string}
           alt="Ảnh tin tức"
@@ -72,7 +72,7 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       title: "File đính kèm",
       dataIndex: "file",
       hideInSearch: true,
-      render: (_, record: NewsRecord) => (
+      render: (_, record) => (
         <a href={record.file} target="_blank" rel="noopener noreferrer">
           <DownloadOutlined /> File đính kèm
         </a>
@@ -100,23 +100,23 @@ export const colums = (): ProColumns<NewsRecord>[] => {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: (text, entity) => (
+      render: (text, record) => (
         <Space>
           <Button
             ghost
             type="link"
             icon={<EyeOutlined />}
-            // onClick={() => handleView(record)}
+            onClick={() => handleViewDetail(record)}
           ></Button>
           <Button
             type="link"
             icon={<EditOutlined />}
-            // onClick={() => handleEdit(record)}
+            onClick={() => handleEdit(record)}
           ></Button>
           <Button
             type="link"
             icon={<DeleteOutlined />}
-            //onClick={() => handleDelete(record)}
+            onClick={() => handleDelete(record)}
           ></Button>
         </Space>
       ),

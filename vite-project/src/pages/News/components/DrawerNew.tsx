@@ -3,39 +3,46 @@ import { getNewsDetail } from "../../../service/api";
 import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
 import { DownloadOutlined } from "@ant-design/icons";
-interface NewsRecord {
-  id: number;
-  title: string;
-  description: string;
-  content: string;
-  image: string;
+import { NewsType } from "../../../service/types";
+// interface NewsRecord {
+//   id: number;
+//   title: string;
+//   description: string;
+//   content: string;
+//   image: string;
 
-  file: string;
-  year: number;
-  subject: string;
-  createAt: Date;
-  updateAt: Date;
-}
+//   file: string;
+//   year: number;
+//   subject: string;
+//   createAt: Date;
+//   updateAt: Date;
+// }
 
 interface DrawerProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
+  selectedRecord: NewsType | null;
 }
 
-const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
+const DrawerNew: React.FC<DrawerProps> = ({
+  open,
+  onClose,
+  selectedRecord,
+}) => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    const responseData = async () => {
-      try {
-        const response = await getNewsDetail(1);
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching topic detail:", error);
-      }
-    };
-
-    responseData();
-  }, []);
+    if (selectedRecord) {
+      const responseData = async () => {
+        try {
+          const response = await getNewsDetail(selectedRecord.id);
+          setData(response);
+        } catch (error) {
+          console.error("Error fetching new detail:", error);
+        }
+      };
+      responseData();
+    }
+  }, [selectedRecord]);
   return (
     <Drawer
       title="Chi tiết tin tức"
@@ -43,7 +50,7 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
       visible={open}
       width={"80%"}
     >
-      <ProDescriptions<NewsRecord>
+      <ProDescriptions<NewsType>
         column={1}
         dataSource={data}
         columns={[
@@ -74,7 +81,7 @@ const DrawerNew: React.FC<DrawerProps> = ({ open, onClose }) => {
             ),
           },
           {
-            title: "Năm",
+            title: "Năm bảo vệ",
             dataIndex: "year",
           },
           {

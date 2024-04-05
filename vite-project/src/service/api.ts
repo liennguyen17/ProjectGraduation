@@ -1,7 +1,13 @@
 import { message } from "antd";
 import axios from "axios";
 import { appInfo } from "../config/appInfo";
-import { MasterData, News, UserType } from "./types";
+import {
+  MasterData,
+  News,
+  NewsType,
+  NotificationType,
+  UserType,
+} from "./types";
 
 export async function UserGetListApi() {
   const requestData = {
@@ -329,24 +335,24 @@ export async function getNotificationsDetail(id: number) {
 
 //==========================
 
-export async function createNews(data: News): Promise<News> {
-  try {
-    const res = await axios.post(`${appInfo.apiUrl}/news`, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.data?.success) {
-      console.log("data new::", res.data.data);
-      return res.data.data;
-    } else {
-      throw new Error("Failed to create news");
-    }
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
+// export async function createNews(data: News): Promise<News> {
+//   try {
+//     const res = await axios.post(`${appInfo.apiUrl}/news`, data, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     if (res.data?.success) {
+//       console.log("data new::", res.data.data);
+//       return res.data.data;
+//     } else {
+//       throw new Error("Failed to create news");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
 
 export const createMasterData = async (data: MasterData) => {
   try {
@@ -373,6 +379,32 @@ export const createUser = async (data: UserType) => {
   } catch (error) {
     console.error("Lỗi khi tạo MasterData:", error);
     throw new Error("Có lỗi xảy ra khi tạo MasterData");
+  }
+};
+export const createNews = async (data: NewsType) => {
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/news`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo news:", error);
+    throw new Error("Có lỗi xảy ra khi tạo news");
+  }
+};
+export const createNotification = async (data: NotificationType) => {
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/notifications`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo thong bao:", error);
+    throw new Error("Có lỗi xảy ra khi tạo thong bao");
   }
 };
 
@@ -428,6 +460,42 @@ export const editUser = async (data: UserType) => {
   }
 };
 
+export const editNews = async (data: NewsType) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/users`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo tin tức:", error);
+    throw new Error("Có lỗi xảy ra khi tạo tin tức");
+  }
+};
+
+export const editNotifications = async (data: NotificationType) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/notifications`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo thong bao:", error);
+    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+  }
+};
+
 // =================DELETE==================
 export const deleteMasterData = async (ids) => {
   try {
@@ -467,3 +535,67 @@ export const deleteUser = async (ids) => {
     throw new Error("Có lỗi xảy ra khi xóa Master Data");
   }
 };
+
+export const deleteNews = async (ids) => {
+  try {
+    const response = await axios.delete(`${appInfo.apiUrl}/news`, {
+      data: {
+        ids: ids,
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(
+        response.data.error.message || response.data.error.errors.message
+      );
+    }
+  } catch (error) {
+    throw new Error("Có lỗi xảy ra khi xóa Master Data");
+  }
+};
+
+export const deleteNotification = async (ids) => {
+  try {
+    const response = await axios.delete(`${appInfo.apiUrl}/notifications`, {
+      data: {
+        ids: ids,
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(
+        response.data.error.message || response.data.error.errors.message
+      );
+    }
+  } catch (error) {
+    throw new Error("Có lỗi xảy ra khi xóa Master Data");
+  }
+};
+
+// ==========filter===========
+export async function MasterDataFilterApi(keywords: string) {
+  const requestData = {
+    keywords: keywords,
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/master-data/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

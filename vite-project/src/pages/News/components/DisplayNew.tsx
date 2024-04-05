@@ -1,22 +1,23 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 import { NewGetListApi } from "../../../service/newsGetList";
-import { Avatar, Button, Tag } from "antd";
+import { Button, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { NewsType } from "../../../service/types";
 
-interface News {
-  content: string;
-  createAt: string;
-  description: string;
-  file: string;
-  id: number;
-  image: string;
-  subject: string;
-  title: string;
-  updateAt: string;
-  year: string;
-}
+// interface News {
+//   content: string;
+//   createAt: string;
+//   description: string;
+//   file: string;
+//   id: number;
+//   image: string;
+//   subject: string;
+//   title: string;
+//   updateAt: string;
+//   year: string;
+// }
 
 const DisplayNew: React.FC = () => {
   const [newsData, setNewsData] = useState([]);
@@ -40,7 +41,7 @@ const DisplayNew: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProList<News>
+      <ProList<NewsType>
         // search={{}}
         headerTitle="Danh sách tin tức"
         dataSource={newsData}
@@ -63,7 +64,7 @@ const DisplayNew: React.FC = () => {
             // dataIndex: "subject",
             // title: "Bộ môn",
             search: false,
-            render: (_, entity: News) => {
+            render: (_, entity) => {
               return (
                 <>
                   <Tag>{entity.subject}</Tag>
@@ -84,19 +85,19 @@ const DisplayNew: React.FC = () => {
           extra: {
             dataIndex: "image",
             search: false,
-            render: (_, row: News) => {
+            render: (text, row: NewsType) => {
               return <img src={row.image} alt="image" width={200} />;
             },
           },
           actions: {
-            render: (text, row, index, action) => [
+            render: (text, row) => [
               <Button type="primary" onClick={() => handleViewDetail(row.id)}>
                 <EyeOutlined /> xem chi tiết
               </Button>,
             ],
           },
           content: {
-            render: (_, entity: News) => {
+            render: (_, entity: NewsType) => {
               return (
                 <>
                   <div>{entity.description}</div>

@@ -4,6 +4,7 @@ import {
   ProFormText,
 } from "@ant-design/pro-components";
 import { Col, Row } from "antd";
+import { handleFilterMasterData } from "../../../service/utils";
 
 const FormRegisterTopic: React.FC = () => {
   const handleSubmit = async (values) => {
@@ -88,6 +89,7 @@ const FormRegisterTopic: React.FC = () => {
             label="Kỳ học"
             name="subject"
             placeholder="Vui lòng chọn kỳ học"
+            request={() => handleFilterMasterData("semester")}
             rules={[
               {
                 required: true,

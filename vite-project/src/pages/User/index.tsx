@@ -17,7 +17,6 @@ const User: React.FC = () => {
   const formRef = useRef<any>();
   const [userData, setUserData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -63,14 +62,6 @@ const User: React.FC = () => {
   const handleCloseConfirmDelete = () => {
     setIsConfirmDeleteOpen(false);
   };
-
-  // const showDrawer = () => {
-  //   setOpenDrawer(true);
-  // };
-
-  // const onClose = () => {
-  //   setOpenDrawer(false);
-  // };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -156,9 +147,6 @@ const User: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo người dùng
           </Button>,
-          // <Button type="primary" key="primary" onClick={showDrawer}>
-          //   demo drawer
-          // </Button>,
         ]}
       ></ProTable>
       <ModalFormUser
@@ -169,8 +157,6 @@ const User: React.FC = () => {
         selectedRecord={selectedRecord}
       />
       <DrawerUser
-        // onClose={onClose}
-        // open={openDrawer}
         open={isDetailVisible}
         onClose={handleCloseDetail}
         selectedRecord={selectedRecord}
@@ -181,7 +167,9 @@ const User: React.FC = () => {
         onOk={handleConfirmDelete}
         onCancel={handleCloseConfirmDelete}
       >
-        <p>Bạn có chắc chắn muốn xóa "{recordToDeleteName}" không?</p>
+        <p>
+          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
+        </p>
       </Modal>
     </PageContainer>
   );

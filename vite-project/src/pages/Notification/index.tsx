@@ -5,11 +5,12 @@ import {
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { NotificationGetListApi } from "../../service/api";
-import { Button } from "antd";
-import { dataNotification } from "./components/ColumTableNotification";
+import { NotificationGetListApi, deleteNotification } from "../../service/api";
+import { Button, Modal, message } from "antd";
+import { columnNotification } from "./components/ColumTableNotification";
 import DrawerNotification from "./components/DrawerNotification";
 import ModalNotificationForm from "./components/ModalNotificationForm";
+import { NotificationType } from "../../service/types";
 // import "./styles.css";
 
 const Notification: React.FC = () => {
@@ -17,15 +18,24 @@ const Notification: React.FC = () => {
   const formRef = useRef<any>();
   const [notificationData, setNotificationData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  // const [openDrawer, setOpenDrawer] = useState(false);
 
-  const showDrawer = () => {
-    setOpenDrawer(true);
-  };
+  const [selectedRecord, setSelectedRecord] = useState<NotificationType | null>(
+    null
+  );
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
 
-  const onClose = () => {
-    setOpenDrawer(false);
-  };
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
+
+  // const showDrawer = () => {
+  //   setOpenDrawer(true);
+  // };
+
+  // const onClose = () => {
+  //   setOpenDrawer(false);
+  // };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -43,6 +53,59 @@ const Notification: React.FC = () => {
     datasetNotification();
   }, []);
 
+  const handleViewDetail = (record: NotificationType) => {
+    setSelectedRecord(record);
+    setIsDetailVisible(true);
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedRecord(null);
+    setIsDetailVisible(false);
+  };
+
+  const handleEdit = (record: NotificationType) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: NotificationType) => {
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.title);
+  };
+
+  const handleCreateSuccess = async () => {
+    try {
+      const res = await NotificationGetListApi();
+      setNotificationData(res);
+    } catch (error) {
+      console.error("loi lay du lieu:", error);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteNotification([selectedRecord?.id]);
+      console.log("delete::", res);
+      message.success(res.data);
+      handleCreateSuccess();
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  const columns = columnNotification({
+    handleViewDetail,
+    handleEdit,
+    handleDelete,
+  });
+
   return (
     <PageContainer
       childrenContentStyle={{
@@ -54,11 +117,11 @@ const Notification: React.FC = () => {
     >
       <ProTable
         dataSource={notificationData}
-        columns={dataNotification}
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
-        headerTitle="Danh sách tất cả người dùng"
+        headerTitle="Danh sách tất cả thông báo"
         size="small"
         tableLayout="auto"
         rowKey="id"
@@ -97,9 +160,9 @@ const Notification: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo thông báo
           </Button>,
-          <Button type="primary" key="primary" onClick={showDrawer}>
-            demo drawer
-          </Button>,
+          // <Button type="primary" key="primary" onClick={showDrawer}>
+          //   demo drawer
+          // </Button>,
         ]}
       ></ProTable>
       {/* <ModalFormUser
@@ -109,8 +172,25 @@ const Notification: React.FC = () => {
       <ModalNotificationForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        handleCreateSuccess={handleCreateSuccess}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
       />
-      <DrawerNotification onClose={onClose} open={openDrawer} />
+      <DrawerNotification
+        open={isDetailVisible}
+        onClose={handleCloseDetail}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>
+          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
+        </p>
+      </Modal>
     </PageContainer>
   );
 };

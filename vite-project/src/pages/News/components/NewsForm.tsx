@@ -6,35 +6,78 @@ import {
   ProFormTextArea,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import Editor from "../../Editor";
 import { appInfo } from "../../../config/appInfo";
 // import "../styles.css";
 import "../../../index.css";
-import { createNews } from "../../../service/api";
-import { News } from "../../../service/types";
+import { createNews, editNews } from "../../../service/api";
+import { NewsType } from "../../../service/types";
+import { FormInstance } from "antd/lib";
+import { useRef } from "react";
+import { handleFilterMasterData } from "../../../service/utils";
 
 interface NewFormProps {
-  onCancel?: () => void;
-  onSuccess?: () => void;
+  // onCancel?: () => void;
+  // onSuccess?: () => void;
+  // handleCancel: () => void;
   initiateData?: any;
   handleCancel: () => void;
+  handleCreateSuccess: () => Promise<void>;
+  editingId: number | null;
+  initialData: NewsType | null;
 }
-const NewsForm: React.FC<NewFormProps> = ({ initiateData, handleCancel }) => {
-  const [formRef] = ProForm.useForm();
+const NewsForm: React.FC<NewFormProps> = ({
+  initiateData,
+  handleCancel,
+  handleCreateSuccess,
+  editingId,
+  initialData,
+}) => {
+  // const [formRef] = ProForm.useForm();
+  const formRef = useRef<FormInstance<NewsType>>();
 
-  const handleFinish = async (value: News) => {
+  // const handleFinish = async (value: NewsType) => {
+  //   try {
+  //     console.log("Data from :", value);
+  //     const res = await createNews(value);
+  //     // console.log("create news::", res);
+  //   } catch (error) {
+  //     console.error("Error creating news:", error);
+  //   }
+  // };
+
+  const handleFinish = async (value: NewsType) => {
     try {
-      console.log("Data from :", value);
-      const res = await createNews(value);
-      // console.log("create news::", res);
+      if (editingId) {
+        const dataToUpdate = { ...value, id: editingId };
+        const res = await editNews(dataToUpdate);
+        if (res.success) {
+          message.success("Chỉnh sửa tin tức thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi chỉnh sửa tin tức");
+        }
+      } else {
+        const res = await createNews(value);
+        if (res.success) {
+          message.success("Tạo tin tức thành công");
+          handleCreateSuccess();
+          handleCancel();
+        } else {
+          message.error("Có lỗi xảy ra khi tạo tin tức");
+        }
+      }
     } catch (error) {
-      console.error("Error creating news:", error);
+      message.error("Có lỗi xảy ra khi tạo/chỉnh sửa tin tức");
     }
   };
+
   return (
     <ProForm
-      form={formRef}
+      initialValues={initialData ? initialData : undefined}
+      formRef={formRef}
       grid
       submitter={{
         resetButtonProps: false,
@@ -90,6 +133,7 @@ const NewsForm: React.FC<NewFormProps> = ({ initiateData, handleCancel }) => {
             label="Bộ môn"
             name="subject"
             placeholder="Vui lòng chọn"
+            request={() => handleFilterMasterData("subject")}
             // required
             // rules={[
             //   {
@@ -123,7 +167,7 @@ const NewsForm: React.FC<NewFormProps> = ({ initiateData, handleCancel }) => {
         </Col>
         <Col span={8}>
           <ProFormDatePicker.Year
-            name="dateYear"
+            name="year"
             label="Năm làm khóa luận"
             fieldProps={{
               style: { width: "100%" }, // Chỉnh chiều rộng của input

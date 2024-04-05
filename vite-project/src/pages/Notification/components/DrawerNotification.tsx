@@ -3,7 +3,7 @@ import { getNotificationsDetail } from "../../../service/api";
 import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
 import { DownloadOutlined } from "@ant-design/icons";
-import { Notification } from "../../../service/types";
+import { Notification, NotificationType } from "../../../service/types";
 
 // interface NotificationRecord {
 //   id: number;
@@ -18,21 +18,27 @@ import { Notification } from "../../../service/types";
 interface DrawerProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
+  selectedRecord: NotificationType | null;
 }
-const DrawerNotification: React.FC<DrawerProps> = ({ open, onClose }) => {
+const DrawerNotification: React.FC<DrawerProps> = ({
+  open,
+  onClose,
+  selectedRecord,
+}) => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    const responseData = async () => {
-      try {
-        const response = await getNotificationsDetail(1);
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching topic detail:", error);
-      }
-    };
-
-    responseData();
-  }, []);
+    if (selectedRecord) {
+      const responseData = async () => {
+        try {
+          const response = await getNotificationsDetail(selectedRecord.id);
+          setData(response);
+        } catch (error) {
+          console.error("Error fetching notification detail:", error);
+        }
+      };
+      responseData();
+    }
+  }, [selectedRecord]);
   return (
     <Drawer
       title="Chi tiết tin tức"
