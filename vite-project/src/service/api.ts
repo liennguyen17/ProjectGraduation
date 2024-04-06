@@ -6,6 +6,7 @@ import {
   News,
   NewsType,
   NotificationType,
+  RegisterTopicType,
   UserType,
 } from "./types";
 
@@ -333,7 +334,7 @@ export async function getNotificationsDetail(id: number) {
   }
 }
 
-//==========================
+//==========================create=========
 
 // export async function createNews(data: News): Promise<News> {
 //   try {
@@ -397,6 +398,20 @@ export const createNews = async (data: NewsType) => {
 export const createNotification = async (data: NotificationType) => {
   try {
     const response = await axios.post(`${appInfo.apiUrl}/notifications`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo thong bao:", error);
+    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+  }
+};
+
+export const createStudentRegisterTopic = async (data: RegisterTopicType) => {
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/topic/student`, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -589,13 +604,35 @@ export async function MasterDataFilterApi(keywords: string) {
         },
       }
     );
-    if (res.data?.success) {
+    if (res.data.success) {
       return res.data.data.items;
     } else {
       throw new Error("Loi");
     }
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+}
+
+export async function filterUser(data) {
+  try {
+    const response = await axios.post(
+      `${appInfo.apiUrl}/master-data/filter`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data.success) {
+      return response.data.data.items;
+    } else {
+      throw new Error("Loi lay du lieu loc/tim kiem user");
+    }
+  } catch (error) {
+    console.error("Error filtering users:", error);
     throw error;
   }
 }

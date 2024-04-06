@@ -5,7 +5,7 @@ import {
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { UserGetListApi, deleteUser } from "../../service/api";
+import { UserGetListApi, deleteUser, filterUser } from "../../service/api";
 import { columUser } from "./components/ColumnTableUsers";
 import { Button, Modal, message } from "antd";
 import ModalFormUser from "./components/ModalFormUser";
@@ -91,6 +91,15 @@ const User: React.FC = () => {
     }
   };
 
+  // const filterData = async (params: any) => {
+  //   try {
+  //     const res = await filterUser(params);
+  //     setUserData(res.data.items);
+  //   } catch (error) {
+  //     console.error("Loi loc user", error);
+  //   }
+  // };
+
   const columns = columUser({ handleViewDetail, handleEdit, handleDelete });
 
   return (
@@ -119,6 +128,9 @@ const User: React.FC = () => {
             // paddingBlock: 12,
           },
         }}
+        // request={(params, sorter, filter) =>
+        //   filterData({ ...params, ...filter })
+        // }
         scroll={{ x: "max-content", y: "calc(100vh - 260px)" }}
         options={{
           search: {

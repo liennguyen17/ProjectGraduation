@@ -26,8 +26,9 @@ const ModalFormTopic: React.FC<ModalTopicFormProps> = ({
       destroyOnClose
       width={900}
       title="ĐƠN ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
+      footer={false}
     >
-      <FormRegisterTopic />
+      <FormRegisterTopic handleCancel={handleCancel} />
     </Modal>
   );
 };

@@ -46,3 +46,31 @@ export interface UserType {
   createAt?: string;
   updateAt?: string;
 }
+
+export interface RegisterTopicType {
+  id: number;
+  student: {
+    id: number;
+    // name: string;
+    // email: string;
+    // phone: string;
+    // role: string;
+    // userCode: string;
+    // className: string;
+  };
+  teacher: {
+    id: number;
+    // name: string;
+    // email: string;
+    // phone: string;
+    // role: string;
+    // userCode: string;
+    // className: null;
+  };
+  nameTopic: string;
+  semester: string;
+  // departmentManagement: string;
+  nameInternshipFacility: string;
+  menterInternshipFacility: string;
+  phoneInstructorInternshipFacility: string;
+}

@@ -8,6 +8,7 @@ import {
   SmileTwoTone,
 } from "@ant-design/icons";
 import ModalResultTopic from "./components/ModalResultTopic";
+import { filterUser } from "../../service/api";
 
 const RegistrationTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,10 @@ const RegistrationTopic = () => {
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const showModal1 = () => {
     setIsModalOpen1(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const { Paragraph, Text } = Typography;
@@ -73,10 +78,17 @@ const RegistrationTopic = () => {
             {/* <Text strong>Chú ý: </Text> */}
             <ul>
               <li>
-                <span>Xem kết quả đăng ký đề tài khóa luận tốt nghiệp.</span>
+                <span>
+                  Sinh viên đã đăng ký đề tài thì kết quả sẽ hiện thị ở đây.
+                </span>
               </li>
-              {/* <li><span>Mỗi đơn đăng ký chỉ được gửi 1 lần.</span></li> */}
-              {/* <li></li> */}
+
+              <li>
+                <span>
+                  Kết quả sẽ được cập nhật sau khi phê duyệt đề tài của sinh
+                  viên.
+                </span>
+              </li>
             </ul>
           </Paragraph>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -86,7 +98,7 @@ const RegistrationTopic = () => {
           </div>
         </Card>
 
-        <Card
+        {/* <Card
           bordered={false}
           title="Đơn kiến nghị"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
@@ -106,7 +118,6 @@ const RegistrationTopic = () => {
                   việc, không thì đơn sẽ bị thu hồi.
                 </span>
               </li>
-              {/* <li></li> */}
             </ul>
           </Paragraph>
 
@@ -115,12 +126,13 @@ const RegistrationTopic = () => {
               Gửi đơn <HeartTwoTone twoToneColor="#eb2f96" />
             </Button>
           </div>
-        </Card>
+        </Card> */}
       </div>
 
       <ModalFormTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        // handleCancel={handleCancel}
       />
       <ModalResultTopic
         isModalOpen={isModalOpen1}

@@ -3,20 +3,80 @@ import {
   ProFormSelect,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import { handleFilterMasterData } from "../../../service/utils";
+import { RegisterTopicType } from "../../../service/types";
+import {
+  TeacherGetListApi,
+  createStudentRegisterTopic,
+} from "../../../service/api";
 
-const FormRegisterTopic: React.FC = () => {
-  const handleSubmit = async (values) => {
-    console.log("Received values:", values);
-    // Gửi thông tin đăng ký đề tài đến backend
+interface PropsForm {
+  handleCancel: () => void;
+}
+
+const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
+  const handleFilterTeacher = async () => {
+    try {
+      const dataTeacher = await TeacherGetListApi();
+      console.log(dataTeacher);
+      return dataTeacher.map((dataTeacher: any) => ({
+        // lable: dataTeacher.id,
+        // value: dataTeacher.name,
+
+        lable: dataTeacher.name,
+        value: dataTeacher.id,
+      }));
+    } catch (error) {
+      console.error("Error fetching teacher data:", error);
+      return [];
+    }
   };
+
+  const handleFinish = async (value: RegisterTopicType) => {
+    try {
+      const res = await createStudentRegisterTopic(value);
+      if (res.success) {
+        message.success("Gửi đơn đăng ký đề tài thành công.");
+        handleCancel();
+      } else {
+        message.error("Có lỗi trong quá trình đăng ký.");
+      }
+    } catch (error) {
+      message.error("Có lỗi trong quá trình đăng ký.");
+    }
+  };
+
   return (
-    <ProForm style={{ flex: 1 }} onFinish={handleSubmit} layout="vertical">
+    <ProForm
+      style={{ flex: 1 }}
+      // onFinish={handleSubmit}
+      onFinish={handleFinish}
+      submitter={{
+        resetButtonProps: false,
+        searchConfig: {
+          submitText: "Xác nhận",
+        },
+        render({ form }, dom) {
+          return (
+            <div className="submitFootbar">
+              <Button
+                // danger
+                onClick={() => handleCancel()}
+              >
+                Đóng
+              </Button>
+              {dom}
+            </div>
+          );
+        },
+      }}
+      layout="vertical"
+    >
       <Row gutter={24}>
         <Col span={12}>
           <ProFormText
-            name="topic_name"
+            name="nameTopic"
             label="Tên đề tài"
             rules={[{ required: true, message: "Vui lòng nhập tên đề tài!" }]}
             // width="lg"
@@ -27,7 +87,7 @@ const FormRegisterTopic: React.FC = () => {
         <Col span={12}>
           <ProFormSelect
             label="Giảng viên hướng dẫn"
-            name="subject"
+            name="teacher"
             placeholder="Vui lòng chọn giảng viên"
             rules={[
               {
@@ -35,11 +95,12 @@ const FormRegisterTopic: React.FC = () => {
                 message: "Vui lòng chọn giảng viên!",
               },
             ]}
+            request={handleFilterTeacher}
           />
         </Col>
         <Col span={12}>
           <ProFormText
-            name="topic_name"
+            name="nameInternshipFacility"
             label="Tên cơ sở thực tập"
             rules={[
               {
@@ -54,7 +115,7 @@ const FormRegisterTopic: React.FC = () => {
         </Col>
         <Col span={12}>
           <ProFormText
-            name="topic_name"
+            name="menterInternshipFacility"
             label="Cán bộ hướng dẫn tại cơ sở thực tập"
             rules={[
               {
@@ -70,7 +131,7 @@ const FormRegisterTopic: React.FC = () => {
         </Col>
         <Col span={12}>
           <ProFormText
-            name="topic_name"
+            name="phoneInstructorInternshipFacility"
             label="Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập"
             rules={[
               {
@@ -87,7 +148,7 @@ const FormRegisterTopic: React.FC = () => {
         <Col span={12}>
           <ProFormSelect
             label="Kỳ học"
-            name="subject"
+            name="semester"
             placeholder="Vui lòng chọn kỳ học"
             request={() => handleFilterMasterData("semester")}
             rules={[
