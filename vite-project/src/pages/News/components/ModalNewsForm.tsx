@@ -6,17 +6,17 @@ import { NewsType } from "../../../service/types";
 interface ModalNewFormProps {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  handleCreateSuccess: () => Promise<void>;
   editingId: number | null;
   selectedRecord: NewsType | null;
+  actionRef?: () => void;
 }
 
 const ModalNewsForm: React.FC<ModalNewFormProps> = ({
   isModalOpen,
   setIsModalOpen,
-  handleCreateSuccess,
   editingId,
   selectedRecord,
+  actionRef,
 }) => {
   const handleOk = () => {
     setIsModalOpen(false);
@@ -37,8 +37,8 @@ const ModalNewsForm: React.FC<ModalNewFormProps> = ({
         footer={false}
       >
         <NewsForm
+          actionRef={actionRef}
           handleCancel={handleCancel}
-          handleCreateSuccess={handleCreateSuccess}
           editingId={editingId}
           initialData={selectedRecord}
         />

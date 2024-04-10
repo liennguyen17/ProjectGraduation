@@ -4,27 +4,84 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { data, dataSource2 } from "../Student/components/demo";
-import { columTeacher } from "./components/ColumTeacher";
-import { ManageGetListApi, TeacherGetListApi } from "../../service/api";
+import { ManageGetListApi, deleteUser } from "../../service/api";
 import { columManage } from "./components/ColumManager";
-// import { data, dataSource2 } from "../Student/components/columTableStudent";
+import { UserType } from "../../service/types";
+import { Modal, message } from "antd";
+import ModalFormUser from "../User/components/ModalFormUser";
+import DrawerUser from "../User/components/DrawerUser";
 
 const Manage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  const [manageData, setManageData] = useState([]);
-  useEffect(() => {
-    const data = async () => {
-      try {
-        const res = await ManageGetListApi();
-        setManageData(res);
-      } catch (error) {
-        console.error("Loi lay du lieu: ", error);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
+
+  // const [manageData, setManageData] = useState([]);
+  // useEffect(() => {
+  //   const data = async () => {
+  //     try {
+  //       const res = await ManageGetListApi();
+  //       setManageData(res);
+  //     } catch (error) {
+  //       console.error("Loi lay du lieu: ", error);
+  //     }
+  //   };
+  //   data();
+  // }, []);
+
+  const handleViewDetail = (record: UserType) => {
+    setSelectedRecord(record);
+    setIsDetailVisible(true);
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedRecord(null);
+    setIsDetailVisible(false);
+  };
+
+  const handleEdit = (record: UserType) => {
+    console.log("Dữ liệu cũ:", record);
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: UserType) => {
+    console.log("DL xoa::", record);
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.name);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteUser([selectedRecord?.id]);
+      console.log("delete::", res);
+      message.success(res.data);
+      if (actionRef && actionRef.current) {
+        actionRef.current.reload();
       }
-    };
-    data();
-  }, []);
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  const columns = columManage({
+    handleViewDetail,
+    handleEdit,
+    handleDelete,
+  });
   return (
     <PageContainer
       childrenContentStyle={{
@@ -36,8 +93,9 @@ const Manage: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={manageData}
-        columns={columManage()}
+        formRef={formRef}
+        // dataSource={manageData}
+        columns={columns}
         rowSelection={{}}
         actionRef={actionRef}
         cardBordered
@@ -45,6 +103,9 @@ const Manage: React.FC = () => {
         size="small"
         tableLayout="auto"
         rowKey="id"
+        request={async (params, sort, filter) =>
+          await ManageGetListApi(params, sort, filter)
+        }
         search={{
           labelWidth: "auto",
           filterType: "query",
@@ -79,6 +140,28 @@ const Manage: React.FC = () => {
         scroll={{ x: "max-content", y: "calc(100vh-245px)" }}
         dateFormatter="string"
       ></ProTable>
+      <ModalFormUser
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
+        actionRef={() => actionRef.current?.reload()}
+      />
+      <DrawerUser
+        open={isDetailVisible}
+        onClose={handleCloseDetail}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>
+          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
+        </p>
+      </Modal>
     </PageContainer>
   );
 };

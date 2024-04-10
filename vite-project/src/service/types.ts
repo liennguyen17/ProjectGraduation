@@ -2,8 +2,8 @@ export interface NewsType {
   id: number;
   title: string;
   description: string;
-  file?: string;
-  image?: string;
+  file?: any;
+  image?: any;
   content: string;
   year: number;
   subject: string;
@@ -73,4 +73,122 @@ export interface RegisterTopicType {
   nameInternshipFacility: string;
   menterInternshipFacility: string;
   phoneInstructorInternshipFacility: string;
+}
+
+export interface TopicType {
+  id: number;
+  student: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    userCode: string;
+    className: string;
+  };
+  teacher: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    userCode: string;
+    className: null;
+  };
+  nameTopic: string;
+  status: string;
+  note: string;
+  departmentManagement: string;
+  nameInternshipFacility: string;
+  menterInternshipFacility: string;
+  phoneInstructorInternshipFacility: string;
+  instructor: number;
+  reviewer: number;
+  semester: string;
+  boardMembers1: number;
+  boardMembers2: number;
+  boardMembers3: number;
+  createAt: string;
+  updateAt: string;
+}
+
+export interface TopicApproval {
+  id: number;
+  student: {
+    id: number;
+  };
+  teacher: {
+    id: number;
+  };
+  status: string;
+  note: string;
+}
+
+export interface TopicEdit {
+  id: number;
+  studentId?: number;
+  teacherId?: number;
+  student: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    userCode: string;
+    className: string;
+  };
+  teacher: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    userCode: string;
+    className: null;
+  };
+  nameTopic: string;
+  status: string;
+  note: string;
+  departmentManagement: string;
+  nameInternshipFacility: string;
+  menterInternshipFacility: string;
+  phoneInstructorInternshipFacility: string;
+  instructor: number;
+  reviewer: number;
+  semester: string;
+  boardMembers1: number;
+  boardMembers2: number;
+  boardMembers3: number;
+  createAt: string;
+  updateAt: string;
+}
+
+export interface TopicTypeFilter {
+  id: number;
+  keywords: string;
+  student: {
+    name: string;
+  };
+  teacher: {
+    name: string;
+  };
+  nameTopic: string;
+  status: string;
+  note: string;
+  departmentManagement: string;
+  semester: string;
+}
+
+export interface TopicTypeCreate {
+  id: number;
+  student: number;
+  teacher: number;
+  nameTopic: string;
+  status: string;
+  // note: string;
+  departmentManagement: string;
+  nameInternshipFacility: string;
+  menterInternshipFacility: string;
+  phoneInstructorInternshipFacility: string;
+  semester: string;
 }

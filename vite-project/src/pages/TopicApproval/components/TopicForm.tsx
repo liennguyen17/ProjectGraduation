@@ -1,25 +1,103 @@
 import {
   ProForm,
-  ProFormInstance,
   ProFormSelect,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Badge, Col, Row } from "antd";
+import { Button, Col, FormInstance, Row, message } from "antd";
 import { useRef } from "react";
+import {
+  handleFilterMasterData,
+  handleFilterStudent,
+  handleFilterTeacher,
+} from "../../../service/utils";
+import { TopicType, TopicTypeCreate } from "../../../service/types";
+
+import "../../../index.css";
+import { TopicCreate, editTopic } from "../../../service/api";
 
 interface TopicFormProps {
-  onCancel?: () => void;
-  onSuccess?: () => void;
-  initiateData?: any;
+  onCancel: () => void;
+  editingId: number | null;
+  initialData: TopicType | null;
+  actionRef?: () => void;
 }
-const TopicForm: React.FC<TopicFormProps> = ({}) => {
-  const formRef = useRef<ProFormInstance>();
+const TopicForm: React.FC<TopicFormProps> = ({
+  onCancel,
+  editingId,
+  initialData,
+  actionRef,
+}) => {
+  const formRef = useRef<FormInstance<TopicTypeCreate>>();
+
+  const handleFinish = async (value) => {
+    try {
+      if (editingId) {
+        console.log("dlc::", initialData);
+        const studentId = initialData?.student.id;
+        const teacherId = initialData?.teacher.id;
+        const dataUpdate = {
+          ...initialData,
+          ...value,
+          id: editingId,
+          studentId: studentId,
+          teacherId: teacherId,
+        };
+
+        const res = await editTopic(dataUpdate);
+        console.log("res:: ", res);
+        if (res.success) {
+          message.success("Chỉnh sửa đề tài thành công");
+          onCancel();
+          actionRef?.();
+        } else {
+          message.error("Có lỗi xảy ra khi chỉnh sửa đề tài");
+        }
+      } else {
+        const res = await TopicCreate(value);
+        if (res.success) {
+          message.success("Tạo đề tài thành công");
+          onCancel();
+          actionRef?.();
+        } else {
+          message.error("Có lỗi xảy ra khi tạo đề tài");
+        }
+      }
+    } catch (error) {
+      message.error("Có lỗi trong quá trình tạo đề tài.");
+    }
+  };
+
   return (
-    <ProForm formRef={formRef} grid>
+    <ProForm
+      initialValues={initialData ? initialData : undefined}
+      formRef={formRef}
+      grid
+      submitter={{
+        resetButtonProps: false,
+        searchConfig: {
+          submitText: "Xác nhận",
+        },
+        render({ form }, dom) {
+          // console.log("dom", dom);
+          return (
+            <div className="submitFootbar">
+              <Button
+                // danger
+                onClick={() => onCancel()}
+              >
+                Đóng
+              </Button>
+              {dom}
+            </div>
+          );
+        },
+      }}
+      onFinish={handleFinish}
+    >
       <Row gutter={[16, 24]}>
         <Col span={12}>
           <ProFormText
-            name="name"
+            name="nameTopic"
             label="Tên đề tài"
             placeholder="Nhập tên đề tài"
             rules={[
@@ -31,24 +109,48 @@ const TopicForm: React.FC<TopicFormProps> = ({}) => {
           />
         </Col>
         <Col span={6}>
-          <ProFormText
-            name="student_id"
-            label="Sinh viên thực hiện"
-            placeholder="Nhập tên sinh viên"
-            rules={[
-              {
-                message: "Vui lòng không để trống",
-                required: true,
-              },
-            ]}
+          <ProFormSelect
+            label="Học kỳ"
+            name="semester"
+            placeholder="Vui lòng chọn"
+            request={() => handleFilterMasterData("semester")}
           />
         </Col>
         <Col span={6}>
           <ProFormSelect
-            name="teacher_id"
-            label="Giáo viên hướng dẫn"
+            label="Bộ môn quản lý"
+            name="departmentManagement"
             placeholder="Vui lòng chọn"
-            required
+            request={() => handleFilterMasterData("subject")}
+          />
+        </Col>
+        <Col span={8}>
+          <ProFormSelect
+            name="student"
+            label="Họ tên sinh viên"
+            // value={initialData ? initialData.student.id : undefined}
+            request={() => handleFilterStudent()}
+            placeholder="Vui lòng chọn sinh viên"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn sinh viên!",
+              },
+            ]}
+          />
+        </Col>
+        <Col span={8}>
+          <ProFormSelect
+            name="teacher"
+            label="Họ và tên giảng viên hướng dẫn"
+            request={() => handleFilterTeacher()}
+            placeholder="Vui lòng chọn giảng viên"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn giảng viên!",
+              },
+            ]}
           />
         </Col>
 
@@ -56,26 +158,41 @@ const TopicForm: React.FC<TopicFormProps> = ({}) => {
           <ProFormSelect
             label="Trạng thái"
             name="status"
-            required
-            allowClear={false}
-            valueEnum={{
-              APPROVED: {
-                text: <Badge status="success" text="Đã phê duyệt" />,
-              },
-              APPROVE: {
-                text: <Badge status="error" text="Chưa phê duyệt" />,
-              },
-              ACTIVE: { text: <Badge status="processing" text="Hoạt động" /> },
-              INACTIVE: {
-                text: <Badge status="default" text="Không hoạt động" />,
-              },
-              ONACTIVE: {
-                text: <Badge status="warning" text="Không hoạt động" />,
-              },
-            }}
+            // required
+            // allowClear={false}
+            placeholder="Vui lòng chọn"
+            request={() => handleFilterMasterData("status")}
           />
         </Col>
-        <Col span={8}>
+
+        <Col span={12}>
+          <ProFormText
+            name="nameInternshipFacility"
+            label="Tên cơ sở thực tập"
+            placeholder="Nhập tên cơ sở thực tập..."
+            // rules={[
+            //   {
+            //     message: "Vui lòng không để trống",
+            //     required: true,
+            //   },
+            // ]}
+          />
+        </Col>
+        <Col span={12}>
+          <ProFormText
+            name="menterInternshipFacility"
+            label="Cán bộ hướng dẫn tại cơ sở thực tập"
+            placeholder="Nhập tên cán bộ hướng dẫn tại cơ sở thực tập..."
+          />
+        </Col>
+        <Col span={12}>
+          <ProFormText
+            name="phoneInstructorInternshipFacility"
+            label="Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập"
+            placeholder="Nhập số điện thoại cán bộ hướng dẫn tại cơ sở thực tập..."
+          />
+        </Col>
+        {/* <Col span={8}>
           <ProFormText
             name="instructor"
             label="Điểm giáo viên hướng dẫn"
@@ -139,7 +256,7 @@ const TopicForm: React.FC<TopicFormProps> = ({}) => {
               },
             ]}
           />
-        </Col>
+        </Col> */}
       </Row>
     </ProForm>
   );

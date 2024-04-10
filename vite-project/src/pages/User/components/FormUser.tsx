@@ -1,4 +1,5 @@
 import {
+  ActionType,
   ProForm,
   ProFormDatePicker,
   ProFormSelect,
@@ -12,16 +13,18 @@ import { createUser, editUser } from "../../../service/api";
 import { handleFilterMasterData } from "../../../service/utils";
 interface PropsForm {
   handleCancel: () => void;
-  handleCreateSuccess: () => Promise<void>;
+  // handleCreateSuccess: () => Promise<void>;
   editingId: number | null;
   initialData: UserType | null;
+  actionRef?: () => void;
 }
 
 const FormUser: React.FC<PropsForm> = ({
   handleCancel,
-  handleCreateSuccess,
+  // handleCreateSuccess,
   editingId,
   initialData,
+  actionRef,
 }) => {
   const formRef = useRef<FormInstance<UserType>>();
   const handleFinish = async (value: UserType) => {
@@ -32,8 +35,10 @@ const FormUser: React.FC<PropsForm> = ({
         const res = await editUser(dataToUpdate);
         if (res.success) {
           message.success("Chỉnh sửa user thành công");
-          handleCreateSuccess();
+          // handleCreateSuccess();
+
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi chỉnh sửa user");
         }
@@ -41,14 +46,16 @@ const FormUser: React.FC<PropsForm> = ({
         const res = await createUser(value);
         if (res.success) {
           message.success("Tạo user thành công");
-          handleCreateSuccess();
+          // handleCreateSuccess();
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi tạo user");
         }
       }
     } catch (error) {
-      message.error("Có lỗi xảy ra khi tạo/chỉnh sửa user");
+      console.log(error);
+      message.error(error);
     }
   };
 
@@ -66,6 +73,7 @@ const FormUser: React.FC<PropsForm> = ({
   // };
   return (
     <ProForm
+      // actionRef={actionRef}
       initialValues={initialData ? initialData : undefined}
       formRef={formRef}
       grid
@@ -157,9 +165,22 @@ const FormUser: React.FC<PropsForm> = ({
             request={() => handleFilterMasterData("subject")}
           />
         </Col>
-        <Col span={8}>
-          <ProFormText label="Lớp" name="className" />
-        </Col>
+        {/* {!initialData?.role === "TEACHER" && (
+          <Col span={8}>
+            <ProFormText label="Lớp" name="className" />
+          </Col>
+        )} */}
+
+        {!(
+          initialData?.role === "TEACHER" ||
+          initialData?.role === "MANAGER" ||
+          initialData?.role === "ADMIN"
+        ) && (
+          <Col span={8}>
+            <ProFormText label="Lớp" name="className" />
+          </Col>
+        )}
+
         <Col span={8}>
           <ProFormSelect
             label="Vai trò"
@@ -167,21 +188,22 @@ const FormUser: React.FC<PropsForm> = ({
             request={() => handleFilterMasterData("role")}
           />
         </Col>
-        <Col span={8}>
-          <ProFormText.Password
-            width="md"
-            name="password"
-            label="Password"
-            required
-            rules={[
-              {
-                required: true,
-                message: "Mật khẩu không được bỏ trống",
-              },
-            ]}
-            // hidden={!!editingId}
-          />
-        </Col>
+        {!initialData && (
+          <Col span={8}>
+            <ProFormText.Password
+              width="md"
+              name="password"
+              label="Password"
+              required
+              rules={[
+                {
+                  required: true,
+                  message: "Mật khẩu không được bỏ trống",
+                },
+              ]}
+            />
+          </Col>
+        )}
       </Row>
     </ProForm>
   );

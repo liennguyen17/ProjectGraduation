@@ -5,17 +5,17 @@ import { MasterData } from "../../../service/types";
 interface ModalFormProps {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  handleCreateSuccess: () => Promise<void>;
   editingId: number | null;
   selectedRecord: MasterData | null;
+  actionRef?: () => void;
 }
 
 const ModalMasterData: React.FC<ModalFormProps> = ({
   isModalOpen,
   setIsModalOpen,
-  handleCreateSuccess,
   editingId,
   selectedRecord,
+  actionRef,
 }) => {
   const handleOk = () => {
     setIsModalOpen(false);
@@ -36,7 +36,7 @@ const ModalMasterData: React.FC<ModalFormProps> = ({
     >
       <MasterDataForm
         handleCancel={handleCancel}
-        handleCreateSuccess={handleCreateSuccess}
+        actionRef={actionRef}
         editingId={editingId}
         initialData={selectedRecord}
       />

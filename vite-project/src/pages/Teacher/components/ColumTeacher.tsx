@@ -1,13 +1,27 @@
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
-import React from "react";
+import { UserType } from "../../../service/types";
+import moment from "moment";
+import { handleFilterMasterData } from "../../../service/utils";
 
-export const columTeacher = () => {
+interface ColumnProps {
+  handleViewDetail: (record: UserType) => void;
+  handleEdit: (record: UserType) => void;
+  handleDelete: (record: UserType) => void;
+}
+
+export const columTeacher = ({
+  handleViewDetail,
+  handleEdit,
+  handleDelete,
+}: ColumnProps): ProColumns<UserType>[] => {
   return [
     {
       title: "ID",
       dataIndex: "id",
       hideInTable: true,
+      hideInSearch: true,
     },
     {
       title: "Họ và tên",
@@ -29,6 +43,7 @@ export const columTeacher = () => {
     {
       title: "Bộ môn",
       dataIndex: "subject",
+      request: () => handleFilterMasterData("subject"),
     },
     {
       title: "Vai trò",
@@ -37,24 +52,33 @@ export const columTeacher = () => {
       width: "100px",
       // hideInTable: true,
     },
+
     {
       title: "Ngày sinh",
       dataIndex: "dob",
       hideInSearch: true,
+      render: (_, record) => moment(record.dob).format("DD/MM/YYYY"),
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
     },
     {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      hideInTable: true,
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createAt",
       hideInSearch: true,
+      hideInTable: true,
       width: "100px",
     },
     {
       title: "Ngày cập nhật",
       dataIndex: "updateAt",
+      hideInTable: true,
       hideInSearch: true,
       width: "100px",
     },
@@ -62,23 +86,23 @@ export const columTeacher = () => {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Space>
           <Button
             ghost
             type="link"
             icon={<EyeOutlined />}
-            // onClick={() => handleView(record)}
+            onClick={() => handleViewDetail(record)}
           ></Button>
           <Button
             type="link"
             icon={<EditOutlined />}
-            // onClick={() => handleEdit(record)}
+            onClick={() => handleEdit(record)}
           ></Button>
           <Button
             type="link"
             icon={<DeleteOutlined />}
-            //onClick={() => handleDelete(record)}
+            onClick={() => handleDelete(record)}
           ></Button>
         </Space>
       ),

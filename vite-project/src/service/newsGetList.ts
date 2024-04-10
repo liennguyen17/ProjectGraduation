@@ -56,11 +56,15 @@ import { appInfo } from "../config/appInfo";
 //   }
 // }
 
-export async function NewGetListApi() {
+export async function NewGetListApi(params, sort, filter) {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
   try {
     const res = await axios.post(
       "http://localhost:8080/news/filter",
-      {},
+      requestData,
       {
         headers: {
           "Content-Type": "application/json",

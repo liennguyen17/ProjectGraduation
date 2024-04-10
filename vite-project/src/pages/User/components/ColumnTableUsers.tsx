@@ -3,17 +3,20 @@ import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
 import { UserType } from "../../../service/types";
 import moment from "moment";
+import { handleFilterMasterData } from "../../../service/utils";
 
 interface ColumnProps {
   handleViewDetail: (record: UserType) => void;
   handleEdit: (record: UserType) => void;
   handleDelete: (record: UserType) => void;
+  listRole: any[];
 }
 
 export const columUser = ({
   handleViewDetail,
   handleEdit,
   handleDelete,
+  listRole,
 }: ColumnProps): ProColumns<UserType>[] => {
   return [
     {
@@ -21,13 +24,6 @@ export const columUser = ({
       dataIndex: "id",
       hideInTable: true,
       hideInSearch: true,
-    },
-    {
-      title: "Học kỳ",
-      dataIndex: "semester",
-      hideInTable: true,
-      // hideInSearch: true,
-      // renderFormItem:(_,)
     },
     {
       title: "Họ và tên",
@@ -46,10 +42,14 @@ export const columUser = ({
     {
       title: "Bộ môn",
       dataIndex: "subject",
+      valueType: "select",
+      request: () => handleFilterMasterData("subject"),
     },
     {
       title: "Vai trò",
       dataIndex: "role",
+      valueType: "select",
+      request: () => handleFilterMasterData("role"),
     },
     {
       title: "Ngày sinh",
@@ -62,14 +62,21 @@ export const columUser = ({
       dataIndex: "phone",
     },
     {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      hideInTable: true,
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createAt",
       hideInSearch: true,
+      hideInTable: true,
     },
     {
       title: "Ngày cập nhật",
       dataIndex: "updateAt",
       hideInSearch: true,
+      hideInTable: true,
     },
     {
       title: "Hành động",
@@ -87,11 +94,13 @@ export const columUser = ({
             type="link"
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
+            disabled={record.role === "ADMIN"}
           ></Button>
           <Button
             type="link"
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record)}
+            disabled={record.role === "ADMIN"}
           ></Button>
         </Space>
       ),

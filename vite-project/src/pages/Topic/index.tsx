@@ -4,26 +4,31 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
-import { dataSource, dataTopic } from "./components/ColumTableTopic";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import ModalTopicForm from "../TopicApproval/components/ModalTopicForm";
-import { TopicGetListApi } from "../../service/api";
+import { dataTopic } from "./components/ColumTableTopic";
+import { TopicGetListApi, TopicGetListData } from "../../service/api";
 import "./styles.css";
+import { TopicType } from "../../service/types";
+import ModalTopic from "./components/ModalTopic";
+import { Modal } from "antd";
+import TopicForm from "./components/TopicForm";
 
 const Topic: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [topicData, setTopicData] = useState([]);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<TopicType | null>(null);
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
   useEffect(() => {
     const data = async () => {
       try {
-        const res = await TopicGetListApi();
+        const res = await TopicGetListData();
         setTopicData(res);
       } catch (error) {
         console.error("Loi lay du lieu: ", error);
@@ -31,6 +36,27 @@ const Topic: React.FC = () => {
     };
     data();
   }, []);
+
+  const handleViewDetail = (record: TopicType) => {
+    setIsModalOpen(true);
+    setSelectedRecord(record);
+    // setIsDetailVisible(true);
+  };
+
+  const handleEdit = (record: TopicType) => {
+    console.log("Dữ liệu cũ:", record);
+    setSelectedRecord(record);
+    setIsModalOpen1(true);
+    setEditingId(record.id);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen1(false);
+    // setEditingId(null);
+    setSelectedRecord(null);
+  };
+
+  const columns = dataTopic({ handleViewDetail, handleEdit });
   return (
     <PageContainer
       // subTitle="Quản lý đề tài khóa luận tốt nghiệp"
@@ -42,13 +68,16 @@ const Topic: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={topicData}
-        columns={dataTopic}
+        // dataSource={topicData}
+        request={async (params, sort, filter) =>
+          await TopicGetListApi(params, sort, filter)
+        }
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
         cardBordered
-        headerTitle="Danh sách đề tài khóa luận tốt nghiệp"
+        headerTitle="Danh sách chấm điểm đề tài khóa luận tốt nghiệp"
         tableLayout="auto"
         search={{
           labelWidth: "auto",
@@ -57,7 +86,6 @@ const Topic: React.FC = () => {
             paddingBlock: 12,
           },
         }}
-        // scroll={{ x: "max-content", y: "calc(100vh-245px)" }}
         scroll={{ x: "max-content" }}
         options={{
           search: {
@@ -82,16 +110,27 @@ const Topic: React.FC = () => {
         }}
         dateFormatter="string"
         rowSelection={{}}
-        // toolBarRender={() => [
-        //   <Button type="primary" key="primary" onClick={showModal}>
-        //     <PlusOutlined /> Tạo đề tài
-        //   </Button>,
-        // ]}
       ></ProTable>
-      {/* <ModalTopicForm
+      <ModalTopic
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      /> */}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Cập nhật thông tin"
+        open={isModalOpen1}
+        onCancel={handleCancel}
+        width="65%"
+        footer={false}
+      >
+        <TopicForm
+          actionRef={() => actionRef.current?.reload()}
+          handleCancel={handleCancel}
+          editingId={editingId}
+          initialData={selectedRecord}
+        ></TopicForm>
+      </Modal>
     </PageContainer>
   );
 };

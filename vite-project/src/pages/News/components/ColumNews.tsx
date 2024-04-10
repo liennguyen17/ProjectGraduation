@@ -5,8 +5,9 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import { ProColumns } from "@ant-design/pro-components";
-import { Button, Space } from "antd";
+import { Button, InputNumber, Space } from "antd";
 import { NewsType } from "../../../service/types";
+import { handleFilterMasterData } from "../../../service/utils";
 
 interface ColumnProps {
   handleViewDetail: (record: NewsType) => void;
@@ -35,20 +36,7 @@ export const columsNews = ({
       title: "Mô tả",
       dataIndex: "description",
       width: "350px",
-      hideInSearch: true,
-      // width: "20%",
-      // ellipsis: true,
-      //   render: (text, entity) => (
-      //     <span
-      //       style={{
-      //         overflow: "hidden",
-      //         textOverflow: "ellipsis",
-      //         whiteSpace: "nowrap",
-      //       }}
-      //     >
-      //       {entity.description}
-      //     </span>
-      //   ),
+      // hideInSearch: true,
     },
     {
       title: "Nội dung",
@@ -81,10 +69,16 @@ export const columsNews = ({
     {
       title: "Năm",
       dataIndex: "year",
+      renderFormItem: (_, { defaultRender, ...rest }) => {
+        // return <DatePicker picker="year" value="number" />;
+        return <InputNumber {...rest} />;
+      },
     },
     {
       title: "Bộ môn",
       dataIndex: "subject",
+      valueType: "select",
+      request: () => handleFilterMasterData("subject"),
     },
     {
       title: "Ngày tạo",

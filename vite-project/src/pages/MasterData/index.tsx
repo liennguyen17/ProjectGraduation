@@ -3,7 +3,7 @@ import {
   PageContainer,
   ProTable,
 } from "@ant-design/pro-components";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { MasterDataApi, deleteMasterData } from "../../service/api";
@@ -16,7 +16,6 @@ const MasterDatas: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [data, setData] = useState([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<MasterData | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
@@ -25,28 +24,6 @@ const MasterDatas: React.FC = () => {
     setIsModalOpen(true);
     setEditingId(null);
     setSelectedRecord(null);
-  };
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await MasterDataApi();
-        console.log("list news:: ", res);
-        setData(res.reverse());
-      } catch (error) {
-        console.error("loi lay du lieu:", error);
-      }
-    };
-    getData();
-  }, []);
-
-  const handleCreateSuccess = async () => {
-    try {
-      const res = await MasterDataApi();
-      setData(res.reverse());
-    } catch (error) {
-      console.error("loi lay du lieu:", error);
-    }
   };
 
   const handleEdit = (record: MasterData) => {
@@ -68,7 +45,9 @@ const MasterDatas: React.FC = () => {
       const res = await deleteMasterData([selectedRecord?.id]);
       console.log("delete::", res);
       message.success(res.data);
-      handleCreateSuccess();
+      if (actionRef && actionRef.current) {
+        actionRef.current.reload();
+      }
       setIsConfirmDeleteOpen(false);
     } catch (error) {
       console.error("Lỗi xóa dữ liệu::", error);
@@ -92,7 +71,9 @@ const MasterDatas: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={data}
+        request={async (params, sort, filter) =>
+          await MasterDataApi(params, sort, filter)
+        }
         columns={columns}
         actionRef={actionRef}
         formRef={formRef}
@@ -101,13 +82,7 @@ const MasterDatas: React.FC = () => {
         headerTitle="Danh sách"
         size="small"
         tableLayout="auto"
-        search={{
-          labelWidth: "auto",
-          filterType: "query",
-          style: {
-            paddingBlock: 12,
-          },
-        }}
+        search={false}
         scroll={{ x: "max-content" }}
         options={{
           search: {
@@ -141,9 +116,9 @@ const MasterDatas: React.FC = () => {
       <ModalMasterData
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleCreateSuccess={handleCreateSuccess}
         editingId={editingId}
         selectedRecord={selectedRecord}
+        actionRef={() => actionRef.current?.reload()}
       />
       <Modal
         title="Xác nhận xóa"

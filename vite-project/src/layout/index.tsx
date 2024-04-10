@@ -4,10 +4,29 @@ import MenuFooter from "../components/MenuFooter";
 import { layoutConfig } from "../config/layout";
 import { defaultRouter, workplace } from "../config/route";
 import ProfileAccount from "../pages/ProfileUser/ProfileAccount";
+import { useContext, useEffect } from "react";
+import { MasterDataFilterApi } from "../service/api";
+import { AppContext } from "../context/AppProvider";
 
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { state, dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    const getMasterData = async () => {
+      const res = await MasterDataFilterApi("role");
+      console.log("res:: ", res);
+      dispatch({
+        payload: {
+          listRole: res,
+        },
+        type: "setListRole",
+      });
+    };
+
+    getMasterData();
+  }, []);
 
   const goTo = (pathName: string) => {
     const pathRouter = defaultRouter?.[pathName] || pathName;

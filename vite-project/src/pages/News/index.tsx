@@ -7,18 +7,15 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ModalNewsForm from "./components/ModalNewsForm";
-import { NewGetListApi } from "../../service/newsGetList";
 import { columsNews } from "./components/ColumNews";
 import DrawerNew from "./components/DrawerNew";
 import { NewsType } from "../../service/types";
-import { deleteNews } from "../../service/api";
+import { NewGetListApi, deleteNews } from "../../service/api";
 
 const News: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newsData, setNewsData] = useState([]);
-  // const [openDrawer, setOpenDrawer] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState<NewsType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
@@ -38,15 +35,6 @@ const News: React.FC = () => {
     setIsDetailVisible(false);
   };
 
-  const handleCreateSuccess = async () => {
-    try {
-      const res = await NewGetListApi();
-      setNewsData(res);
-    } catch (error) {
-      console.error("loi lay du lieu:", error);
-    }
-  };
-
   const handleEdit = (record: NewsType) => {
     setSelectedRecord(record);
     setIsModalOpen(true);
@@ -64,7 +52,10 @@ const News: React.FC = () => {
       const res = await deleteNews([selectedRecord?.id]);
       console.log("delete::", res);
       message.success(res.data);
-      handleCreateSuccess();
+      // handleCreateSuccess();
+      if (actionRef && actionRef.current) {
+        actionRef.current.reload();
+      }
       setIsConfirmDeleteOpen(false);
     } catch (error) {
       console.error("Lỗi xóa dữ liệu::", error);
@@ -75,31 +66,12 @@ const News: React.FC = () => {
   const handleCloseConfirmDelete = () => {
     setIsConfirmDeleteOpen(false);
   };
-  // const showDrawer = () => {
-  //   setOpenDrawer(true);
-  // };
 
-  // const onClose = () => {
-  //   setOpenDrawer(false);
-  // };
   const showModal = () => {
     setIsModalOpen(true);
     setEditingId(null);
     setSelectedRecord(null);
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await NewGetListApi();
-        console.log("list news:: ", res);
-        setNewsData(res);
-      } catch (error) {
-        console.error("loi lay du lieu:", error);
-      }
-    };
-    getData();
-  }, []);
 
   const columns = columsNews({ handleViewDetail, handleEdit, handleDelete });
 
@@ -114,10 +86,13 @@ const News: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={newsData}
-        columns={columns}
         actionRef={actionRef}
+        // dataSource={newsData}
+        columns={columns}
         formRef={formRef}
+        request={async (params, sort, filter) =>
+          await NewGetListApi(params, sort, filter)
+        }
         rowKey="id"
         cardBordered
         headerTitle="Danh sách tin tức"
@@ -163,9 +138,9 @@ const News: React.FC = () => {
       <ModalNewsForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleCreateSuccess={handleCreateSuccess}
         editingId={editingId}
         selectedRecord={selectedRecord}
+        actionRef={() => actionRef.current?.reload()}
       />
       <DrawerNew
         open={isDetailVisible}
@@ -178,9 +153,7 @@ const News: React.FC = () => {
         onOk={handleConfirmDelete}
         onCancel={handleCloseConfirmDelete}
       >
-        <p>
-          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
-        </p>
+        <p>Bạn có chắc chắn muốn xóa tin tức: "{recordToDeleteName}" không?</p>
       </Modal>
     </PageContainer>
   );

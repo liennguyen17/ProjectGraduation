@@ -7,14 +7,14 @@ import { MasterData } from "../../../service/types";
 
 interface PropsForm {
   handleCancel: () => void;
-  handleCreateSuccess: () => Promise<void>;
+  actionRef?: () => void;
   editingId: number | null;
   initialData: MasterData | null;
 }
 
 const MasterDataForm: React.FC<PropsForm> = ({
   handleCancel,
-  handleCreateSuccess,
+  actionRef,
   editingId,
   initialData,
 }) => {
@@ -28,8 +28,9 @@ const MasterDataForm: React.FC<PropsForm> = ({
         const res = await editMasterData(dataToUpdate);
         if (res.success) {
           message.success("Chỉnh sửa MasterData thành công");
-          handleCreateSuccess();
+
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi chỉnh sửa MasterData");
         }
@@ -37,8 +38,9 @@ const MasterDataForm: React.FC<PropsForm> = ({
         const res = await createMasterData(value);
         if (res.success) {
           message.success("Tạo MasterData thành công");
-          handleCreateSuccess();
+
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi tạo MasterData");
         }

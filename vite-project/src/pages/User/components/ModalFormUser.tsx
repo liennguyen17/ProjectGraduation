@@ -1,20 +1,21 @@
 import { Modal } from "antd";
 import FormUser from "./FormUser";
 import { UserType } from "../../../service/types";
+import { ActionType } from "@ant-design/pro-components";
 
 interface ModalUserFormProps {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  handleCreateSuccess: () => Promise<void>;
   editingId: number | null;
   selectedRecord: UserType | null;
+  actionRef?: () => void;
 }
 const ModalFormUser: React.FC<ModalUserFormProps> = ({
   isModalOpen,
   setIsModalOpen,
-  handleCreateSuccess,
   editingId,
   selectedRecord,
+  actionRef,
 }) => {
   const handleOk = () => {
     setIsModalOpen(false);
@@ -34,8 +35,8 @@ const ModalFormUser: React.FC<ModalUserFormProps> = ({
       footer={false}
     >
       <FormUser
+        actionRef={actionRef}
         handleCancel={handleCancel}
-        handleCreateSuccess={handleCreateSuccess}
         editingId={editingId}
         initialData={selectedRecord}
       />

@@ -7,13 +7,28 @@ import {
   NewsType,
   NotificationType,
   RegisterTopicType,
+  TopicApproval,
+  TopicEdit,
+  TopicType,
+  TopicTypeCreate,
   UserType,
 } from "./types";
 
-export async function UserGetListApi() {
+export async function UserGetListApi(params, sort, filter) {
+  console.log("params: ", params);
   const requestData = {
     start: 0,
     limit: 50,
+    role: params?.role || "",
+    keywords: params?.keyword || "",
+    email: params?.email || "",
+    phone: params?.phone || "",
+    username: params?.username || "",
+    subject: params?.subject || "",
+    address: params?.address || "",
+    userCode: params?.userCode || "",
+    className: params?.className || "",
+    name: params?.name || "",
   };
   try {
     const res = await axios.post(
@@ -26,7 +41,9 @@ export async function UserGetListApi() {
       }
     );
     if (res.data?.success) {
-      return res.data.data.items;
+      return {
+        data: res.data.data.items,
+      };
     } else {
       throw new Error("Loi");
     }
@@ -36,10 +53,20 @@ export async function UserGetListApi() {
   }
 }
 
-export async function StudentGetListApi() {
+export async function StudentGetListApi(params, sort, filter) {
   const requestData = {
-    // keywords: "STUDENT",
+    start: 0,
+    limit: 50,
     role: "STUDENT",
+    keywords: params?.keyword || "",
+    email: params?.email || "",
+    phone: params?.phone || "",
+    username: params?.username || "",
+    subject: params?.subject || "",
+    address: params?.address || "",
+    userCode: params?.userCode || "",
+    className: params?.className || "",
+    name: params?.name || "",
   };
   console.log("appInfo.apiUrl", appInfo.apiUrl);
   try {
@@ -53,7 +80,7 @@ export async function StudentGetListApi() {
       }
     );
     if (res.data?.success) {
-      return res.data.data.items;
+      return { data: res.data.data.items };
     } else {
       throw new Error("Loi");
     }
@@ -63,9 +90,46 @@ export async function StudentGetListApi() {
   }
 }
 
-export async function TeacherGetListApi() {
+export async function TeacherGetListApi(params, sort, filter) {
   const requestData = {
-    // keywords: "STUDENT",
+    start: 0,
+    limit: 50,
+    role: "TEACHER",
+    keywords: params?.keyword || "",
+    email: params?.email || "",
+    phone: params?.phone || "",
+    username: params?.username || "",
+    subject: params?.subject || "",
+    address: params?.address || "",
+    userCode: params?.userCode || "",
+    className: params?.className || "",
+    name: params?.name || "",
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return { data: res.data.data.items };
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function TeacherGetListData() {
+  const requestData = {
+    start: 0,
+    limit: 50,
     role: "TEACHER",
   };
   try {
@@ -88,11 +152,11 @@ export async function TeacherGetListApi() {
     throw error;
   }
 }
-
-export async function ManageGetListApi() {
+export async function StudentGetListData() {
   const requestData = {
-    // keywords: "ASSISTANT",
-    role: "MANAGE",
+    start: 0,
+    limit: 50,
+    role: "STUDENT",
   };
   try {
     const res = await axios.post(
@@ -115,8 +179,107 @@ export async function ManageGetListApi() {
   }
 }
 
-export async function TopicGetListApi() {
-  const requestData = {};
+export async function ManageGetListApi(params, sort, filter) {
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "MANAGER",
+    keywords: params?.keyword || "",
+    email: params?.email || "",
+    phone: params?.phone || "",
+    username: params?.username || "",
+    subject: params?.subject || "",
+    address: params?.address || "",
+    userCode: params?.userCode || "",
+    className: params?.className || "",
+    name: params?.name || "",
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return { data: res.data.data.items };
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function NewGetListApi(params, sort, filter) {
+  console.log("params: ", params);
+  const requestData = {
+    start: 0,
+    limit: 50,
+    title: params?.title || "",
+    year: params?.year || "",
+    description: params?.description || "",
+    subject: params?.subject || "",
+  };
+  try {
+    const res = await axios.post(`${appInfo.apiUrl}/news/filter`, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.data?.success) {
+      return { data: res.data.data.items };
+    } else {
+      throw new Error("loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function TopicGetListApi(params, sort, filter) {
+  console.log("params:: ", params);
+  const requestData = {
+    start: 0,
+    limit: 50,
+    keywords: params?.keyword || "",
+    status: params?.status || "",
+    nameTopic: params?.nameTopic || "",
+    semester: params?.semester || "",
+    departmentManagement: params?.departmentManagement || "",
+    teacher: params?.teacher,
+    student: params?.student,
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/topic/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return {
+        data: res.data.data.items,
+      };
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function TopicGetListData() {
+  const requestData = { start: 0, limit: 50 };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/topic/filter`,
@@ -138,8 +301,8 @@ export async function TopicGetListApi() {
   }
 }
 
-export async function NotificationGetListApi() {
-  const requestData = {};
+export async function NotificationGetListApi(params, sort, filter) {
+  const requestData = { start: 0, limit: 50, keywords: params?.keyword || "" };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/notifications/filter`,
@@ -151,7 +314,9 @@ export async function NotificationGetListApi() {
       }
     );
     if (res.data?.success) {
-      return res.data.data.items;
+      return {
+        data: res.data.data.items,
+      };
     } else {
       throw new Error("Loi");
     }
@@ -234,10 +399,11 @@ export async function LoginApi(username: string, password: string) {
   }
 }
 
-export async function MasterDataApi() {
+export async function MasterDataApi(params, sort, filter) {
   const requestData = {
     start: 0,
     limit: 50,
+    keywords: params?.keyword || "",
   };
   try {
     const res = await axios.post(
@@ -250,7 +416,9 @@ export async function MasterDataApi() {
       }
     );
     if (res.data?.success) {
-      return res.data.data.items;
+      return {
+        data: res.data.data.items,
+      };
     } else {
       throw new Error("Loi");
     }
@@ -336,25 +504,6 @@ export async function getNotificationsDetail(id: number) {
 
 //==========================create=========
 
-// export async function createNews(data: News): Promise<News> {
-//   try {
-//     const res = await axios.post(`${appInfo.apiUrl}/news`, data, {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//     if (res.data?.success) {
-//       console.log("data new::", res.data.data);
-//       return res.data.data;
-//     } else {
-//       throw new Error("Failed to create news");
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
 export const createMasterData = async (data: MasterData) => {
   try {
     const response = await axios.post(`${appInfo.apiUrl}/master-data`, data, {
@@ -418,26 +567,25 @@ export const createStudentRegisterTopic = async (data: RegisterTopicType) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Lỗi khi tạo thong bao:", error);
+    console.error("Lỗi khi tạo dang ky:", error);
     throw new Error("Có lỗi xảy ra khi tạo thong bao");
   }
 };
 
+export const TopicCreate = async (data: TopicTypeCreate) => {
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/topic`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo de tai:", error);
+    throw new Error("Có lỗi xảy ra khi tạo de tai");
+  }
+};
 // =========================PUT=================
-
-// export const editMasterData = async (data: MasterData) => {
-//   try {
-//     const response = await axios.put(`${appInfo.apiUrl}/master-data`, data, {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error("Lỗi khi tạo MasterData:", error);
-//     throw new Error("Có lỗi xảy ra khi tạo MasterData");
-//   }
-// };
 
 export const editMasterData = async (data: MasterData) => {
   try {
@@ -496,6 +644,42 @@ export const editNews = async (data: NewsType) => {
 export const editNotifications = async (data: NotificationType) => {
   try {
     const response = await axios.put(`${appInfo.apiUrl}/notifications`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo thong bao:", error);
+    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+  }
+};
+
+export const editTopic = async (data: TopicEdit) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/topic`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo thong bao:", error);
+    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+  }
+};
+
+export const editTopic1 = async (data: TopicTypeCreate) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/topic`, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -590,7 +774,7 @@ export const deleteNotification = async (ids) => {
 };
 
 // ==========filter===========
-export async function MasterDataFilterApi(keywords: string) {
+export async function MasterDataFilterApi(keywords: string): Promise<any[]> {
   const requestData = {
     keywords: keywords,
   };
@@ -607,7 +791,7 @@ export async function MasterDataFilterApi(keywords: string) {
     if (res.data.success) {
       return res.data.data.items;
     } else {
-      throw new Error("Loi");
+      return [];
     }
   } catch (error) {
     console.error(error);
@@ -633,6 +817,35 @@ export async function filterUser(data) {
     }
   } catch (error) {
     console.error("Error filtering users:", error);
+    throw error;
+  }
+}
+
+// =============filebase===========
+
+export async function uploadFile(file) {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await axios.post(
+      `${appInfo.apiUrl}/file/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("response:: ", response);
+    if (response.data.success) {
+      console.log("file upload:: ", response.data.data);
+      return response.data.data;
+    } else {
+      return [];
+      // throw new Error("Loi upload file");
+    }
+  } catch (error) {
+    console.error("Error upload file:", error);
     throw error;
   }
 }

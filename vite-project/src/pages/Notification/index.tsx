@@ -3,7 +3,7 @@ import {
   PageContainer,
   ProTable,
 } from "@ant-design/pro-components";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { NotificationGetListApi, deleteNotification } from "../../service/api";
 import { Button, Modal, message } from "antd";
@@ -11,14 +11,11 @@ import { columnNotification } from "./components/ColumTableNotification";
 import DrawerNotification from "./components/DrawerNotification";
 import ModalNotificationForm from "./components/ModalNotificationForm";
 import { NotificationType } from "../../service/types";
-// import "./styles.css";
 
 const Notification: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  const [notificationData, setNotificationData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [openDrawer, setOpenDrawer] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState<NotificationType | null>(
     null
@@ -29,29 +26,9 @@ const Notification: React.FC = () => {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [recordToDeleteName, setRecordToDeleteName] = useState("");
 
-  // const showDrawer = () => {
-  //   setOpenDrawer(true);
-  // };
-
-  // const onClose = () => {
-  //   setOpenDrawer(false);
-  // };
-
   const showModal = () => {
     setIsModalOpen(true);
   };
-
-  useEffect(() => {
-    const datasetNotification = async () => {
-      try {
-        const res = await NotificationGetListApi();
-        setNotificationData(res);
-      } catch (error) {
-        console.error("Loi lay du lieu: ", error);
-      }
-    };
-    datasetNotification();
-  }, []);
 
   const handleViewDetail = (record: NotificationType) => {
     setSelectedRecord(record);
@@ -75,21 +52,14 @@ const Notification: React.FC = () => {
     setRecordToDeleteName(record.title);
   };
 
-  const handleCreateSuccess = async () => {
-    try {
-      const res = await NotificationGetListApi();
-      setNotificationData(res);
-    } catch (error) {
-      console.error("loi lay du lieu:", error);
-    }
-  };
-
   const handleConfirmDelete = async () => {
     try {
       const res = await deleteNotification([selectedRecord?.id]);
       console.log("delete::", res);
       message.success(res.data);
-      handleCreateSuccess();
+      if (actionRef && actionRef.current) {
+        actionRef.current.reload();
+      }
       setIsConfirmDeleteOpen(false);
     } catch (error) {
       console.error("Lỗi xóa dữ liệu::", error);
@@ -116,7 +86,9 @@ const Notification: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        dataSource={notificationData}
+        request={async (params, sort, filter) =>
+          await NotificationGetListApi(params, sort, filter)
+        }
         columns={columns}
         actionRef={actionRef}
         formRef={formRef}
@@ -125,13 +97,7 @@ const Notification: React.FC = () => {
         size="small"
         tableLayout="auto"
         rowKey="id"
-        search={{
-          labelWidth: "auto",
-          filterType: "query",
-          style: {
-            // paddingBlock: 12,
-          },
-        }}
+        search={false}
         scroll={{ x: "max-content", y: "calc(100vh - 260px)" }}
         options={{
           search: {
@@ -160,19 +126,12 @@ const Notification: React.FC = () => {
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo thông báo
           </Button>,
-          // <Button type="primary" key="primary" onClick={showDrawer}>
-          //   demo drawer
-          // </Button>,
         ]}
       ></ProTable>
-      {/* <ModalFormUser
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      /> */}
       <ModalNotificationForm
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleCreateSuccess={handleCreateSuccess}
+        actionRef={() => actionRef.current?.reload()}
         editingId={editingId}
         selectedRecord={selectedRecord}
       />

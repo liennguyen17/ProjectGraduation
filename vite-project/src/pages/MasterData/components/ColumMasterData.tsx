@@ -21,40 +21,48 @@ export const columsMasterData = ({
     {
       title: "Mã",
       dataIndex: "code",
+      hideInSearch: true,
     },
     {
       title: "Thuộc loại",
       dataIndex: "type",
+      hideInSearch: true,
     },
     {
       title: "Tên",
       dataIndex: "name",
+      hideInSearch: true,
       //   hideInTable: true,
     },
     {
       title: "Hành động",
       hideInSearch: true,
       align: "center",
-      render: (_, record) => (
-        <Space>
-          {/* <Button
-            ghost
-            type="link"
-            icon={<EyeOutlined />}
-            // onClick={() => handleView(record)}
-          ></Button> */}
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-          ></Button>
-          <Button
-            type="link"
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record)}
-          ></Button>
-        </Space>
-      ),
+      render: (_, record) => {
+        // console.log("log:: ", record);
+        return (
+          <Space>
+            {/* <Button
+              ghost
+              type="link"
+              icon={<EyeOutlined />}
+              // onClick={() => handleView(record)}
+            ></Button> */}
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              disabled={record.code === "ROLE"}
+              onClick={() => handleEdit(record)}
+            ></Button>
+            <Button
+              type="link"
+              icon={<DeleteOutlined />}
+              disabled={record.code === "ROLE"}
+              onClick={() => handleDelete(record)}
+            ></Button>
+          </Space>
+        );
+      },
     },
   ];
 };

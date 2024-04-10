@@ -5,16 +5,20 @@ import {
   ProFormUploadButton,
 } from "@ant-design/pro-components";
 import { NotificationType } from "../../../service/types";
-import { Button, Col, FormInstance, Row, message } from "antd";
+import { Button, Col, FormInstance, Row, message, notification } from "antd";
 import Editor from "../../Editor";
 import { appInfo } from "../../../config/appInfo";
-import { useRef } from "react";
-import { createNotification, editNotifications } from "../../../service/api";
+import { useRef, useState } from "react";
+import {
+  createNotification,
+  editNotifications,
+  uploadFile,
+} from "../../../service/api";
 import "../../../index.css";
 
 interface FormProps {
   handleCancel: () => void;
-  handleCreateSuccess: () => Promise<void>;
+  actionRef?: () => void;
   editingId: number | null;
   initialData: NotificationType | null;
   initiateData?: NotificationType;
@@ -23,12 +27,14 @@ interface FormProps {
 const NotificationForm: React.FC<FormProps> = ({
   initiateData,
   handleCancel,
-  handleCreateSuccess,
+  actionRef,
   editingId,
   initialData,
 }) => {
-  // const [formRef] = ProForm.useForm();
   const formRef = useRef<FormInstance<NotificationType>>();
+  const [listFile, setListFile] = useState([]);
+
+  const [fieldFile, setFieldFile] = useState("");
 
   const handleFinish = async (value: NotificationType) => {
     try {
@@ -37,8 +43,8 @@ const NotificationForm: React.FC<FormProps> = ({
         const res = await editNotifications(dataToUpdate);
         if (res.success) {
           message.success("Chỉnh sửa thong bao thành công");
-          handleCreateSuccess();
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi chỉnh sửa MasterData");
         }
@@ -46,14 +52,37 @@ const NotificationForm: React.FC<FormProps> = ({
         const res = await createNotification(value);
         if (res.success) {
           message.success("Tạo thong bao thành công");
-          handleCreateSuccess();
           handleCancel();
+          actionRef?.();
         } else {
           message.error("Có lỗi xảy ra khi tạo thong bao");
         }
       }
     } catch (error) {
       message.error("Có lỗi xảy ra khi tạo/chỉnh sửa thong bao");
+    }
+  };
+
+  const handleUpload = async (file) => {
+    try {
+      const res = await uploadFile(file.file);
+      console.log("res upload ", res);
+      console.log("res upload file", res.downloadUrl);
+
+      // Nếu res không rỗng
+      if (res) {
+        // Set listFile và fieldFile với dữ liệu từ response
+        setListFile([{ url: res.downloadUrl }]);
+        setFieldFile(res.downloadUrl);
+        notification.success({ message: "Tải file lên thành công" });
+      } else {
+        // Nếu res rỗng
+        notification.error({ message: "Tải file lên không thành công!" });
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error("Error uploading file:", error);
+      notification.error({ message: "Tải file lên không thành công!" });
     }
   };
 
@@ -124,25 +153,40 @@ const NotificationForm: React.FC<FormProps> = ({
           >
             <Editor
               onChange={(event, editor) => {
-                formRef?.setFieldsValue({
-                  bodyKB: editor.getData(),
+                formRef.current?.setFieldsValue({
+                  content: editor.getData() || "",
                 });
               }}
-              initiateData={initiateData?.kbBody}
+              initiateData={initiateData?.content}
             />
           </ProForm.Item>
         </Col>
-        <Col span={8}>
+        <Col span={12}>
           <ProFormUploadButton
             name="file"
+            // accept={"image/*, video/*"}
             label="File đính kèm"
-            max={2}
+            title="Click to upload"
+            fileList={listFile}
+            transform={(value) => {
+              return {
+                file: fieldFile || "",
+              };
+            }}
             fieldProps={{
-              name: "file",
+              name: "image",
+              customRequest: handleUpload,
+              onRemove: () => setListFile([]),
               listType: "picture-card",
+              multiple: true,
+              method: "POST",
+              openFileDialogOnClick: true,
+              onChange: (file) => {
+                console.log("file :: ", file);
+              },
             }}
             action={`${appInfo.apiUrl}/file/upload`}
-            extra="Upload file lên"
+            extra="Upload ảnh lên"
           />
         </Col>
       </Row>

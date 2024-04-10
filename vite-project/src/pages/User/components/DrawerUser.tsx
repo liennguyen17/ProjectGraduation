@@ -3,6 +3,7 @@ import { getUserDetail } from "../../../service/api";
 import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
 import { UserType } from "../../../service/types";
+import moment from "moment";
 
 interface DrawerProps {
   open: boolean;
@@ -95,11 +96,24 @@ const DrawerUser: React.FC<DrawerProps> = ({
             key: "dob",
             dataIndex: "dob",
             ellipsis: true,
+            render: (_, record) => moment(record.dob).format("DD/MM/YYYY"),
           },
           {
             title: "Địa chỉ",
             key: "address",
             dataIndex: "address",
+            ellipsis: true,
+          },
+          {
+            title: "Ngày tạo",
+            key: "createAt",
+            dataIndex: "updateAt",
+            ellipsis: true,
+          },
+          {
+            title: "Ngày cập nhật",
+            key: "updateAt",
+            dataIndex: "updateAt",
             ellipsis: true,
           },
         ]}

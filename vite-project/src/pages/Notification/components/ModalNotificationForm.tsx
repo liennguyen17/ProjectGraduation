@@ -5,7 +5,7 @@ import { NotificationType } from "../../../service/types";
 interface ModalFormProps {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  handleCreateSuccess: () => Promise<void>;
+  actionRef?: () => void;
   editingId: number | null;
   selectedRecord: NotificationType | null;
 }
@@ -13,7 +13,7 @@ interface ModalFormProps {
 const ModalNotificationForm: React.FC<ModalFormProps> = ({
   isModalOpen,
   setIsModalOpen,
-  handleCreateSuccess,
+  actionRef,
   editingId,
   selectedRecord,
 }) => {
@@ -28,7 +28,7 @@ const ModalNotificationForm: React.FC<ModalFormProps> = ({
     <Modal
       title={editingId ? "Chỉnh sửa thông báo" : "Tạo thông báo"}
       open={isModalOpen}
-      // onOk={handleOk}
+      onOk={handleOk}
       onCancel={handleCancel}
       destroyOnClose
       width={900}
@@ -36,7 +36,7 @@ const ModalNotificationForm: React.FC<ModalFormProps> = ({
     >
       <NotificationForm
         handleCancel={handleCancel}
-        handleCreateSuccess={handleCreateSuccess}
+        actionRef={actionRef}
         editingId={editingId}
         initialData={selectedRecord}
       />

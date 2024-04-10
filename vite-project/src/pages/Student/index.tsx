@@ -1,12 +1,13 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import type { ActionType } from "@ant-design/pro-components";
-import { useEffect, useRef, useState } from "react";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { useRef, useState } from "react";
 
-import ModalNewsForm from "../News/components/ModalNewsForm";
-import { StudentGetListApi } from "../../service/api";
+import { StudentGetListApi, deleteUser } from "../../service/api";
 import { columStudent } from "./components/ColumTableStudent";
+import { UserType } from "../../service/types";
+import DrawerUser from "../User/components/DrawerUser";
+import ModalFormUser from "../User/components/ModalFormUser";
+import { Modal, message } from "antd";
 // const actionRef = useRef<ActionType>();
 
 const Student: React.FC = () => {
@@ -14,22 +15,76 @@ const Student: React.FC = () => {
   const formRef = useRef<any>();
   // const [showTableAlert, setShowTableAlert] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    console.log(1);
-    setIsModalOpen(true);
+  const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [recordToDeleteName, setRecordToDeleteName] = useState("");
+
+  const handleViewDetail = (record: UserType) => {
+    setSelectedRecord(record);
+    setIsDetailVisible(true);
   };
-  const [studentData, setStudentData] = useState([]);
-  useEffect(() => {
-    const dataStudent = async () => {
-      try {
-        const res = await StudentGetListApi();
-        setStudentData(res);
-      } catch (error) {
-        console.error("Loi lay du lieu: ", error);
-      }
-    };
-    dataStudent();
-  }, []);
+
+  const handleCloseDetail = () => {
+    setSelectedRecord(null);
+    setIsDetailVisible(false);
+  };
+
+  const handleEdit = (record: UserType) => {
+    console.log("Dữ liệu cũ:", record);
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+    setEditingId(record.id);
+  };
+
+  const handleDelete = (record: UserType) => {
+    console.log("DL xoa::", record);
+    setSelectedRecord(record);
+    setIsConfirmDeleteOpen(true);
+    setRecordToDeleteName(record.name);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const res = await deleteUser([selectedRecord?.id]);
+      console.log("delete::", res);
+      message.success(res.data);
+
+      setIsConfirmDeleteOpen(false);
+    } catch (error) {
+      console.error("Lỗi xóa dữ liệu::", error);
+    }
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  //   setEditingId(null);
+  //   setSelectedRecord(null);
+  // };
+
+  const columns = columStudent({
+    handleViewDetail,
+    handleEdit,
+    handleDelete,
+  });
+
+  // const [studentData, setStudentData] = useState([]);
+  // useEffect(() => {
+  //   const dataStudent = async () => {
+  //     try {
+  //       const res = await StudentGetListApi();
+  //       setStudentData(res);
+  //     } catch (error) {
+  //       console.error("Loi lay du lieu: ", error);
+  //     }
+  //   };
+  //   dataStudent();
+  // }, []);
 
   return (
     <PageContainer
@@ -42,8 +97,8 @@ const Student: React.FC = () => {
     >
       {/* <FormStudent /> */}
       <ProTable
-        dataSource={studentData}
-        columns={columStudent()}
+        // dataSource={studentData}
+        columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
@@ -51,6 +106,9 @@ const Student: React.FC = () => {
         size="small"
         tableLayout="auto"
         rowKey="id" //truyen id
+        request={async (params, sort, filter) =>
+          await StudentGetListApi(params, sort, filter)
+        }
         search={{
           labelWidth: "auto",
           filterType: "query", //light: tiết kiệm khoảng trống
@@ -88,10 +146,28 @@ const Student: React.FC = () => {
         rowSelection={{}}
         dateFormatter="string"
       ></ProTable>
-      <ModalNewsForm
+      <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        editingId={editingId}
+        selectedRecord={selectedRecord}
+        actionRef={() => actionRef.current?.reload()}
       />
+      <DrawerUser
+        open={isDetailVisible}
+        onClose={handleCloseDetail}
+        selectedRecord={selectedRecord}
+      />
+      <Modal
+        title="Xác nhận xóa"
+        visible={isConfirmDeleteOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCloseConfirmDelete}
+      >
+        <p>
+          Bạn có chắc chắn muốn xóa người dùng "{recordToDeleteName}" không?
+        </p>
+      </Modal>
     </PageContainer>
   );
 };

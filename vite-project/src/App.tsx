@@ -7,6 +7,7 @@ import "dayjs/locale/vi";
 
 import NotFound from "./pages/404";
 import { routes } from "./config/route";
+import AppProvider from "./context/AppProvider";
 
 dayjs.locale("vi");
 
@@ -23,9 +24,11 @@ function MyApp() {
         },
       }}
     >
-      <App>
-        <RouterProvider router={router} fallbackElement={<NotFound />} />
-      </App>
+      <AppProvider>
+        <App>
+          <RouterProvider router={router} fallbackElement={<NotFound />} />
+        </App>
+      </AppProvider>
     </ConfigProvider>
   );
 }

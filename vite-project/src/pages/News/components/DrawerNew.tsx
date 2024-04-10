@@ -4,19 +4,6 @@ import { Drawer } from "antd";
 import { ProDescriptions } from "@ant-design/pro-components";
 import { DownloadOutlined } from "@ant-design/icons";
 import { NewsType } from "../../../service/types";
-// interface NewsRecord {
-//   id: number;
-//   title: string;
-//   description: string;
-//   content: string;
-//   image: string;
-
-//   file: string;
-//   year: number;
-//   subject: string;
-//   createAt: Date;
-//   updateAt: Date;
-// }
 
 interface DrawerProps {
   open: boolean;

@@ -4,34 +4,31 @@ import {
   ProFormText,
 } from "@ant-design/pro-components";
 import { Button, Col, Row, message } from "antd";
-import { handleFilterMasterData } from "../../../service/utils";
-import { RegisterTopicType } from "../../../service/types";
 import {
-  TeacherGetListApi,
-  createStudentRegisterTopic,
-} from "../../../service/api";
+  handleFilterMasterData,
+  handleFilterTeacher,
+} from "../../../service/utils";
+import { RegisterTopicType } from "../../../service/types";
+import { createStudentRegisterTopic } from "../../../service/api";
 
 interface PropsForm {
   handleCancel: () => void;
 }
 
 const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
-  const handleFilterTeacher = async () => {
-    try {
-      const dataTeacher = await TeacherGetListApi();
-      console.log(dataTeacher);
-      return dataTeacher.map((dataTeacher: any) => ({
-        // lable: dataTeacher.id,
-        // value: dataTeacher.name,
-
-        lable: dataTeacher.name,
-        value: dataTeacher.id,
-      }));
-    } catch (error) {
-      console.error("Error fetching teacher data:", error);
-      return [];
-    }
-  };
+  // const handleFilterTeacher = async () => {
+  //   try {
+  //     const dataTeacher = await TeacherGetListApi();
+  //     console.log(dataTeacher);
+  //     return dataTeacher.map((dataTeacher: any) => ({
+  //       lable: dataTeacher.name,
+  //       value: dataTeacher.username,
+  //     }));
+  //   } catch (error) {
+  //     console.error("Error fetching teacher data:", error);
+  //     return [];
+  //   }
+  // };
 
   const handleFinish = async (value: RegisterTopicType) => {
     try {
@@ -88,6 +85,7 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
           <ProFormSelect
             label="Giảng viên hướng dẫn"
             name="teacher"
+            request={() => handleFilterTeacher()}
             placeholder="Vui lòng chọn giảng viên"
             rules={[
               {
@@ -95,7 +93,6 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
                 message: "Vui lòng chọn giảng viên!",
               },
             ]}
-            request={handleFilterTeacher}
           />
         </Col>
         <Col span={12}>
