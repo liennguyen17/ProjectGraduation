@@ -69,7 +69,7 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
         actionRef={actionRef}
         title={false}
         request={async () => {
-          console.log("data", data);
+          // console.log("data", data);
           return Promise.resolve({
             success: true,
             data: data,

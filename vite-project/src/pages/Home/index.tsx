@@ -1,4 +1,4 @@
-import { Input, Button, Typography, Tag } from "antd";
+import { Input, Button, Typography, Tag, Divider } from "antd";
 import "./styles.css"; // Import file CSS riêng
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
@@ -84,17 +84,20 @@ const Home = () => {
             onSearch={handleSearch}
           />
         </div>
-        <Title
-          level={4}
-          style={{
-            marginBottom: "50px",
-            textAlign: "center",
-            // fontSize: "25px",
-          }}
-        >
-          Danh sách khóa luận tốt nghiệp
-        </Title>
+        <Divider>
+          <Title
+            level={4}
+            style={{
+              marginBottom: "50px",
+              textAlign: "center",
+              // fontSize: "25px",
+            }}
+          >
+            Danh sách khóa luận tốt nghiệp
+          </Title>
+        </Divider>
         <ProList<News>
+          // search={{}}
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,

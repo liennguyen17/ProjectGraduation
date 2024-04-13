@@ -1,8 +1,6 @@
 import { PageContainer, ProDescriptions } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 import { getTopicDetail } from "../../../service/api";
-import { ArrowRightOutlined } from "@ant-design/icons";
-
 const ResultTopic: React.FC = () => {
   const [topicData, setTopicData] = useState([]);
   useEffect(() => {

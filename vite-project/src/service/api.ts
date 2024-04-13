@@ -242,6 +242,28 @@ export async function NewGetListApi(params, sort, filter) {
   }
 }
 
+export async function NewGetListData() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
+  try {
+    const res = await axios.post(`${appInfo.apiUrl}/news/filter`, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function TopicGetListApi(params, sort, filter) {
   console.log("params:: ", params);
   const requestData = {
@@ -317,6 +339,28 @@ export async function NotificationGetListApi(params, sort, filter) {
       return {
         data: res.data.data.items,
       };
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function NotificationGetListData() {
+  const requestData = { start: 0, limit: 50 };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/notifications/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
     } else {
       throw new Error("Loi");
     }
@@ -849,3 +893,56 @@ export async function uploadFile(file) {
     throw error;
   }
 }
+
+// ===========================
+// const jwtToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw";
+
+// // Function to call the PDF generation endpoint with JWT
+// async function generatePdfWithJwt() {
+//   try {
+//     const response = await axios.get(`${appInfo.apiUrl}/topic/generate-pdf`, {
+//       headers: {
+//         Authorization: `Bearer ${jwtToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error generating PDF:', error);
+//     throw error;
+//   }
+// }
+
+const jwtToken =
+  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw"; // Thay thế bằng JWT token của bạn
+
+export async function UserProfile() {
+  try {
+    const response = await axios.get("http://localhost:8080/users/profile", {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+    // Trả về dữ liệu người dùng từ phản hồi nếu thành công
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    // Xử lý lỗi nếu có
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+}
+
+// // Sử dụng hàm fetchUserProfile để lấy thông tin người dùng và xử lý dữ liệu khi đã nhận được
+// fetchUserProfile()
+//   .then((userData) => {
+//     console.log("User profile:", userData);
+//     // Xử lý dữ liệu người dùng ở đây nếu cần thiết
+//   })
+//   .catch((error) => {
+//     console.error("Error:", error);
+//     // Xử lý lỗi khi không thể lấy thông tin người dùng
+//   });

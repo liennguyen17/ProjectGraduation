@@ -10,6 +10,7 @@ function ProfileAccount({ defaultDom }: any) {
       key: "profile",
       label: "Thông tin tài khoản",
       // icon: <BsPersonFillExclamation />,
+      // path: "/profile",
     },
     {
       key: "support",

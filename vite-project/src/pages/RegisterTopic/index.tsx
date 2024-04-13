@@ -3,12 +3,18 @@ import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Modal, Typography } from "antd";
 import ModalFormTopic from "./components/ModalFormTopic";
 import {
+  CheckCircleFilled,
   CheckCircleTwoTone,
+  CheckOutlined,
+  DownloadOutlined,
   HeartTwoTone,
+  PlusOutlined,
+  PrinterOutlined,
   SmileTwoTone,
 } from "@ant-design/icons";
 import ModalResultTopic from "./components/ModalResultTopic";
 import { filterUser } from "../../service/api";
+import axios from "axios";
 
 const RegistrationTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +31,33 @@ const RegistrationTopic = () => {
   };
 
   const { Paragraph, Text } = Typography;
+
+  const jwtToken =
+    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw";
+
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/topic/generate-pdf",
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "don_xin_xac_nhan.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };
+
   return (
     <PageContainer
       subTitle="Đăng ký đề tài"
@@ -64,7 +97,8 @@ const RegistrationTopic = () => {
             }}
           >
             <Button type="primary" onClick={showModal}>
-              Tạo đơn <SmileTwoTone twoToneColor="#c41a1a" />
+              <PlusOutlined /> Tạo đơn
+              {/* <SmileTwoTone twoToneColor="#c41a1a" /> */}
             </Button>
           </div>
         </Card>
@@ -93,14 +127,16 @@ const RegistrationTopic = () => {
           </Paragraph>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button type="primary" onClick={showModal1}>
-              Xem kết quả <CheckCircleTwoTone twoToneColor="#52c41a" />
+              <CheckOutlined />
+              Xem kết quả
+              {/* <CheckCircleTwoTone twoToneColor="#52c41a" /> */}
             </Button>
           </div>
         </Card>
 
-        {/* <Card
+        <Card
           bordered={false}
-          title="Đơn kiến nghị"
+          title="Tải đơn đăng ký"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
         >
           <Paragraph>
@@ -108,25 +144,20 @@ const RegistrationTopic = () => {
             <ul>
               <li>
                 <span>
-                  Là đơn mà sinh viên muốn gửi kiến nghị lên bộ phận khoa về các
-                  vấn đề trong quá trình làm đề tài.
-                </span>
-              </li>
-              <li>
-                <span>
-                  Khi gửi đơn sinh viên phải chịu trách nghiệm đến khoa làm
-                  việc, không thì đơn sẽ bị thu hồi.
+                  Sinh viên có thể tải bản Pdf của bản đăng ký khi đã có kết quả
+                  để đóng dấu và nộp lên bộ môn.
                 </span>
               </li>
             </ul>
           </Paragraph>
 
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button type="primary" onClick={showModal}>
-              Gửi đơn <HeartTwoTone twoToneColor="#eb2f96" />
+            <Button type="primary" onClick={handleDownloadPdf}>
+              <DownloadOutlined /> Pdf
+              {/* <HeartTwoTone twoToneColor="#eb2f96" /> */}
             </Button>
           </div>
-        </Card> */}
+        </Card>
       </div>
 
       <ModalFormTopic

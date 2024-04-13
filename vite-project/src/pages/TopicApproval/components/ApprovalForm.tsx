@@ -1,9 +1,8 @@
 import { Button, Col, FormInstance, Row, message } from "antd";
-import { TopicApproval, TopicEdit, TopicType } from "../../../service/types";
+import { TopicEdit, TopicType } from "../../../service/types";
 import { useEffect, useRef } from "react";
 import {
   ProForm,
-  ProFormDigit,
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-components";

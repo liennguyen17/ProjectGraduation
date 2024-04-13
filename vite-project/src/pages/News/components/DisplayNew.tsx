@@ -5,6 +5,7 @@ import { Button, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { NewsType } from "../../../service/types";
+import { NewGetListData } from "../../../service/api";
 
 // interface News {
 //   content: string;
@@ -25,7 +26,7 @@ const DisplayNew: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await NewGetListApi();
+        const res = await NewGetListData();
         console.log("list news:: ", res);
         setNewsData(res);
       } catch (error) {
@@ -42,7 +43,7 @@ const DisplayNew: React.FC = () => {
   return (
     <PageContainer>
       <ProList<NewsType>
-        // search={{}}
+        search={{}}
         headerTitle="Danh sách tin tức"
         dataSource={newsData}
         // showActions="hover"

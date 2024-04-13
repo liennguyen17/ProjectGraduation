@@ -1,5 +1,8 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
-import { NotificationGetListApi } from "../../../service/api";
+import {
+  NotificationGetListApi,
+  NotificationGetListData,
+} from "../../../service/api";
 import { Key, ReactNode, useEffect, useState } from "react";
 import { Avatar, Button, Image, Space, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
@@ -13,8 +16,8 @@ const DisplayNotification: React.FC = () => {
   useEffect(() => {
     const datasetNotification = async () => {
       try {
-        const res = await NotificationGetListApi();
-        console.log("res:: ", res);
+        const res = await NotificationGetListData();
+        // console.log("res:: ", res);
         setNotificationData(res);
       } catch (error) {
         console.error("Loi lay du lieu: ", error);

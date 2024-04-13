@@ -31,6 +31,7 @@ import ResultTopic from "../pages/Topic/components/ResultTopic";
 import Comment from "../pages/Comment";
 import NotificationDetail from "../pages/Notification/components/NotificationDetail";
 import MasterDatas from "../pages/MasterData";
+import Info from "../pages/ProfileUser";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -155,6 +156,13 @@ export const workplace: RouteObject | MenuDataItem = {
       path: "action",
       icon: <FileDoneOutlined />,
       element: <Comment />,
+      // element: <>dlkjlahd</>,
+    },
+    {
+      name: "Infor",
+      path: "infor",
+      icon: <FileDoneOutlined />,
+      element: <Info />,
       // element: <>dlkjlahd</>,
     },
     // {
