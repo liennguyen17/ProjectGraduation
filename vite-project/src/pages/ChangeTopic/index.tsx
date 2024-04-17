@@ -1,21 +1,12 @@
 import { useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Modal, Typography } from "antd";
-import ModalFormTopic from "./components/ModalFormTopic";
-import {
-  CheckCircleFilled,
-  CheckCircleTwoTone,
-  CheckOutlined,
-  DownloadOutlined,
-  HeartTwoTone,
-  PlusOutlined,
-  PrinterOutlined,
-  SmileTwoTone,
-} from "@ant-design/icons";
-import ModalResultTopic from "./components/ModalResultTopic";
+import { Button, Card, Typography } from "antd";
+import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+import ModalFormTopic from "./components/ModalFormTopic";
+import ModalResultTopic from "./components/ModalResultTopic";
 
-const RegistrationTopic = () => {
+const ChangeTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -59,14 +50,14 @@ const RegistrationTopic = () => {
 
   return (
     <PageContainer
-      subTitle="Đăng ký đề tài"
+      //   subTitle="Đăng ký đề tài"
       // title="sljfa;lsajf"
       title={false}
     >
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Card
           bordered={false}
-          title="Đơn đăng ký đề tài"
+          title="Đơn xin đổi đề tài"
           style={{
             //   height: "250px",
             width: "30%",
@@ -78,8 +69,8 @@ const RegistrationTopic = () => {
             <ul>
               <li>
                 <span>
-                  Sinh viên điền đầy đủ thông tin vào đơn đăng kí đề tài khóa
-                  luận tốt nghiệp.
+                  Sinh viên điền đầy đủ thông tin vào đơn đổi đề tài khóa luận
+                  tốt nghiệp.
                 </span>
               </li>
               <li>
@@ -104,7 +95,7 @@ const RegistrationTopic = () => {
 
         <Card
           bordered={false}
-          title="Xem kết quả đăng ký"
+          title="Xem kết quả đổi đề tài"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
         >
           <Paragraph>
@@ -112,7 +103,7 @@ const RegistrationTopic = () => {
             <ul>
               <li>
                 <span>
-                  Sinh viên đã đăng ký đề tài thì kết quả sẽ hiện thị ở đây.
+                  Sinh viên đã đăng ký đổi đề tài thì kết quả sẽ hiện thị ở đây.
                 </span>
               </li>
 
@@ -153,7 +144,6 @@ const RegistrationTopic = () => {
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button type="primary" onClick={handleDownloadPdf}>
               <DownloadOutlined /> Pdf
-              
             </Button>
           </div>
         </Card> */}
@@ -172,4 +162,4 @@ const RegistrationTopic = () => {
   );
 };
 
-export default RegistrationTopic;
+export default ChangeTopic;

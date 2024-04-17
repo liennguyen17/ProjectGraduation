@@ -2,6 +2,7 @@ import {
   ProForm,
   ProFormSelect,
   ProFormText,
+  ProFormTextArea,
 } from "@ant-design/pro-components";
 import { Button, Col, Divider, Row, message } from "antd";
 import {
@@ -75,16 +76,6 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
           <Divider />
         </Col>
         <Col span={12}>
-          <ProFormText
-            name="nameTopic"
-            label="Tên đề tài"
-            rules={[{ required: true, message: "Vui lòng nhập tên đề tài!" }]}
-            // width="lg"
-            placeholder="Nhập tên đề tài"
-            required
-          />
-        </Col>
-        <Col span={12}>
           <ProFormSelect
             label="Giảng viên hướng dẫn"
             name="teacher"
@@ -99,49 +90,27 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
           />
         </Col>
         <Col span={12}>
-          <ProFormText
-            name="nameInternshipFacility"
-            label="Tên cơ sở thực tập"
+          <ProFormSelect
+            label="Bộ môn"
+            name="semester"
+            request={() => handleFilterMasterData("subject")}
+            placeholder="Vui lòng chọn bộ môn"
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập tên cơ sở thực tập!",
+                message: "Vui lòng chọn bộ môn!",
               },
             ]}
-            // width="lg"
-            placeholder="Nhập tên cơ sở thực tập"
-            required
           />
         </Col>
+
         <Col span={12}>
           <ProFormText
-            name="menterInternshipFacility"
-            label="Cán bộ hướng dẫn tại cơ sở thực tập"
-            rules={[
-              {
-                required: true,
-                message:
-                  "Vui lòng nhập tên cán bộ hướng dẫn tại cơ sở thực tập!",
-              },
-            ]}
+            name="nameTopic"
+            label="Tên đề tài đã đăng ký"
+            rules={[{ required: true, message: "Vui lòng nhập tên đề tài!" }]}
             // width="lg"
-            placeholder="Nhập tên cán bộ hướng dẫn"
-            required
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormText
-            name="phoneInstructorInternshipFacility"
-            label="Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập"
-            rules={[
-              {
-                required: true,
-                message:
-                  "Vui lòng nhập số điện thoại cán bộ hướng dẫn tại cơ sở thực tập!",
-              },
-            ]}
-            // width="lg"
-            placeholder="Nhập số điện thoại"
+            placeholder="Nhập tên đề tài"
             required
           />
         </Col>
@@ -155,6 +124,34 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
               {
                 required: true,
                 message: "Vui lòng chọn kỳ học!",
+              },
+            ]}
+          />
+        </Col>
+        <Col span={12}>
+          <ProFormText
+            name="nameTopic"
+            label="Tên đề tài mới"
+            rules={[{ required: true, message: "Vui lòng nhập tên đề tài!" }]}
+            // width="lg"
+            placeholder="Nhập tên đề tài"
+            required
+          />
+        </Col>
+        <Col span={12}>
+          <ProFormTextArea
+            name="reason"
+            placeholder="Nhập lý do..."
+            label="Lý do thay đổi đề tài"
+            required
+            rules={[
+              {
+                required: true,
+                message: "Lý do không được bỏ trống.",
+              },
+              {
+                max: 200,
+                message: "Lý do không vượt quá 200 ký tự.",
               },
             ]}
           />

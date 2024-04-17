@@ -12,6 +12,7 @@ import FormProfile from "./FormProfile";
 
 const Info: React.FC = () => {
   const [open, setOpen] = useState(false);
+  // const [open1, setOpen1] = useState(false);
   const [data, setData] = useState<UserType>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -24,6 +25,7 @@ const Info: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
+
   const onClose1 = () => {
     setIsDetailVisible(false);
   };
@@ -32,6 +34,7 @@ const Info: React.FC = () => {
     console.log("Dữ liệu cũ:", data);
     setIsDetailVisible(true);
     setEditingId(data.id);
+
     setOpen(false);
     setData(data);
   };
@@ -53,13 +56,17 @@ const Info: React.FC = () => {
         Thông tin người dùng
       </Button>
       <Drawer
-        title="Thông tin người dùng"
+        width={500}
+        title="Hồ sơ"
         open={open}
         onClose={onClose}
         footer={
           <div style={{ textAlign: "right" }}>
             <Button onClick={onClose} style={{ marginRight: 8 }}>
               Đóng
+            </Button>
+            <Button style={{ marginRight: 8 }} type="primary">
+              File
             </Button>
             <Button
               icon={<EditOutlined />}
@@ -113,9 +120,10 @@ const Info: React.FC = () => {
         </ProDescriptions>
       </Drawer>
       <Drawer
-        onClose={onClose}
+        onClose={onClose1}
         title="Cập nhật thông tin người dùng"
         open={isDetailVisible}
+        width={500}
       >
         <FormProfile
           data={data}

@@ -40,7 +40,7 @@ const FormProfile: React.FC<FormProps> = ({
         if (res.success) {
           message.success("Chỉnh sửa thông tin thành công");
           onClose();
-          window.location.reload();
+          // window.location.reload();
         } else {
           message.error("Có lỗi xảy ra khi cập nhật thông tin");
         }

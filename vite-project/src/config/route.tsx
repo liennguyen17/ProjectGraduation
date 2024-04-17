@@ -32,6 +32,7 @@ import Comment from "../pages/Comment";
 import NotificationDetail from "../pages/Notification/components/NotificationDetail";
 import MasterDatas from "../pages/MasterData";
 import Info from "../pages/ProfileUser";
+import ChangeTopic from "../pages/ChangeTopic";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -105,6 +106,12 @@ export const workplace: RouteObject | MenuDataItem = {
           element: <TopicApproval />,
         },
         {
+          name: "Phê duyệt đổi đề tài",
+          path: "approval",
+          icon: <TeamOutlined />,
+          element: <TopicApproval />,
+        },
+        {
           name: "Điểm đề tài",
           path: "topic",
           icon: <SolutionOutlined />,
@@ -130,6 +137,13 @@ export const workplace: RouteObject | MenuDataItem = {
       path: "register-topic",
       icon: <FileDoneOutlined />,
       element: <RegistrationTopic />,
+      // element: <MyComponent />,
+    },
+    {
+      name: "Đổi đề tài",
+      path: "change-topic",
+      icon: <FileDoneOutlined />,
+      element: <ChangeTopic />,
       // element: <MyComponent />,
     },
     {

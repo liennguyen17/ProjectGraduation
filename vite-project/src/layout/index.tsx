@@ -16,7 +16,7 @@ const Layout: React.FC = () => {
   useEffect(() => {
     const getMasterData = async () => {
       const res = await MasterDataFilterApi("role");
-      console.log("res:: ", res);
+      // console.log("res:: ", res);
       dispatch({
         payload: {
           listRole: res,
