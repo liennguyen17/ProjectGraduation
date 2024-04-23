@@ -108,7 +108,7 @@ const Comment: React.FC = () => {
           actions: {
             render: () => [
               <Button type="primary" onClick={showDrawerDiary}>
-                Nhật ký
+                Xem nhật ký
               </Button>,
               <Button type="primary" onClick={showDrawerFile}>
                 File

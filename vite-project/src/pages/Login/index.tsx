@@ -10,6 +10,8 @@ import { useState } from "react";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { LoginApi } from "../../service/api";
 import { useNavigate } from "react-router-dom";
+import { saveCredentialCookie } from "../../service/utils";
+import { ProfileAccount } from "../../service/types";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -30,9 +32,23 @@ const Login: React.FC = () => {
     try {
       const responseData = await LoginApi(username, password);
       console.log("Login response", responseData);
+      const profileAccount: ProfileAccount = {
+        id: responseData.data?.id,
+        name: responseData.data?.name,
+        username: responseData.data?.username,
+        email: responseData.data?.email,
+        phone: responseData.data?.phone,
+        roles: responseData.data?.roles,
+      };
+      console.log("profileAccount: ", profileAccount);
       if (responseData.success) {
+        saveCredentialCookie({
+          accessToken: responseData?.data?.jwt,
+        });
+        sessionStorage.setItem("profileAcc", JSON.stringify(profileAccount));
         message.success("Đăng nhập thành công.");
-        navigate("/users");
+        // navigate("/users/user");
+        navigate("/");
       } else {
         if (responseData.error && responseData.error.errors) {
           responseData.error.errors.forEach((error: any) => {

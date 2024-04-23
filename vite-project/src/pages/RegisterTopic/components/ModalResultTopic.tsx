@@ -56,68 +56,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
             data: topicData,
           });
         }}
-
-        // columns={[
-        //   {
-        //     title: "kết quả:  đơn đăng ký của sinh viên đã được phê duyệt",
-        //   },
-        //   {
-        //     title: "Sinh viên",
-        //     key: "id",
-        //     dataIndex: ["student", "name"],
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Mã sinh viên",
-        //     key: "userCode",
-        //     dataIndex: ["student", "userCode"],
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Giáo viên hướng dẫn",
-        //     dataIndex: ["teacher", "name"],
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Mã giáo viên hướng dẫn",
-        //     dataIndex: ["teacher", "userCode"],
-        //     ellipsis: true,
-        //   },
-        //   // {
-        //   //   title: "Đề tài khóa luận tốt nghiệp",
-        //   //   dataIndex: "nameTopic",
-        //   //   ellipsis: true,
-        //   // },
-        //   {
-        //     title: "Tên cơ sở thực tập",
-        //     dataIndex: "nameInternshipFacility",
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Cán bộ hướng dẫn tại cơ sở thực tập",
-        //     dataIndex: "menterInternshipFacility",
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập",
-        //     dataIndex: "phoneInstructorInternshipFacility",
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Kỳ học",
-        //     dataIndex: "semester",
-        //     ellipsis: true,
-        //   },
-        //   {
-        //     title: "Bộ môn quản lý",
-        //     dataIndex: "departmentManagement",
-        //     ellipsis: true,
-        //   },
-        // ]}
       >
-        {/* <ProDescriptions.Item span={3} style={{ marginBottom: "5" }}>
-          <Divider />
-        </ProDescriptions.Item> */}
         <ProDescriptions.Item
           dataIndex="nameTopic"
           label="Đề tài khóa luận tốt nghiệp"

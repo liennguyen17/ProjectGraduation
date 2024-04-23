@@ -49,11 +49,7 @@ const ChangeTopic = () => {
   };
 
   return (
-    <PageContainer
-      //   subTitle="Đăng ký đề tài"
-      // title="sljfa;lsajf"
-      title={false}
-    >
+    <PageContainer subTitle="Đổi đề tài" title={false}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Card
           bordered={false}
@@ -73,9 +69,7 @@ const ChangeTopic = () => {
                   tốt nghiệp.
                 </span>
               </li>
-              <li>
-                <span>Mỗi đơn đăng ký chỉ được gửi 1 lần.</span>
-              </li>
+              <li>{/* <span>Mỗi đơn đăng ký chỉ được gửi 1 lần.</span> */}</li>
               {/* <li></li> */}
             </ul>
           </Paragraph>
@@ -113,6 +107,34 @@ const ChangeTopic = () => {
                   viên.
                 </span>
               </li>
+            </ul>
+          </Paragraph>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button type="primary" onClick={showModal1}>
+              <CheckOutlined />
+              Xem kết quả
+              {/* <CheckCircleTwoTone twoToneColor="#52c41a" /> */}
+            </Button>
+          </div>
+        </Card>
+        <Card
+          bordered={false}
+          title="Danh sách các lần đổi đề tài"
+          style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
+        >
+          <Paragraph>
+            {/* <Text strong>Chú ý: </Text> */}
+            <ul>
+              <li>
+                <span>Danh sách các lần đổi đề tài sẽ hiện thị ở đây.</span>
+              </li>
+
+              {/* <li>
+                <span>
+                  Kết quả sẽ được cập nhật sau khi phê duyệt đề tài của sinh
+                  viên.
+                </span>
+              </li> */}
             </ul>
           </Paragraph>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>

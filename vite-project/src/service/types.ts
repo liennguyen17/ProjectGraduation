@@ -47,6 +47,12 @@ export interface UserType {
   updateAt?: string;
 }
 
+export interface ChangeNameTopicType {
+  id: number;
+  newNameTopic: string;
+  reason: string;
+}
+
 export interface RegisterTopicType {
   id: number;
   student: {
@@ -191,4 +197,59 @@ export interface TopicTypeCreate {
   menterInternshipFacility: string;
   phoneInstructorInternshipFacility: string;
   semester: string;
+}
+
+export interface ProfileAccount {
+  jwt?: string;
+  id: number;
+  name: string;
+  username: string;
+  phone: string;
+  email: string;
+  roles: Array<"ADMIN" | "MANAGER" | "TEACHER" | "STUDENT">;
+}
+
+export interface ChangeTopicType {
+  id: number;
+  topic: {
+    id: number;
+    student: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      role: string;
+      userCode: string;
+      className: string;
+    };
+    teacher: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      role: string;
+      userCode: string;
+      className: null;
+    };
+    status: string;
+    semester: string;
+    nameTopic: string;
+    departmentManagement: string;
+    nameInternshipFacility: string;
+    menterInternshipFacility: string;
+    phoneInstructorInternshipFacility: string;
+  };
+  oldNameTopic: string;
+  newNameTopic: string;
+  status: string;
+  note: null;
+  reason: string;
+  createAt: string;
+}
+
+export interface TopicEditChangeName {
+  id: number;
+  topic: number;
+  status: string;
+  note: string;
 }

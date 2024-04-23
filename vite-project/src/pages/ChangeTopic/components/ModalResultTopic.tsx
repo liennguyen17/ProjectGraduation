@@ -1,6 +1,9 @@
 import { Button, Divider, Modal } from "antd";
 import { useEffect, useState } from "react";
-import { getTopicDetail } from "../../../service/api";
+import {
+  findTopicFromStudentLogin,
+  getTopicDetail,
+} from "../../../service/api";
 import { ProDescriptions } from "@ant-design/pro-components";
 
 interface ModalTopicFormProps {
@@ -16,15 +19,18 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await getTopicDetail(1);
+        const response = await findTopicFromStudentLogin();
         setTopicData(response);
       } catch (error) {
-        console.error("Error fetching topic detail:", error);
+        console.error(
+          "Lỗi hiện thị kết quả đăng ký gửi đơn đổi đề tài:",
+          error
+        );
       }
     };
 
     fetchNewsDetail();
-  }, [1]);
+  }, []);
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -40,7 +46,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
       onCancel={handleCancel}
       destroyOnClose
       width={900}
-      title="KẾT QUẢ ĐỔI ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
+      // title="KẾT QUẢ ĐỔI ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
       footer={[
         <Button key="back" type="primary" onClick={handleCancel}>
           Đóng
@@ -56,39 +62,69 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
           });
         }}
       >
-        {/* <ProDescriptions.Item span={3}>
-          <Divider />
-        </ProDescriptions.Item> */}
+        <ProDescriptions.Item span={3}>
+          <Divider>ĐƠN ĐĂNG KÝ ĐỔI TÊN ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</Divider>
+        </ProDescriptions.Item>
         <ProDescriptions.Item
-          dataIndex="nameTopic"
-          label="Tên đề tài khóa luận tốt nghiệp mới"
+          dataIndex="newNameTopic"
+          label="Đề tài khóa luận tốt nghiệp mới"
           span={3}
         />
         <ProDescriptions.Item
-          dataIndex={["student", "name"]}
+          dataIndex="oldNameTopic"
+          label="Đề tài khóa luận tốt nghiệp cũ"
+          span={3}
+        />
+        <ProDescriptions.Item
+          dataIndex={["topic", "student", "name"]}
           label="Họ tên sinh viên "
         />
         <ProDescriptions.Item
-          dataIndex={["student", "userCode"]}
+          dataIndex={["topic", "student", "userCode"]}
           label="Mã sinh viên"
         />
 
         <ProDescriptions.Item
-          dataIndex={["teacher", "name"]}
+          dataIndex={["topic", "teacher", "name"]}
           label="Họ tên giảng viên hướng dẫn "
         />
         <ProDescriptions.Item
-          dataIndex={["teacher", "userCode"]}
+          dataIndex={["topic", "teacher", "userCode"]}
           label="Mã giảng viên hướng dẫn "
         />
 
         <ProDescriptions.Item
-          dataIndex="departmentManagement"
+          dataIndex={["topic", "departmentManagement"]}
           label="Bộ môn quản lý "
         />
-        <ProDescriptions.Item dataIndex="semester" label="Học kỳ " />
+        <ProDescriptions.Item
+          dataIndex={["topic", "semester"]}
+          label="Học kỳ "
+        />
 
-        <ProDescriptions.Item dataIndex="note" label="Ghi chú " />
+        <ProDescriptions.Item
+          span={2}
+          dataIndex="reason"
+          label="Lý do đổi đề tài"
+        />
+        <ProDescriptions.Item
+          span={2}
+          dataIndex="createAt"
+          label="Ngày gửi đơn"
+        />
+        <ProDescriptions.Item span={3}>
+          <Divider>Kết quả</Divider>
+        </ProDescriptions.Item>
+        <ProDescriptions.Item
+          dataIndex="status"
+          label="Trạng thái đơn đổi đề tài"
+          span={2}
+        />
+        <ProDescriptions.Item
+          dataIndex="note"
+          label="Chú thích/nhắc nhở(nếu có)"
+          span={2}
+        />
       </ProDescriptions>
     </Modal>
   );

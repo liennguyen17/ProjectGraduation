@@ -3,6 +3,7 @@ import {
   StudentGetListData,
   TeacherGetListData,
 } from "./api";
+import Cookies from "js-cookie";
 
 export const handleFilterMasterData = async (keywords: string) => {
   try {
@@ -20,7 +21,7 @@ export const handleFilterMasterData = async (keywords: string) => {
 export const handleFilterTeacher = async () => {
   try {
     const dataTeacher = await TeacherGetListData();
-    // console.log("data:: ", dataTeacher);
+    console.log("data teacher:: ", dataTeacher);
     return dataTeacher.map((data: any) => ({
       label: `${data.name} - ${data.userCode}`,
       value: data.id,
@@ -43,4 +44,20 @@ export const handleFilterStudent = async () => {
     console.error("Error student data:", error);
     return [];
   }
+};
+
+export const saveCredentialCookie = ({
+  accessToken,
+  expires,
+}: {
+  accessToken: string;
+  expires?: number | Date;
+}) => {
+  Cookies.set("access_token", accessToken || "", {
+    expires: expires,
+  });
+};
+
+export const clearCredentialCookie = ({ name }: { name: string }) => {
+  Cookies.remove(name);
 };

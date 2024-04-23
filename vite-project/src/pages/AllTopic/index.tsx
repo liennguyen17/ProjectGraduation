@@ -49,17 +49,17 @@ interface dataAllTopic {
 const AllTopic: React.FC = () => {
   const [dataTopic, setTopicData] = useState([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly Key[]>([]);
-  useEffect(() => {
-    const data = async () => {
-      try {
-        const res = await TopicGetListData();
-        setTopicData(res);
-      } catch (error) {
-        console.error("Loi lay du lieu: ", error);
-      }
-    };
-    data();
-  }, []);
+  // useEffect(() => {
+  //   const data = async () => {
+  //     try {
+  //       const res = await TopicGetListData();
+  //       setTopicData(res);
+  //     } catch (error) {
+  //       console.error("Loi lay du lieu: ", error);
+  //     }
+  //   };
+  //   data();
+  // }, []);
 
   return (
     <PageContainer
@@ -72,7 +72,10 @@ const AllTopic: React.FC = () => {
       footer={[]}
     >
       <ProList<dataAllTopic>
-        dataSource={dataTopic}
+        // dataSource={dataTopic}
+        request={async (params, sort, filter) =>
+          await TopicGetListData(params, sort, filter)
+        }
         search={{
           filterType: "query",
         }}
@@ -89,7 +92,7 @@ const AllTopic: React.FC = () => {
           subTitle: {
             dataIndex: "semester",
             title: "kỳ học",
-
+            search: false,
             render: (_, entity: dataAllTopic) => {
               return (
                 <Space size={0}>
@@ -126,97 +129,7 @@ const AllTopic: React.FC = () => {
                         data: entity,
                       });
                     }}
-                    // columns={[
-                    //   {
-                    //     title: "Sinh viên",
-                    //     key: "id",
-                    //     dataIndex: ["student", "name"],
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Mã sinh viên",
-                    //     key: "userCode",
-                    //     dataIndex: ["student", "userCode"],
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Giáo viên hướng dẫn",
-                    //     dataIndex: ["teacher", "name"],
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Mã giáo viên hướng dẫn",
-                    //     dataIndex: ["teacher", "userCode"],
-                    //     ellipsis: true,
-                    //   },
-                    //   // {
-                    //   //   title: "Đề tài khóa luận tốt nghiệp",
-                    //   //   dataIndex: "nameTopic",
-                    //   //   ellipsis: true,
-                    //   // },
-                    //   {
-                    //     title: "Tên cơ sở thực tập",
-                    //     dataIndex: "nameInternshipFacility",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Cán bộ hướng dẫn tại cơ sở thực tập",
-                    //     dataIndex: "menterInternshipFacility",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title:
-                    //       "Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập",
-                    //     dataIndex: "phoneInstructorInternshipFacility",
-                    //     ellipsis: true,
-                    //   },
-
-                    //   {
-                    //     title: "Kỳ học",
-                    //     dataIndex: "semester",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Bộ môn quản lý",
-                    //     dataIndex: "departmentManagement",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Điểm giáo viên hướng dẫn",
-                    //     dataIndex: "instructor",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Điểm giáo viên phản biện",
-                    //     dataIndex: "reviewer",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Điểm thành viên hội đồng thứ nhất",
-                    //     dataIndex: "boardMembers1",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Điểm thành viên hội đồng thứ hai",
-                    //     dataIndex: "boardMembers2",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Điểm thành viên hội đồng thứ ba",
-                    //     dataIndex: "boardMembers3",
-                    //     ellipsis: true,
-                    //   },
-                    //   {
-                    //     title: "Kết quả tổng điểm KLTN",
-                    //     dataIndex: "boardMembers3",
-                    //     ellipsis: true,
-                    //   },
-                    // ]}
                   >
-                    {/* <Divider>😀😁</Divider> */}
-                    {/* <ProDescriptions.Item span={3}>
-                      <Divider />
-                    </ProDescriptions.Item> */}
                     <ProDescriptions.Item
                       dataIndex="nameTopic"
                       label="Đề tài khóa luận tốt nghiệp"

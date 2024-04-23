@@ -1,8 +1,5 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
-import {
-  NotificationGetListApi,
-  NotificationGetListData,
-} from "../../../service/api";
+import { NotificationGetListApi } from "../../../service/api";
 import { Key, ReactNode, useEffect, useState } from "react";
 import { Avatar, Button, Image, Space, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
@@ -13,53 +10,33 @@ const DisplayNotification: React.FC = () => {
   const [notificationData, setNotificationData] = useState([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly Key[]>([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    const datasetNotification = async () => {
-      try {
-        const res = await NotificationGetListData();
-        // console.log("res:: ", res);
-        setNotificationData(res);
-      } catch (error) {
-        console.error("Loi lay du lieu: ", error);
-      }
-    };
-    datasetNotification();
-  }, []);
+  // useEffect(() => {
+  //   const datasetNotification = async () => {
+  //     try {
+  //       const res = await NotificationGetListData();
+  //       // console.log("res:: ", res);
+  //       setNotificationData(res);
+  //     } catch (error) {
+  //       console.error("Loi lay du lieu: ", error);
+  //     }
+  //   };
+  //   datasetNotification();
+  // }, []);
 
   const handleViewDetail = (id: number) => {
     navigate(`/notifications/${id}`);
   };
 
-  // const ActionsButton: React.FC = () => {
-  //   return (
-  //     <>
-  //       <Button>
-  //         <EyeOutlined />
-  //       </Button>
-  //     </>
-  //   );
-  // };
-
   return (
     <PageContainer subTitle="Thông báo" title={false}>
       <ProList<Notification>
-        dataSource={notificationData}
-        search={
-          {
-            // filterType: "query",
-          }
+        search={{
+          filterType: "query",
+        }}
+        request={async (params, sort, filter) =>
+          await NotificationGetListApi(params, sort, filter)
         }
         headerTitle="Danh sách thông báo "
-        // request={async () => {
-        //   // try{
-        //   const res = await NotificationGetListApi();
-        //   return res;
-        //   // }
-        // }}
-        // expandable={{
-        //   expandedRowKeys,
-        //   onExpandedRowsChange: setExpandedRowKeys,
-        // }}
         metas={{
           title: {
             dataIndex: "title",
@@ -78,10 +55,11 @@ const DisplayNotification: React.FC = () => {
           },
           description: {
             dataIndex: "description",
-            search: false,
+            // search: false,
+            title: "Mô tả",
           },
           subTitle: {
-            // search: false,
+            search: false,
             title: "Ngày tạo",
             dataIndex: "updateAt",
             render: (a) => {

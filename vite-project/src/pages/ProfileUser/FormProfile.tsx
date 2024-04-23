@@ -16,6 +16,7 @@ interface FormProps {
   editingId: number | null;
   onClose: () => void;
   setData: React.Dispatch<React.SetStateAction<UserType | undefined>>;
+  actionRef?: () => void;
 }
 
 const FormProfile: React.FC<FormProps> = ({
@@ -23,6 +24,7 @@ const FormProfile: React.FC<FormProps> = ({
   editingId,
   onClose,
   setData,
+  actionRef,
 }) => {
   const formRef = useRef<FormInstance<UserType>>();
 
@@ -40,6 +42,7 @@ const FormProfile: React.FC<FormProps> = ({
         if (res.success) {
           message.success("Chỉnh sửa thông tin thành công");
           onClose();
+          actionRef?.();
           // window.location.reload();
         } else {
           message.error("Có lỗi xảy ra khi cập nhật thông tin");
@@ -81,6 +84,7 @@ const FormProfile: React.FC<FormProps> = ({
       <Row style={{ flex: 1 }} gutter={16}>
         <Col span={24}>
           <ProFormText
+            disabled
             label="Username"
             name="username"
             required

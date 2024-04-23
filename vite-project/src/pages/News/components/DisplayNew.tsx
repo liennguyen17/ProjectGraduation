@@ -1,11 +1,10 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
-import { NewGetListApi } from "../../../service/newsGetList";
 import { Button, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { NewsType } from "../../../service/types";
-import { NewGetListData } from "../../../service/api";
+import { NewGetListApi, NewGetListData } from "../../../service/api";
 
 // interface News {
 //   content: string;
@@ -43,9 +42,14 @@ const DisplayNew: React.FC = () => {
   return (
     <PageContainer>
       <ProList<NewsType>
-        search={{}}
+        search={{
+          filterType: "query",
+        }}
         headerTitle="Danh sách tin tức"
-        dataSource={newsData}
+        // dataSource={newsData}
+        request={async (params, sort, filter) =>
+          await NewGetListApi(params, sort, filter)
+        }
         // showActions="hover"
         itemLayout="vertical"
         // grid={{ gutter: 16, column: 2 }}
@@ -61,10 +65,38 @@ const DisplayNew: React.FC = () => {
           //       return <Avatar src={entity.image} />;
           //     },
           //   },
+          content: {
+            dataIndex: "subject",
+            title: "Bộ môn",
+            // valueType: "select",
+            // valueEnum: {
+            //   all: { text: "全部", status: "Default" },
+            //   open: {
+            //     text: "Công nghệ thông tin",
+            //     status: "Error",
+            //   },
+            //   closed: {
+            //     text: "An toàn thông tin",
+            //     status: "Success",
+            //   },
+            //   processing: {
+            //     text: "Trí tuệ nhân tạo",
+            //     status: "Processing",
+            //   },
+            // },
+            render: (_, entity: NewsType) => {
+              return (
+                <>
+                  <div>{entity.description}</div>
+                </>
+              );
+            },
+          },
+
           description: {
-            // dataIndex: "subject",
-            // title: "Bộ môn",
-            search: false,
+            dataIndex: "description",
+            title: "Mo ta",
+            // search: false,
             render: (_, entity) => {
               return (
                 <>
@@ -96,15 +128,6 @@ const DisplayNew: React.FC = () => {
                 <EyeOutlined /> xem chi tiết
               </Button>,
             ],
-          },
-          content: {
-            render: (_, entity: NewsType) => {
-              return (
-                <>
-                  <div>{entity.description}</div>
-                </>
-              );
-            },
           },
         }}
         pagination={{

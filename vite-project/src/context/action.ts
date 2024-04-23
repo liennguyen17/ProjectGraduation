@@ -3,6 +3,7 @@ export type AppState = {
 };
 type PayloadType = {
   listRole?: Array<any>;
+  isDrawerProfile?: boolean;
 };
 
 export type ActionType = {
@@ -14,5 +15,12 @@ export const setListRole = (state: AppState, action: ActionType) => {
   return {
     ...state,
     listRole: action.payload?.listRole,
+  };
+};
+
+export const setIsDrawerProfile = (state: AppState, action: ActionType) => {
+  return {
+    ...state,
+    isDrawerProfile: action.payload?.isDrawerProfile,
   };
 };

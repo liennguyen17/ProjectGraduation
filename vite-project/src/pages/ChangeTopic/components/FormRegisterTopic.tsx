@@ -9,8 +9,11 @@ import {
   handleFilterMasterData,
   handleFilterTeacher,
 } from "../../../service/utils";
-import { RegisterTopicType } from "../../../service/types";
-import { createStudentRegisterTopic } from "../../../service/api";
+import { ChangeNameTopicType, RegisterTopicType } from "../../../service/types";
+import {
+  createStudentRegisterTopic,
+  studentChangeNameTopic,
+} from "../../../service/api";
 
 interface PropsForm {
   handleCancel: () => void;
@@ -31,17 +34,17 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
   //   }
   // };
 
-  const handleFinish = async (value: RegisterTopicType) => {
+  const handleFinish = async (value: ChangeNameTopicType) => {
     try {
-      const res = await createStudentRegisterTopic(value);
+      const res = await studentChangeNameTopic(value);
       if (res.success) {
-        message.success("Gửi đơn đăng ký đề tài thành công.");
+        message.success("Gửi đơn đăng ký đổi đề tài thành công.");
         handleCancel();
       } else {
-        message.error("Có lỗi trong quá trình đăng ký.");
+        message.error("Có lỗi trong quá trình gửi đơn đổi đề tài.");
       }
     } catch (error) {
-      message.error("Có lỗi trong quá trình đăng ký.");
+      message.error("Lỗi trong quá trình gửi đơn đổi đề tài.");
     }
   };
 
@@ -75,7 +78,7 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
         <Col span={24}>
           <Divider />
         </Col>
-        <Col span={12}>
+        {/* <Col span={12}>
           <ProFormSelect
             label="Giảng viên hướng dẫn"
             name="teacher"
@@ -88,11 +91,11 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
               },
             ]}
           />
-        </Col>
-        <Col span={12}>
+        </Col> */}
+        {/* <Col span={12}>
           <ProFormSelect
             label="Bộ môn"
-            name="semester"
+            name="subject"
             request={() => handleFilterMasterData("subject")}
             placeholder="Vui lòng chọn bộ môn"
             rules={[
@@ -102,9 +105,9 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
               },
             ]}
           />
-        </Col>
+        </Col> */}
 
-        <Col span={12}>
+        {/* <Col span={12}>
           <ProFormText
             name="nameTopic"
             label="Tên đề tài đã đăng ký"
@@ -113,8 +116,8 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
             placeholder="Nhập tên đề tài"
             required
           />
-        </Col>
-        <Col span={12}>
+        </Col> */}
+        {/* <Col span={12}>
           <ProFormSelect
             label="Kỳ học"
             name="semester"
@@ -127,10 +130,10 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
               },
             ]}
           />
-        </Col>
+        </Col> */}
         <Col span={12}>
           <ProFormText
-            name="nameTopic"
+            name="newNameTopic"
             label="Tên đề tài mới"
             rules={[{ required: true, message: "Vui lòng nhập tên đề tài!" }]}
             // width="lg"
@@ -138,7 +141,7 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
             required
           />
         </Col>
-        <Col span={12}>
+        <Col span={18}>
           <ProFormTextArea
             name="reason"
             placeholder="Nhập lý do..."

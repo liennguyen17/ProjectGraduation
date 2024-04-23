@@ -1,18 +1,21 @@
 import { Button, Col, FormInstance, Row, message } from "antd";
-import { TopicEdit, TopicType } from "../../../service/types";
 import { useEffect, useRef } from "react";
 import {
   ProForm,
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-components";
-import { handleFilterMasterData } from "../../../service/utils";
-import { editTopic } from "../../../service/api";
+import {
+  ChangeTopicType,
+  TopicEditChangeName,
+} from "../../../../service/types";
+import { editTopicChangeName } from "../../../../service/api";
+import { handleFilterMasterData } from "../../../../service/utils";
 interface FormProps {
   handleCancel: () => void;
   editingId: number | null;
   actionRef?: () => void;
-  initialData: TopicType | null;
+  initialData: ChangeTopicType;
 }
 const ApprovalForm: React.FC<FormProps> = ({
   handleCancel,
@@ -20,7 +23,7 @@ const ApprovalForm: React.FC<FormProps> = ({
   actionRef,
   initialData,
 }) => {
-  const formRef = useRef<FormInstance<TopicType>>();
+  const formRef = useRef<FormInstance<ChangeTopicType>>();
 
   useEffect(() => {
     // Đặt lại giá trị của form khi initialData thay đổi
@@ -29,21 +32,19 @@ const ApprovalForm: React.FC<FormProps> = ({
     }
   }, [initialData]);
 
-  const handleFinish = async (value: TopicEdit) => {
+  const handleFinish = async (value: TopicEditChangeName) => {
     try {
-      // console.log("initialData:: ", initialData);
+      console.log("initialData:: ", initialData);
       // console.log("value:: ", value);
       if (editingId) {
-        const studentId = initialData?.student.id;
-        const teacherId = initialData?.teacher.id;
+        const topic = initialData.topic.id;
         const dataToUpdate = {
           ...initialData,
           ...value,
           id: editingId,
-          studentId: studentId,
-          teacherId: teacherId,
+          topic: topic,
         };
-        const res = await editTopic(dataToUpdate);
+        const res = await editTopicChangeName(dataToUpdate);
         // console.log("data gui di:: ", res);
         if (res.success) {
           message.success("Phê duyệt đề tài thành công.");
@@ -92,7 +93,7 @@ const ApprovalForm: React.FC<FormProps> = ({
             label="Trạng thái"
             name="status"
             placeholder="Vui lòng chọn"
-            request={() => handleFilterMasterData("status")}
+            request={() => handleFilterMasterData("changeTopicName")}
           />
         </Col>
         <Col span={24}>

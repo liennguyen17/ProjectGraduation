@@ -2,16 +2,7 @@ import { useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Modal, Typography } from "antd";
 import ModalFormTopic from "./components/ModalFormTopic";
-import {
-  CheckCircleFilled,
-  CheckCircleTwoTone,
-  CheckOutlined,
-  DownloadOutlined,
-  HeartTwoTone,
-  PlusOutlined,
-  PrinterOutlined,
-  SmileTwoTone,
-} from "@ant-design/icons";
+import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalResultTopic from "./components/ModalResultTopic";
 import axios from "axios";
 

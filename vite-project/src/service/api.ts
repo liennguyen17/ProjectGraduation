@@ -1,7 +1,8 @@
 import { message } from "antd";
-import axios from "axios";
+// import axios from "axios";
 import { appInfo } from "../config/appInfo";
 import {
+  ChangeNameTopicType,
   MasterData,
   News,
   NewsType,
@@ -9,10 +10,12 @@ import {
   RegisterTopicType,
   TopicApproval,
   TopicEdit,
+  TopicEditChangeName,
   TopicType,
   TopicTypeCreate,
   UserType,
 } from "./types";
+import axios from "../lib/request";
 
 export async function UserGetListApi(params, sort, filter) {
   console.log("params: ", params);
@@ -224,6 +227,7 @@ export async function NewGetListApi(params, sort, filter) {
     year: params?.year || "",
     description: params?.description || "",
     subject: params?.subject || "",
+    keywords: params?.keyword || "",
   };
   try {
     const res = await axios.post(`${appInfo.apiUrl}/news/filter`, requestData, {
@@ -239,6 +243,29 @@ export async function NewGetListApi(params, sort, filter) {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+
+export async function NewGetList() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
+
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/news/filter`,
+      requestData,
+      // {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(res.data); // Xử lý dữ liệu phản hồi từ server
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -300,8 +327,44 @@ export async function TopicGetListApi(params, sort, filter) {
   }
 }
 
-export async function TopicGetListData() {
-  const requestData = { start: 0, limit: 50 };
+export async function TopicChangeNameGetListApi(params, sort, filter) {
+  console.log("params:: ", params);
+  const requestData = {
+    start: 0,
+    limit: 50,
+    keywords: params?.keyword || "",
+    status: params?.status || "",
+    newNameTopic: params?.newNameTopic || "",
+    student: params?.student,
+    // semester: params?.semester || "",
+    // departmentManagement: params?.departmentManagement || "",
+    // teacher: params?.teacher,
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/topic-change-name/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return {
+        data: res.data.data.items,
+      };
+    } else {
+      throw new Error("Lỗi lấy danh sách đơn đổi đề tài");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function TopicGetListData(params, sort, filter) {
+  const requestData = { start: 0, limit: 50, nameTopic: params?.nameTopic };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/topic/filter`,
@@ -313,7 +376,9 @@ export async function TopicGetListData() {
       }
     );
     if (res.data?.success) {
-      return res.data.data.items;
+      return {
+        data: res.data.data.items,
+      };
     } else {
       throw new Error("Loi");
     }
@@ -324,7 +389,13 @@ export async function TopicGetListData() {
 }
 
 export async function NotificationGetListApi(params, sort, filter) {
-  const requestData = { start: 0, limit: 50, keywords: params?.keyword || "" };
+  const requestData = {
+    start: 0,
+    limit: 50,
+    keywords: params?.keyword || "",
+    description: params?.description || "",
+    title: params?.title || "",
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/notifications/filter`,
@@ -486,7 +557,37 @@ export async function getListComment() {
   }
 }
 
-// -------------------------------------------
+export async function getListTopicStudentOfTeacher() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/users/topic/teacher`);
+    if (res.data?.success) {
+      return { data: res.data.data.items };
+    } else {
+      throw new Error("Failed to fetch comment detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// -------get by login------------------------------------
+
+export async function findTopicFromStudentLogin() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/topic-change-name`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Lỗi hiện thị kết quả đăng ký gửi đơn đổi đề tài");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+//===get by id=====
 
 export async function getTopicDetail(id: number) {
   try {
@@ -611,8 +712,26 @@ export const createStudentRegisterTopic = async (data: RegisterTopicType) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Lỗi khi tạo dang ky:", error);
-    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+    console.error("Lỗi khi đăng ký đề tài:", error);
+    throw new Error("Có lỗi xảy ra khi đăng ký đề tài");
+  }
+};
+
+export const studentChangeNameTopic = async (data: ChangeNameTopicType) => {
+  try {
+    const response = await axios.post(
+      `${appInfo.apiUrl}/topic-change-name`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi đổi tên đề tài:", error);
+    throw new Error("Có lỗi xảy ra khi đổi tên đề tài");
   }
 };
 
@@ -716,8 +835,30 @@ export const editTopic = async (data: TopicEdit) => {
       throw new Error(response.data.error.message);
     }
   } catch (error) {
-    console.error("Lỗi khi tạo thong bao:", error);
-    throw new Error("Có lỗi xảy ra khi tạo thong bao");
+    console.error("Lỗi khi phê duyệt đăng ký đề tài:", error);
+    throw new Error("Có lỗi xảy ra khi phê duyệt đăng ký đề tài");
+  }
+};
+
+export const editTopicChangeName = async (data: TopicEditChangeName) => {
+  try {
+    const response = await axios.put(
+      `${appInfo.apiUrl}/topic-change-name`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi tạo đơn đăng ký đổi đề tài:", error);
+    throw new Error("Có lỗi xảy ra khi tạo đơn đăng ký đổi đề tài");
   }
 };
 
@@ -865,6 +1006,32 @@ export async function filterUser(data) {
   }
 }
 
+// export async function NewGetListApi(params, sort, filter) {
+//   const requestData = {
+//     start: 0,
+//     limit: 50,
+//   };
+//   try {
+//     const res = await axios.post(
+//       "http://localhost:8080/news/filter",
+//       requestData,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+//     if (res.data?.success) {
+//       return res.data.data.items;
+//     } else {
+//       throw new Error("loi");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+
 // =============filebase===========
 
 export async function uploadFile(file) {
@@ -912,15 +1079,15 @@ export async function uploadFile(file) {
 //   }
 // }
 
-const jwtToken =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw"; // Thay thế bằng JWT token của bạn
+// const jwtToken =
+//   "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw"; // Thay thế bằng JWT token của bạn
 
 export async function UserProfile() {
   try {
     const response = await axios.get("http://localhost:8080/users/profile", {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${jwtToken}`,
+      // },
     });
 
     // Trả về dữ liệu người dùng từ phản hồi nếu thành công

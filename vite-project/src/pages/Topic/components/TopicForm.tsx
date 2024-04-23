@@ -1,7 +1,16 @@
 import { Button, Col, FormInstance, Row } from "antd";
 import { TopicType } from "../../../service/types";
 import { useRef } from "react";
-import { ProForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
+import {
+  ProForm,
+  ProFormDigit,
+  ProFormSelect,
+  ProFormText,
+} from "@ant-design/pro-components";
+import {
+  handleFilterStudent,
+  handleFilterTeacher,
+} from "../../../service/utils";
 
 interface FormProps {
   handleCancel: () => void;
@@ -57,11 +66,11 @@ const TopicForm: React.FC<FormProps> = ({
           />
         </Col>
         <Col span={8}>
-          <ProFormText
+          <ProFormSelect
             name="student"
             label="Sinh viên"
             // value={initialData ? initialData.student.id : undefined}
-            // request={() => handleFilterStudent()}
+            request={() => handleFilterStudent()}
             // placeholder="Vui lòng chọn sinh viên"
             // rules={[
             //   {
@@ -72,10 +81,10 @@ const TopicForm: React.FC<FormProps> = ({
           />
         </Col>
         <Col span={8}>
-          <ProFormText
+          <ProFormSelect
             name="teacher"
             label="Giảng viên hướng dẫn"
-            // request={() => handleFilterTeacher()}
+            request={() => handleFilterTeacher()}
             // placeholder="Vui lòng chọn giảng viên"
             // rules={[
             //   {

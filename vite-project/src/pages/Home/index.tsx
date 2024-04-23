@@ -4,7 +4,7 @@ import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
 import { NewGetListApi } from "../../service/newsGetList";
-import { NewsFilterApi } from "../../service/api";
+// import { NewGetListApi } from "../../service/newsGetList";
 
 const { Search } = Input;
 

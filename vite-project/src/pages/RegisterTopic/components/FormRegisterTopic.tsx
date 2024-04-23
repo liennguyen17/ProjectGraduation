@@ -16,20 +16,6 @@ interface PropsForm {
 }
 
 const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
-  // const handleFilterTeacher = async () => {
-  //   try {
-  //     const dataTeacher = await TeacherGetListApi();
-  //     console.log(dataTeacher);
-  //     return dataTeacher.map((dataTeacher: any) => ({
-  //       lable: dataTeacher.name,
-  //       value: dataTeacher.username,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error fetching teacher data:", error);
-  //     return [];
-  //   }
-  // };
-
   const handleFinish = async (value: RegisterTopicType) => {
     try {
       const res = await createStudentRegisterTopic(value);

@@ -1,12 +1,14 @@
 import { ReactNode, createContext, useReducer } from "react";
-import { setListRole } from "./action";
+import { setIsDrawerProfile, setListRole } from "./action";
 
 type PayloadType = {
   listRole?: Array<any>;
+  isDrawerProfile?: boolean;
 };
 
 export type AppState = {
   listRole?: Array<any>;
+  isDrawerProfile?: boolean;
 };
 
 export type ActionType = {
@@ -25,6 +27,7 @@ type AppContextProps = {
 
 const initialState = {
   listRole: [],
+  isDrawerProfile: false,
 };
 
 export const AppContext = createContext<AppContextProps>({
@@ -36,7 +39,8 @@ function reducer(state: AppState, action: ActionType) {
   switch (action?.type) {
     case "setListRole":
       return setListRole(state, action);
-
+    case "setIsDrawerProfile":
+      return setIsDrawerProfile(state, action);
     default:
       throw new Error();
   }

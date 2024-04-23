@@ -4,11 +4,12 @@ import {
   ProDescriptions,
 } from "@ant-design/pro-components";
 import { Button, Drawer } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { UserProfile } from "../../service/api";
 import { EditOutlined } from "@ant-design/icons";
 import { UserType } from "../../service/types";
 import FormProfile from "./FormProfile";
+import { AppContext } from "../../context/AppProvider";
 
 const Info: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -17,13 +18,19 @@ const Info: React.FC = () => {
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const actionRef = useRef<ActionType>();
+  const { state, dispatch } = useContext(AppContext);
 
   const showDrawer = () => {
     setOpen(true);
   };
 
   const onClose = () => {
-    setOpen(false);
+    dispatch({
+      payload: {
+        isDrawerProfile: false,
+      },
+      type: "setIsDrawerProfile",
+    });
   };
 
   const onClose1 = () => {
@@ -35,7 +42,7 @@ const Info: React.FC = () => {
     setIsDetailVisible(true);
     setEditingId(data.id);
 
-    setOpen(false);
+    setOpen(true);
     setData(data);
   };
 
@@ -58,7 +65,7 @@ const Info: React.FC = () => {
       <Drawer
         width={500}
         title="Hồ sơ"
-        open={open}
+        open={state.isDrawerProfile}
         onClose={onClose}
         footer={
           <div style={{ textAlign: "right" }}>
@@ -117,20 +124,21 @@ const Info: React.FC = () => {
           <ProDescriptions.Item dataIndex="email" label="Email" span={3} />
           <ProDescriptions.Item dataIndex="address" label="Địa chỉ" span={3} />
           <ProDescriptions.Item dataIndex="role" label="Vai trò" span={3} />
+          <Drawer
+            onClose={onClose1}
+            title="Cập nhật thông tin người dùng"
+            open={isDetailVisible}
+            width={500}
+          >
+            <FormProfile
+              data={data}
+              setData={setData}
+              editingId={editingId}
+              onClose={onClose1}
+              actionRef={actionRef.current?.reload}
+            />
+          </Drawer>
         </ProDescriptions>
-      </Drawer>
-      <Drawer
-        onClose={onClose1}
-        title="Cập nhật thông tin người dùng"
-        open={isDetailVisible}
-        width={500}
-      >
-        <FormProfile
-          data={data}
-          setData={setData}
-          editingId={editingId}
-          onClose={onClose1}
-        />
       </Drawer>
     </PageContainer>
   );

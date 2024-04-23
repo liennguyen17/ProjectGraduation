@@ -1,29 +1,30 @@
-import {
-  ActionType,
-  PageContainer,
-  ProTable,
-} from "@ant-design/pro-components";
-import { useContext, useRef, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
-import { UserGetListApi, deleteUser } from "../../service/api";
-import { columUser } from "./components/ColumnTableUsers";
-import { Button, Modal, message } from "antd";
-import ModalFormUser from "./components/ModalFormUser";
-import DrawerUser from "./components/DrawerUser";
-import { UserType } from "../../service/types";
-import { AppContext } from "../../context/AppProvider";
+import { PageContainer, ProTable } from "@ant-design/pro-components";
+import type { ActionType } from "@ant-design/pro-components";
+import { useRef, useState } from "react";
 
-const User: React.FC = () => {
+import { Modal, message } from "antd";
+import { UserType } from "../../../service/types";
+import {
+  StudentGetListApi,
+  deleteUser,
+  getListTopicStudentOfTeacher,
+} from "../../../service/api";
+import { columStudent } from "../../Student/components/ColumTableStudent";
+import DrawerUser from "../../User/components/DrawerUser";
+import ModalFormUser from "../../User/components/ModalFormUser";
+import { ColumnStudentOfTeacher } from "./ColumnStudentOfTeacher";
+// const actionRef = useRef<ActionType>();
+
+const StudentOfTeacher: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
-  // const [userData, setUserData] = useState([]);
+  // const [showTableAlert, setShowTableAlert] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [recordToDeleteName, setRecordToDeleteName] = useState("");
-  const { state } = useContext(AppContext);
 
   const handleViewDetail = (record: UserType) => {
     setSelectedRecord(record);
@@ -54,9 +55,7 @@ const User: React.FC = () => {
       const res = await deleteUser([selectedRecord?.id]);
       console.log("delete::", res);
       message.success(res.data);
-      if (actionRef && actionRef.current) {
-        actionRef.current.reload();
-      }
+
       setIsConfirmDeleteOpen(false);
     } catch (error) {
       console.error("Lỗi xóa dữ liệu::", error);
@@ -67,17 +66,10 @@ const User: React.FC = () => {
     setIsConfirmDeleteOpen(false);
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-    setEditingId(null);
-    setSelectedRecord(null);
-  };
-
-  const columns = columUser({
+  const columns = columStudent({
     handleViewDetail,
     handleEdit,
     handleDelete,
-    listRole: state.listRole || [],
   });
 
   return (
@@ -90,37 +82,39 @@ const User: React.FC = () => {
       footer={[]}
     >
       <ProTable
-        columns={columns}
+        // columns={columns}
+        columns={ColumnStudentOfTeacher}
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
-        headerTitle="Danh sách tất cả người dùng"
+        headerTitle="Danh sách sinh viên hướng dẫn"
         size="small"
         tableLayout="auto"
-        rowKey="id"
-        search={{
-          labelWidth: "auto",
-          filterType: "query",
-          style: {
-            // paddingBlock: 12,
-          },
-        }}
+        rowKey="id" //truyen id
         request={async (params, sort, filter) =>
-          await UserGetListApi(params, sort, filter)
+          await getListTopicStudentOfTeacher()
         }
+        // search={{
+        //   labelWidth: "auto",
+        //   filterType: "query", //light: tiết kiệm khoảng trống
+        //   style: {
+        //     paddingBlock: 12,
+        //   },
+        // }}
+        search={false}
         scroll={{ x: "max-content", y: "calc(100vh - 260px)" }}
-        options={{
-          search: {
-            placeholder: "Nhập từ khoá để tìm kiếm...",
-            style: { width: 300 },
-          },
-          density: false,
-          setting: true,
-        }}
+        // options={{
+        //   search: {
+        //     placeholder: "Nhập từ khoá để tìm kiếm...",
+        //     style: { width: 300 },
+        //   },
+        //   density: false,
+        //   setting: false,
+        // }}
         cardProps={{
           bodyStyle: {
-            paddingBottom: 30,
-            paddingTop: 20,
+            paddingBottom: 0,
+            paddingTop: 0,
             paddingInline: 12,
           },
         }}
@@ -130,13 +124,8 @@ const User: React.FC = () => {
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
-        dateFormatter="string"
         // rowSelection={{}}
-        toolBarRender={() => [
-          <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo người dùng
-          </Button>,
-        ]}
+        dateFormatter="string"
       ></ProTable>
       <ModalFormUser
         isModalOpen={isModalOpen}
@@ -163,4 +152,5 @@ const User: React.FC = () => {
     </PageContainer>
   );
 };
-export default User;
+
+export default StudentOfTeacher;

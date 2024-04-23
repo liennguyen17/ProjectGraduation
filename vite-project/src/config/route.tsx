@@ -33,29 +33,106 @@ import NotificationDetail from "../pages/Notification/components/NotificationDet
 import MasterDatas from "../pages/MasterData";
 import Info from "../pages/ProfileUser";
 import ChangeTopic from "../pages/ChangeTopic";
+import { ProfileAccount } from "../service/types";
+import StudentOfTeacher from "../pages/Teacher/components/StudentOfTeacher";
+import DetailTopicStudent from "../pages/Teacher/components/DetailTopicStudent";
+import ResultTopicStudent from "../pages/Teacher/components/ResultTopicStudent";
+import ApprovalChangeTopic from "../pages/TopicApproval/approvalChangeTopic";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
   "/sinh-vien": "/1/sinh-vien",
 };
 
+const accountInfo: ProfileAccount = JSON.parse(
+  sessionStorage.getItem("profileAcc") as any
+);
+
+const checkRole = (roleName: string) => {
+  let resultCheckRole: boolean = false;
+  switch (roleName) {
+    case "AllRole":
+      resultCheckRole = accountInfo?.roles.some(
+        (value) =>
+          value === "ADMIN" ||
+          value === "MANAGER" ||
+          value === "TEACHER" ||
+          value === "STUDENT"
+      )
+        ? true
+        : false;
+      break;
+    case "AdminAndManager":
+      resultCheckRole = accountInfo?.roles.some(
+        (value) => value === "ADMIN" || value === "MANAGER"
+      )
+        ? true
+        : false;
+      break;
+    case "ManagerAndTeacher":
+      resultCheckRole = accountInfo?.roles.some(
+        (value) =>
+          value === "ADMIN" || value === "MANAGER" || value === "TEACHER"
+      )
+        ? true
+        : false;
+      break;
+    case "ManagerAndStudent":
+      resultCheckRole = accountInfo?.roles.some(
+        (value) =>
+          value === "ADMIN" || value === "MANAGER" || value === "STUDENT"
+      )
+        ? true
+        : false;
+      break;
+    case "Manager":
+      resultCheckRole = accountInfo?.roles.some((value) => value === "MANAGER")
+        ? true
+        : false;
+      break;
+    case "StudentAndTeacher":
+      resultCheckRole = accountInfo?.roles.some(
+        (value) => value === "TEACHER" || value === "STUDENT"
+      )
+        ? true
+        : false;
+      break;
+    case "Teacher":
+      resultCheckRole = accountInfo?.roles.some((value) => value === "TEACHER")
+        ? true
+        : false;
+      break;
+    case "Student":
+      resultCheckRole = accountInfo?.roles.some((value) => value === "STUDENT")
+        ? true
+        : false;
+      break;
+    default:
+  }
+  console.log("resultCheckRole:: ", resultCheckRole);
+
+  return resultCheckRole;
+};
+
+console.log("profileAcc:: ", accountInfo);
+
 export const workplace: RouteObject | MenuDataItem = {
   path: "/",
   element: <Layout />,
   children: [
     {
-      // >>>>>>> 1707fabce9ba066f41e3500b44be2d6a9917f96b
       name: "Quản lý người dùng",
       path: "users",
       icon: <ReadOutlined />,
-      // element: <PostPage />,
+      hideInMenu: checkRole("StudentAndTeacher"),
+      // hideChildrenInMenu: true,
       children: [
         {
           name: "User",
           path: "user",
           icon: <ReadOutlined />,
           element: <User />,
-          // element: <Student />,
+          hideInMenu: checkRole("Manager"),
         },
 
         {
@@ -63,13 +140,14 @@ export const workplace: RouteObject | MenuDataItem = {
           path: "manage",
           icon: <ClusterOutlined />,
           element: <Manage />,
+          hideInMenu: checkRole("Manager"),
         },
         {
           name: "Giảng viên hướng dẫn",
           path: "teacher",
           icon: <NotificationOutlined />,
           element: <Teacher />,
-          // element: <ModalFormNews />,
+          // hideInMenu: checkRole("Student"),
         },
         {
           name: "Sinh viên",
@@ -81,23 +159,10 @@ export const workplace: RouteObject | MenuDataItem = {
       ],
     },
     {
-      name: "Quản lý tin tức",
-      path: "news",
-      icon: <FileDoneOutlined />,
-      element: <News />,
-    },
-
-    {
-      name: "Quản lý thông báo",
-      path: "notification",
-      icon: <FileDoneOutlined />,
-      element: <Notification />,
-    },
-    {
       name: "Quản lý khóa luận tốt nghiệp",
       path: "graduation-thesis",
       icon: <FileDoneOutlined />,
-      // element: <>recruitment</>,
+      hideInMenu: checkRole("StudentAndTeacher"),
       children: [
         {
           name: "Phê duyệt đề tài",
@@ -107,9 +172,9 @@ export const workplace: RouteObject | MenuDataItem = {
         },
         {
           name: "Phê duyệt đổi đề tài",
-          path: "approval",
+          path: "approval-change-topic",
           icon: <TeamOutlined />,
-          element: <TopicApproval />,
+          element: <ApprovalChangeTopic />,
         },
         {
           name: "Điểm đề tài",
@@ -126,66 +191,90 @@ export const workplace: RouteObject | MenuDataItem = {
       ],
     },
     {
+      name: "Quản lý tin tức",
+      path: "news",
+      icon: <FileDoneOutlined />,
+      element: <News />,
+      hideInMenu: checkRole("StudentAndTeacher"),
+    },
+
+    {
+      name: "Quản lý thông báo",
+      path: "notification",
+      icon: <FileDoneOutlined />,
+      element: <Notification />,
+      hideInMenu: checkRole("StudentAndTeacher"),
+    },
+    {
       name: "Master Data",
       path: "master-data",
       icon: <FileDoneOutlined />,
       element: <MasterDatas />,
-      // element: <MyComponent />,
+      hideInMenu: checkRole("StudentAndTeacher"),
     },
     {
       name: "Đăng ký đề tài",
       path: "register-topic",
       icon: <FileDoneOutlined />,
       element: <RegistrationTopic />,
-      // element: <MyComponent />,
+      hideInMenu: checkRole("ManagerAndTeacher"),
     },
     {
       name: "Đổi đề tài",
       path: "change-topic",
       icon: <FileDoneOutlined />,
       element: <ChangeTopic />,
-      // element: <MyComponent />,
+      hideInMenu: checkRole("ManagerAndTeacher"),
     },
     {
       name: "Thông báo",
       path: "notification-user",
       icon: <FileDoneOutlined />,
       element: <DisplayNotification />,
-      // element: <MyComponent />,
+      hideInMenu: checkRole("AdminAndManager"),
     },
     {
       name: "Tin tức",
       path: "new-user",
       icon: <FileDoneOutlined />,
       element: <DisplayNew />,
+      hideInMenu: checkRole("AdminAndManager"),
     },
     {
       name: "Kết quả KLTN",
       path: "result",
       icon: <FileDoneOutlined />,
       element: <ResultTopic />,
+      hideInMenu: checkRole("ManagerAndTeacher"),
     },
     {
-      name: "Hành động",
+      name: "Sinh viên hướng dẫn",
+      path: "student",
+      icon: <FileDoneOutlined />,
+      element: <StudentOfTeacher />,
+      hideInMenu: checkRole("ManagerAndStudent"),
+    },
+    {
+      name: "Thông tin thực tập",
+      path: "detailTopic",
+      icon: <FileDoneOutlined />,
+      element: <DetailTopicStudent />,
+      hideInMenu: checkRole("ManagerAndStudent"),
+    },
+    {
+      name: "Danh sách điểm đề tài",
+      path: "topicStudent",
+      icon: <FileDoneOutlined />,
+      element: <ResultTopicStudent />,
+      hideInMenu: checkRole("ManagerAndStudent"),
+    },
+    {
+      name: "Nhật ký",
       path: "action",
       icon: <FileDoneOutlined />,
       element: <Comment />,
-      // element: <>dlkjlahd</>,
+      hideInMenu: checkRole("ManagerAndStudent"),
     },
-    {
-      name: "Infor",
-      path: "infor",
-      icon: <FileDoneOutlined />,
-      element: <Info />,
-      // element: <>dlkjlahd</>,
-    },
-    // {
-    //   name: "demo",
-    //   path: "demo",
-    //   icon: <FileDoneOutlined />,
-    //   // element: <DrawerDiary />,
-    //   element: <>dlkjlahd</>,
-    // },
   ],
 };
 
