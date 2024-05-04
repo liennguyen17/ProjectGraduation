@@ -4,10 +4,14 @@ import {
   ProTable,
 } from "@ant-design/pro-components";
 import { useContext, useRef, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  ExportOutlined,
+  ImportOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { UserGetListApi, deleteUser } from "../../service/api";
 import { columUser } from "./components/ColumnTableUsers";
-import { Button, Modal, message } from "antd";
+import { Button, Modal, Space, message } from "antd";
 import ModalFormUser from "./components/ModalFormUser";
 import DrawerUser from "./components/DrawerUser";
 import { UserType } from "../../service/types";
@@ -131,10 +135,17 @@ const User: React.FC = () => {
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
         dateFormatter="string"
-        // rowSelection={{}}
+        // rowSelection={{}} // xóa tất cả
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo người dùng
+          </Button>,
+
+          <Button type="primary" key="primary" onClick={showModal}>
+            <ImportOutlined /> Nhập danh sách
+          </Button>,
+          <Button type="primary" key="primary" onClick={showModal}>
+            <ExportOutlined /> Xuất danh sách
           </Button>,
         ]}
       ></ProTable>

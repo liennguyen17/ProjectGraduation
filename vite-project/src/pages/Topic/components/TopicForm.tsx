@@ -1,4 +1,4 @@
-import { Button, Col, FormInstance, Row } from "antd";
+import { Button, Col, FormInstance, Row, message } from "antd";
 import { TopicType } from "../../../service/types";
 import { useRef } from "react";
 import {
@@ -11,6 +11,7 @@ import {
   handleFilterStudent,
   handleFilterTeacher,
 } from "../../../service/utils";
+import { editTopic } from "../../../service/api";
 
 interface FormProps {
   handleCancel: () => void;
@@ -25,6 +26,34 @@ const TopicForm: React.FC<FormProps> = ({
   initialData,
 }) => {
   const formRef = useRef<FormInstance<TopicType>>();
+  const handleFinish = async (value) => {
+    try {
+      if (editingId) {
+        console.log("dlc::", initialData);
+        const studentId = initialData?.student.id;
+        const teacherId = initialData?.teacher.id;
+        const dataUpdate = {
+          ...initialData,
+          ...value,
+          id: editingId,
+          studentId: studentId,
+          teacherId: teacherId,
+        };
+
+        const res = await editTopic(dataUpdate);
+        console.log("res:: ", res);
+        if (res.success) {
+          message.success("Chỉnh sửa đề tài thành công");
+          handleCancel();
+          actionRef?.();
+        } else {
+          message.error("Có lỗi xảy ra khi chỉnh sửa đề tài");
+        }
+      }
+    } catch (error) {
+      message.error("Lỗi cập nhật điểm đề tài vui lòng thử lại sau.");
+    }
+  };
   return (
     <ProForm
       initialValues={initialData}
@@ -49,6 +78,7 @@ const TopicForm: React.FC<FormProps> = ({
           );
         },
       }}
+      onFinish={handleFinish}
     >
       <Row gutter={[16, 16]}>
         <Col span={8}>
@@ -62,7 +92,8 @@ const TopicForm: React.FC<FormProps> = ({
                 required: true,
               },
             ]}
-            disabled
+            // disabled
+            hidden
           />
         </Col>
         <Col span={8}>
@@ -78,6 +109,7 @@ const TopicForm: React.FC<FormProps> = ({
             //     message: "Vui lòng chọn sinh viên!",
             //   },
             // ]}
+            hidden
           />
         </Col>
         <Col span={8}>
@@ -92,6 +124,7 @@ const TopicForm: React.FC<FormProps> = ({
             //     message: "Vui lòng chọn giảng viên!",
             //   },
             // ]}
+            hidden
           />
         </Col>
         <Col span={8}>

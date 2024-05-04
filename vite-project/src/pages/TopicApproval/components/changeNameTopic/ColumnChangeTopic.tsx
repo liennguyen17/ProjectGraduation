@@ -48,7 +48,7 @@ export const topicApprovalChangeName = ({
       dataIndex: ["topic", "semester"],
       valueType: "select",
       request: () => handleFilterMasterData("semester"),
-      hideInSearch: true,
+      // hideInSearch: true,
     },
     {
       title: "Đề tài mới",
@@ -57,6 +57,12 @@ export const topicApprovalChangeName = ({
     {
       title: "Đề tài cũ",
       dataIndex: "oldNameTopic",
+      hideInSearch: true,
+    },
+    {
+      title: "Lý do đổi đề tài",
+      dataIndex: "reason",
+      width: 400,
       hideInSearch: true,
     },
     {

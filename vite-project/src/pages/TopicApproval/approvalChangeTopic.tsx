@@ -110,7 +110,7 @@ const ApprovalChangeTopic: React.FC = () => {
             placeholder: "Nhập từ khóa tìm kiếm...",
             style: { width: 300 },
           },
-          density: false,
+          density: true,
           setting: true,
         }}
         cardProps={{
@@ -128,11 +128,11 @@ const ApprovalChangeTopic: React.FC = () => {
         }}
         dateFormatter="string"
         rowSelection={{}}
-        toolBarRender={() => [
-          <Button type="primary" key="primary" onClick={showModal}>
-            <PlusOutlined /> Tạo đề tài
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Button type="primary" key="primary" onClick={showModal}>
+        //     <PlusOutlined /> Tạo đề tài
+        //   </Button>,
+        // ]}
       ></ProTable>
       {/* <ModalTopicForm
         isModalOpen={isModalOpen}

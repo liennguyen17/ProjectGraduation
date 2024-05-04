@@ -1,80 +1,46 @@
+import { Button, Col, FormInstance, Row, message } from "antd";
+import { UserType } from "../../../service/types";
+import { useRef } from "react";
 import {
-  ActionType,
   ProForm,
   ProFormDatePicker,
   ProFormSelect,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Button, Col, FormInstance, Row, message } from "antd";
-import { useRef } from "react";
-import "../../../index.css";
-import { UserType } from "../../../service/types";
-import { createUser, editUser } from "../../../service/api";
+import { createUser } from "../../../service/api";
 import { handleFilterMasterData } from "../../../service/utils";
+
 interface PropsForm {
   handleCancel: () => void;
-  // handleCreateSuccess: () => Promise<void>;
-  editingId: number | null;
+  //   editingId: number | null;
   initialData: UserType | null;
   actionRef?: () => void;
 }
 
-const FormUser: React.FC<PropsForm> = ({
+const FormStudent: React.FC<PropsForm> = ({
   handleCancel,
-  // handleCreateSuccess,
-  editingId,
+  //   editingId,
   initialData,
   actionRef,
 }) => {
   const formRef = useRef<FormInstance<UserType>>();
   const handleFinish = async (value: UserType) => {
-    console.log("Dữ liệu user trước khi gửi đi:", value);
     try {
-      if (editingId) {
-        const dataToUpdate = { ...value, id: editingId };
-        const res = await editUser(dataToUpdate);
-        if (res.success) {
-          message.success("Chỉnh sửa user thành công");
-          // handleCreateSuccess();
-
-          handleCancel();
-          actionRef?.();
-        } else {
-          message.error("Có lỗi xảy ra khi chỉnh sửa user");
-        }
+      const res = await createUser(value);
+      if (res.success) {
+        message.success("Tạo user thành công");
+        // handleCreateSuccess();
+        handleCancel();
+        actionRef?.();
       } else {
-        const res = await createUser(value);
-        if (res.success) {
-          message.success("Tạo user thành công");
-          // handleCreateSuccess();
-          handleCancel();
-          actionRef?.();
-        } else {
-          message.error("Có lỗi xảy ra khi tạo user");
-        }
+        message.error("Có lỗi xảy ra khi tạo user");
       }
     } catch (error) {
-      console.log(error);
-      message.error(error);
+      message.error("Lỗi tạo user, vui lòng thử lại sau.");
     }
   };
-
-  // const handleSubject = async (keywords: string) => {
-  //   try {
-  //     const subject = await MasterDataFilterApi(keywords);
-  //     return subject.map((subject: any) => ({
-  //       label: subject.name,
-  //       value: subject.id,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Loi lay du lieu subject:", error);
-  //     return [];
-  //   }
-  // };
   return (
     <ProForm
-      // actionRef={actionRef}
-      initialValues={initialData ? initialData : undefined}
       formRef={formRef}
       grid
       submitter={{
@@ -104,7 +70,6 @@ const FormUser: React.FC<PropsForm> = ({
             label="Username"
             name="username"
             required
-            disabled={!!editingId}
             rules={[
               {
                 required: true,
@@ -115,11 +80,7 @@ const FormUser: React.FC<PropsForm> = ({
         </Col>
 
         <Col span={8}>
-          <ProFormText
-            label="Mã người dùng"
-            name="userCode"
-            // disabled={!!editingId}
-          />
+          <ProFormText label="Mã sinh viên" name="userCode" />
         </Col>
 
         <Col span={8}>
@@ -170,27 +131,17 @@ const FormUser: React.FC<PropsForm> = ({
             request={() => handleFilterMasterData("subject")}
           />
         </Col>
-        {/* {!initialData?.role === "TEACHER" && (
-          <Col span={8}>
-            <ProFormText label="Lớp" name="className" />
-          </Col>
-        )} */}
-
-        {!(
-          initialData?.role === "TEACHER" ||
-          initialData?.role === "MANAGER" ||
-          initialData?.role === "ADMIN"
-        ) && (
-          <Col span={8}>
-            <ProFormText label="Lớp" name="className" />
-          </Col>
-        )}
 
         <Col span={8}>
-          <ProFormSelect
+          <ProFormText label="Lớp" name="className" />
+        </Col>
+
+        <Col span={8}>
+          <ProFormText
             label="Vai trò"
             name="role"
-            request={() => handleFilterMasterData("role")}
+            initialValue={"STUDENT"}
+            disabled
           />
         </Col>
         {!initialData && (
@@ -213,4 +164,4 @@ const FormUser: React.FC<PropsForm> = ({
     </ProForm>
   );
 };
-export default FormUser;
+export default FormStudent;

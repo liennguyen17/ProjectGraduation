@@ -117,34 +117,26 @@ const ChangeTopic = () => {
             </Button>
           </div>
         </Card>
-        <Card
+        {/* <Card
           bordered={false}
           title="Danh sách các lần đổi đề tài"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
         >
           <Paragraph>
-            {/* <Text strong>Chú ý: </Text> */}
             <ul>
               <li>
                 <span>Danh sách các lần đổi đề tài sẽ hiện thị ở đây.</span>
               </li>
 
-              {/* <li>
-                <span>
-                  Kết quả sẽ được cập nhật sau khi phê duyệt đề tài của sinh
-                  viên.
-                </span>
-              </li> */}
             </ul>
           </Paragraph>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button type="primary" onClick={showModal1}>
               <CheckOutlined />
               Xem kết quả
-              {/* <CheckCircleTwoTone twoToneColor="#52c41a" /> */}
             </Button>
           </div>
-        </Card>
+        </Card> */}
 
         {/* <Card
           bordered={false}

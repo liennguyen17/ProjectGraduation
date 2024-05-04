@@ -8,6 +8,7 @@ import { Key, useEffect, useState } from "react";
 import { TopicGetListApi, TopicGetListData } from "../../service/api";
 import { Divider, Space, Tag } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { handleFilterMasterData } from "../../service/utils";
 
 interface dataAllTopic {
   id: number;
@@ -49,17 +50,20 @@ interface dataAllTopic {
 const AllTopic: React.FC = () => {
   const [dataTopic, setTopicData] = useState([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly Key[]>([]);
-  // useEffect(() => {
-  //   const data = async () => {
-  //     try {
-  //       const res = await TopicGetListData();
-  //       setTopicData(res);
-  //     } catch (error) {
-  //       console.error("Loi lay du lieu: ", error);
-  //     }
-  //   };
-  //   data();
-  // }, []);
+  const [semesterOptions, setSemesterOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchSemesterOptions = async () => {
+      try {
+        const options = await handleFilterMasterData("semester");
+        setSemesterOptions(options);
+      } catch (error) {
+        console.error("Error fetching semester options:", error);
+      }
+    };
+
+    fetchSemesterOptions();
+  }, []);
 
   return (
     <PageContainer
@@ -73,8 +77,11 @@ const AllTopic: React.FC = () => {
     >
       <ProList<dataAllTopic>
         // dataSource={dataTopic}
+        // request={async (params, sort, filter) =>
+        //   await TopicGetListData(params, sort, filter)
+        // }
         request={async (params, sort, filter) =>
-          await TopicGetListData(params, sort, filter)
+          await TopicGetListApi(params, sort, filter)
         }
         search={{
           filterType: "query",
@@ -92,7 +99,7 @@ const AllTopic: React.FC = () => {
           subTitle: {
             dataIndex: "semester",
             title: "kỳ học",
-            search: false,
+            // search: false,
             render: (_, entity: dataAllTopic) => {
               return (
                 <Space size={0}>
@@ -101,17 +108,10 @@ const AllTopic: React.FC = () => {
                 </Space>
               );
             },
-            valueEnum: {
-              all: { text: "全部", status: "Default" },
-              open: {
-                text: "未解决",
-                status: "Error",
-              },
-              closed: {
-                text: "已解决",
-                status: "Success",
-              },
-            },
+            // valueEnum: semesterOptions.reduce((acc, option) => {
+            //   acc[option.value] = { text: option.text };
+            //   return acc;
+            // }, {}),
           },
           description: {
             search: false,

@@ -7,33 +7,27 @@ import { useEffect, useRef, useState } from "react";
 import { ManageGetListApi, deleteUser } from "../../service/api";
 import { columManage } from "./components/ColumManager";
 import { UserType } from "../../service/types";
-import { Modal, message } from "antd";
+import { Button, Modal, message } from "antd";
 import ModalFormUser from "../User/components/ModalFormUser";
 import DrawerUser from "../User/components/DrawerUser";
+import {
+  ExportOutlined,
+  ImportOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import FormManager from "./components/FormManager";
 
 const Manage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [recordToDeleteName, setRecordToDeleteName] = useState("");
-
-  // const [manageData, setManageData] = useState([]);
-  // useEffect(() => {
-  //   const data = async () => {
-  //     try {
-  //       const res = await ManageGetListApi();
-  //       setManageData(res);
-  //     } catch (error) {
-  //       console.error("Loi lay du lieu: ", error);
-  //     }
-  //   };
-  //   data();
-  // }, []);
 
   const handleViewDetail = (record: UserType) => {
     setSelectedRecord(record);
@@ -77,6 +71,15 @@ const Manage: React.FC = () => {
     setIsConfirmDeleteOpen(false);
   };
 
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+    setSelectedRecord(null);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen1(false);
+  };
+
   const columns = columManage({
     handleViewDetail,
     handleEdit,
@@ -113,6 +116,26 @@ const Manage: React.FC = () => {
             // paddingBlock: 12,
           },
         }}
+        toolBarRender={() => [
+          <Button type="primary" key="primary" onClick={showModal1}>
+            <PlusOutlined /> Tạo giảng viên
+          </Button>,
+
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ImportOutlined /> Nhập danh sách
+          </Button>,
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ExportOutlined /> Xuất danh sách
+          </Button>,
+        ]}
         cardProps={{
           //   bodyStyle: { padding: 4 },
           bodyStyle: {
@@ -123,7 +146,7 @@ const Manage: React.FC = () => {
         }}
         options={{
           search: {
-            placeholder: "Tìm kiếm bài viết...",
+            placeholder: "Nhập từ khoá để tìm kiếm...",
             style: { width: 300 },
           },
           setting: true,
@@ -140,6 +163,21 @@ const Manage: React.FC = () => {
         scroll={{ x: "max-content", y: "calc(100vh-245px)" }}
         dateFormatter="string"
       ></ProTable>
+      <Modal
+        open={isModalOpen1}
+        onCancel={handleCancel}
+        onOk={handleCancel}
+        destroyOnClose
+        width={900}
+        title="Tạo giảng viên quản lý"
+        footer={false}
+      >
+        <FormManager
+          actionRef={() => actionRef.current?.reload()}
+          handleCancel={handleCancel}
+          initialData={selectedRecord}
+        ></FormManager>
+      </Modal>
       <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

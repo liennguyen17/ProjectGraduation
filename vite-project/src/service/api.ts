@@ -304,6 +304,7 @@ export async function TopicGetListApi(params, sort, filter) {
     teacher: params?.teacher,
     student: params?.student,
   };
+  console.log("request data:: ", requestData);
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/topic/filter`,
@@ -335,11 +336,16 @@ export async function TopicChangeNameGetListApi(params, sort, filter) {
     keywords: params?.keyword || "",
     status: params?.status || "",
     newNameTopic: params?.newNameTopic || "",
-    student: params?.student,
-    // semester: params?.semester || "",
-    // departmentManagement: params?.departmentManagement || "",
-    // teacher: params?.teacher,
+    // topic: {
+    //   semester: params?.semester || "",
+    //   student: {
+    //     name: params?.name || "",
+    //     userCode: params?.userCode || "",
+    //   },
+    // },
+    topic: params.topic,
   };
+  console.log("request data:: ", requestData);
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/topic-change-name/filter`,

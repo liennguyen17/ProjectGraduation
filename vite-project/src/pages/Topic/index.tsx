@@ -1,6 +1,7 @@
 import {
   ActionType,
   PageContainer,
+  ProDescriptions,
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +10,7 @@ import { TopicGetListApi, TopicGetListData } from "../../service/api";
 import "./styles.css";
 import { TopicType } from "../../service/types";
 import ModalTopic from "./components/ModalTopic";
-import { Modal } from "antd";
+import { Divider, Modal } from "antd";
 import TopicForm from "./components/TopicForm";
 
 const Topic: React.FC = () => {
@@ -124,6 +125,29 @@ const Topic: React.FC = () => {
         width="65%"
         footer={false}
       >
+        <ProDescriptions
+          column={2}
+          request={async () => {
+            return Promise.resolve({
+              success: true,
+              data: selectedRecord,
+            });
+          }}
+        >
+          <ProDescriptions.Item span={3}>
+            <Divider>
+              Điểm đề tài khóa luận tốt nghiệp: {selectedRecord?.nameTopic}
+            </Divider>
+          </ProDescriptions.Item>
+          <ProDescriptions.Item>
+            Sinh viên thực hiện: {selectedRecord?.student.name} - MSV:
+            {selectedRecord?.student.userCode}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item>
+            Giảng viên hướng dẫn: {selectedRecord?.student.name} - MGV:
+            {selectedRecord?.student.userCode}
+          </ProDescriptions.Item>
+        </ProDescriptions>
         <TopicForm
           actionRef={() => actionRef.current?.reload()}
           handleCancel={handleCancel}

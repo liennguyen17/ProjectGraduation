@@ -121,12 +121,12 @@ export const dataTopicApproval = ({
             icon={<EyeOutlined />}
             onClick={() => handleViewDetail(record)}
           ></Button>
-          <Button
+          {/* <Button
             type="link"
             // type="primary"
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
-          ></Button>
+          ></Button> */}
           {/* <Button
             type="link"
             icon={<DeleteOutlined />}

@@ -7,7 +7,13 @@ import { columStudent } from "./components/ColumTableStudent";
 import { UserType } from "../../service/types";
 import DrawerUser from "../User/components/DrawerUser";
 import ModalFormUser from "../User/components/ModalFormUser";
-import { Modal, message } from "antd";
+import { Button, Modal, message } from "antd";
+import {
+  ExportOutlined,
+  ImportOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import FormStudent from "./components/FormStudent";
 // const actionRef = useRef<ActionType>();
 
 const Student: React.FC = () => {
@@ -15,6 +21,7 @@ const Student: React.FC = () => {
   const formRef = useRef<any>();
   // const [showTableAlert, setShowTableAlert] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -61,30 +68,19 @@ const Student: React.FC = () => {
     setIsConfirmDeleteOpen(false);
   };
 
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  //   setEditingId(null);
-  //   setSelectedRecord(null);
-  // };
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+    setSelectedRecord(null);
+  };
+  const handleCancel = () => {
+    setIsModalOpen1(false);
+  };
 
   const columns = columStudent({
     handleViewDetail,
     handleEdit,
     handleDelete,
   });
-
-  // const [studentData, setStudentData] = useState([]);
-  // useEffect(() => {
-  //   const dataStudent = async () => {
-  //     try {
-  //       const res = await StudentGetListApi();
-  //       setStudentData(res);
-  //     } catch (error) {
-  //       console.error("Loi lay du lieu: ", error);
-  //     }
-  //   };
-  //   dataStudent();
-  // }, []);
 
   return (
     <PageContainer
@@ -132,11 +128,26 @@ const Student: React.FC = () => {
             paddingInline: 12,
           },
         }}
-        // toolBarRender={() => [
-        //   <Button type="primary" key="primary" onClick={showModal}>
-        //     <PlusOutlined /> Tạo người dùng
-        //   </Button>,
-        // ]}
+        toolBarRender={() => [
+          <Button type="primary" key="primary" onClick={showModal1}>
+            <PlusOutlined /> Tạo sinh viên
+          </Button>,
+
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ImportOutlined /> Nhập danh sách
+          </Button>,
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ExportOutlined /> Xuất danh sách
+          </Button>,
+        ]}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
@@ -146,6 +157,21 @@ const Student: React.FC = () => {
         rowSelection={{}}
         dateFormatter="string"
       ></ProTable>
+      <Modal
+        open={isModalOpen1}
+        onCancel={handleCancel}
+        onOk={handleCancel}
+        destroyOnClose
+        width={900}
+        title="Tạo sinh viên"
+        footer={false}
+      >
+        <FormStudent
+          actionRef={() => actionRef.current?.reload()}
+          handleCancel={handleCancel}
+          initialData={selectedRecord}
+        ></FormStudent>
+      </Modal>
       <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

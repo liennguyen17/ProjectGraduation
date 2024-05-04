@@ -7,15 +7,22 @@ import { useRef, useState } from "react";
 import { columTeacher } from "./components/ColumTeacher";
 import { TeacherGetListApi, deleteUser } from "../../service/api";
 import { UserType } from "../../service/types";
-import { Modal, message } from "antd";
+import { Button, Modal, message } from "antd";
 import ModalFormUser from "../User/components/ModalFormUser";
 import DrawerUser from "../User/components/DrawerUser";
+import {
+  ExportOutlined,
+  ImportOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import FormTeacher from "./components/FormTeacher";
 
 const Teacher: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<UserType | null>(null);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -64,11 +71,13 @@ const Teacher: React.FC = () => {
     setIsConfirmDeleteOpen(false);
   };
 
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  //   setEditingId(null);
-  //   setSelectedRecord(null);
-  // };
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+    setSelectedRecord(null);
+  };
+  const handleCancel = () => {
+    setIsModalOpen1(false);
+  };
 
   const columns = columTeacher({
     handleViewDetail,
@@ -76,18 +85,6 @@ const Teacher: React.FC = () => {
     handleDelete,
   });
 
-  // const [teacherData, setTeacherData] = useState([]);
-  // useEffect(() => {
-  //   const data = async () => {
-  //     try {
-  //       const res = await TeacherGetListApi();
-  //       setTeacherData(res);
-  //     } catch (error) {
-  //       console.error("Loi lay du lieu: ", error);
-  //     }
-  //   };
-  //   data();
-  // }, []);
   return (
     <PageContainer
       childrenContentStyle={{
@@ -145,7 +142,42 @@ const Teacher: React.FC = () => {
         }}
         scroll={{ x: "max-content", y: "calc(100vh-245px)" }}
         dateFormatter="string"
+        toolBarRender={() => [
+          <Button type="primary" key="primary" onClick={showModal1}>
+            <PlusOutlined /> Tạo giảng viên
+          </Button>,
+
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ImportOutlined /> Nhập danh sách
+          </Button>,
+          <Button
+            type="primary"
+            key="primary"
+            // onClick={showModal}
+          >
+            <ExportOutlined /> Xuất danh sách
+          </Button>,
+        ]}
       ></ProTable>
+      <Modal
+        open={isModalOpen1}
+        onCancel={handleCancel}
+        onOk={handleCancel}
+        destroyOnClose
+        width={900}
+        title="Tạo giảng viên hướng dẫn"
+        footer={false}
+      >
+        <FormTeacher
+          actionRef={() => actionRef.current?.reload()}
+          handleCancel={handleCancel}
+          initialData={selectedRecord}
+        ></FormTeacher>
+      </Modal>
       <ModalFormUser
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
