@@ -46,15 +46,22 @@ ColumnProps): ProColumns<TopicType>[] => {
       title: "Mã sinh viên",
       dataIndex: ["student", "userCode"],
     },
-    {
-      title: "Giáo viên hướng dẫn",
-      dataIndex: ["teacher", "name"],
-    },
-    {
-      title: "Giáo viên hướng dẫn",
-      dataIndex: ["teacher", "userCode"],
-    },
+    // {
+    //   title: "Giáo viên hướng dẫn",
+    //   dataIndex: ["teacher", "name"],
+    // },
+    // {
+    //   title: "Giáo viên hướng dẫn",
+    //   dataIndex: ["teacher", "userCode"],
+    // },
 
+    {
+      title: "Điểm cơ sở thực tập",
+      dataIndex: "scoresInternshipFacility",
+      align: "center",
+      width: "10%",
+      hideInSearch: true,
+    },
     {
       title: "Điểm giáo viên hướng dẫn",
       dataIndex: "instructor",
@@ -97,18 +104,18 @@ ColumnProps): ProColumns<TopicType>[] => {
       width: "10%",
       hideInSearch: true,
     },
-    {
-      title: "Ngày tạo",
-      dataIndex: "createAt",
-      align: "center",
-      hideInSearch: true,
-    },
-    {
-      title: "Ngày cập nhật",
-      dataIndex: "updateAt",
-      align: "center",
-      hideInSearch: true,
-    },
+    // {
+    //   title: "Ngày tạo",
+    //   dataIndex: "createAt",
+    //   align: "center",
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: "Ngày cập nhật",
+    //   dataIndex: "updateAt",
+    //   align: "center",
+    //   hideInSearch: true,
+    // },
     {
       title: "Thao tác",
       dataIndex: "operation",

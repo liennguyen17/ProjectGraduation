@@ -7,6 +7,10 @@ export const ColumnDetailTopicStudent = [
     hideInTable: true,
   },
   {
+    title: "Học kỳ",
+    dataIndex: "semester",
+  },
+  {
     title: "Họ tên sinh viên",
     dataIndex: ["student", "name"],
   },
@@ -18,12 +22,7 @@ export const ColumnDetailTopicStudent = [
     title: "Đề tài khóa luận",
     dataIndex: "nameTopic",
   },
-  {
-    title: "Học kỳ",
-    dataIndex: "semester",
-    valueType: "select",
-    request: () => handleFilterMasterData("semester"),
-  },
+
   {
     title: "Bộ môn quản lý",
     dataIndex: "departmentManagement",

@@ -253,3 +253,49 @@ export interface TopicEditChangeName {
   status: string;
   note: string;
 }
+
+export interface dataComment {
+  message: string;
+  createBy: string;
+  file: string;
+  topic: {
+    id: number;
+    student: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      role: string;
+      userCode: string;
+      className: string;
+    };
+    teacher: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      role: string;
+      userCode: string;
+      className: null;
+    };
+    status: string;
+    semester: string;
+    nameTopic: string;
+    departmentManagement: string;
+    nameInternshipFacility: string;
+    menterInternshipFacility: string;
+    phoneInstructorInternshipFacility: string;
+  };
+  createAt: string;
+}
+
+export interface ListCommentTopicId {
+  topicId: number;
+}
+
+export interface CreateComment {
+  message?: string;
+  file?: string;
+  descriptionFile?: string;
+  topicId: number;
+}

@@ -1,54 +1,30 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
-import { getListComment } from "../../service/api";
+import { getListComment, getListCommentTeacher } from "../../service/api";
 import { Avatar, Button, Space, Tag } from "antd";
 import DrawerDiary from "./components/DrawerDiary";
 import DrawerFile from "./components/DrawerFile";
-
-interface dataComment {
-  message: string;
-  createBy: string;
-  file: string;
-  topic: {
-    id: number;
-    student: {
-      id: number;
-      name: string;
-      email: string;
-      phone: string;
-      role: string;
-      userCode: string;
-      className: string;
-    };
-    teacher: {
-      id: number;
-      name: string;
-      email: string;
-      phone: string;
-      role: string;
-      userCode: string;
-      className: null;
-    };
-    status: string;
-    semester: string;
-    nameTopic: string;
-    departmentManagement: string;
-    nameInternshipFacility: string;
-    menterInternshipFacility: string;
-    phoneInstructorInternshipFacility: string;
-  };
-  createAt: string;
-}
+import { dataComment } from "../../service/types";
 
 const Comment: React.FC = () => {
   // const [open, setOpen] = useState(false);
   // const [openFile, setOpenFile] = useState(false);
+  const [openDiary, setOpenDiary] = useState(false);
+  const [openFile, setOpenFile] = useState(false);
   const [commentsData, setCommentData] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState<dataComment | null>(
+    null
+  );
+  // const handleViewDetail = (record: dataComment) => {
+  //   setSelectedRecord(record);
+  //   setOpenDiary(true);
+  // };
+
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await getListComment();
-        console.log("list comments:: ", res);
+        const res = await getListCommentTeacher();
+        // console.log("list comments:: ", res);
         setCommentData(res);
       } catch (error) {
         console.error("loi lay du lieu:", error);
@@ -57,15 +33,14 @@ const Comment: React.FC = () => {
     getData();
   }, []);
 
-  const [openDiary, setOpenDiary] = useState(false);
-  const [openFile, setOpenFile] = useState(false);
-
-  const showDrawerDiary = () => {
+  const showDrawerDiary = (record: dataComment) => {
     setOpenDiary(true);
+    setSelectedRecord(record);
   };
 
-  const showDrawerFile = () => {
+  const showDrawerFile = (record: dataComment) => {
     setOpenFile(true);
+    setSelectedRecord(record);
   };
 
   const onCloseDiary = () => {
@@ -75,11 +50,18 @@ const Comment: React.FC = () => {
   const onCloseFile = () => {
     setOpenFile(false);
   };
+
   return (
-    <PageContainer subTitle="Hành động" title={false}>
+    <PageContainer
+      // subTitle=">Nhật ký"
+      title={false}
+    >
       <ProList<dataComment>
+        // request={async (params, sort, filter) =>
+        //   await TopicGetListApi(params, sort, filter)
+        // }
         dataSource={commentsData}
-        headerTitle="Hành động"
+        headerTitle="Danh sách nhật ký"
         metas={{
           title: {
             render: (_, entity) => {
@@ -106,11 +88,11 @@ const Comment: React.FC = () => {
             search: false,
           },
           actions: {
-            render: () => [
-              <Button type="primary" onClick={showDrawerDiary}>
+            render: (_, entity) => [
+              <Button type="primary" onClick={() => showDrawerDiary(entity)}>
                 Xem nhật ký
               </Button>,
-              <Button type="primary" onClick={showDrawerFile}>
+              <Button type="primary" onClick={() => showDrawerFile(entity)}>
                 File
               </Button>,
             ],
@@ -118,8 +100,16 @@ const Comment: React.FC = () => {
           },
         }}
       ></ProList>
-      <DrawerDiary onClose={onCloseDiary} open={openDiary} />
-      <DrawerFile onClose={onCloseFile} open={openFile} />
+      <DrawerDiary
+        onClose={onCloseDiary}
+        open={openDiary}
+        selectedRecord={selectedRecord}
+      />
+      <DrawerFile
+        onClose={onCloseFile}
+        open={openFile}
+        selectedRecord={selectedRecord}
+      />
     </PageContainer>
   );
 };

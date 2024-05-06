@@ -23,21 +23,6 @@ const ResultTopicStudent: React.FC = () => {
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<TopicType | null>(null);
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  //   useEffect(() => {
-  //     const data = async () => {
-  //       try {
-  //         const res = await TopicGetListData();
-  //         setTopicData(res);
-  //       } catch (error) {
-  //         console.error("Loi lay du lieu: ", error);
-  //       }
-  //     };
-  //     data();
-  //   }, []);
 
   const handleViewDetail = (record: TopicType) => {
     setIsModalOpen(true);

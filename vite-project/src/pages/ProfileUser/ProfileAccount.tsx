@@ -28,6 +28,15 @@ function ProfileAccount({ defaultDom }: any) {
     });
   };
 
+  const changePassword = () => {
+    dispatch({
+      payload: {
+        isModalPassword: true,
+      },
+      type: "setIsModalPassword",
+    });
+  };
+
   const items: MenuProps["items"] = [
     {
       key: "profile",
@@ -40,6 +49,7 @@ function ProfileAccount({ defaultDom }: any) {
       key: "support",
       label: "Đổi mật khẩu",
       // icon: <BiSupport />,
+      onClick: changePassword,
     },
     {
       key: "divider",

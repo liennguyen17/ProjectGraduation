@@ -285,7 +285,7 @@ const NewsForm: React.FC<NewFormProps> = ({
             fieldProps={{
               name: "file",
               customRequest: handleUploadFile,
-              onRemove: () => setListFile([]),
+              onRemove: () => setListFile1([]),
               listType: "picture-card",
               multiple: true,
               method: "POST",

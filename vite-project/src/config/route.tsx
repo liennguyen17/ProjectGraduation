@@ -226,20 +226,7 @@ export const workplace: RouteObject | MenuDataItem = {
       element: <ChangeTopic />,
       hideInMenu: checkRole("ManagerAndTeacher"),
     },
-    {
-      name: "Thông báo",
-      path: "notification-user",
-      icon: <FileDoneOutlined />,
-      element: <DisplayNotification />,
-      hideInMenu: checkRole("AdminAndManager"),
-    },
-    {
-      name: "Tin tức",
-      path: "new-user",
-      icon: <FileDoneOutlined />,
-      element: <DisplayNew />,
-      hideInMenu: checkRole("AdminAndManager"),
-    },
+
     {
       name: "Kết quả KLTN",
       path: "result",
@@ -274,6 +261,20 @@ export const workplace: RouteObject | MenuDataItem = {
       icon: <FileDoneOutlined />,
       element: <Comment />,
       hideInMenu: checkRole("ManagerAndStudent"),
+    },
+    {
+      name: "Thông báo",
+      path: "notification-user",
+      icon: <FileDoneOutlined />,
+      element: <DisplayNotification />,
+      hideInMenu: checkRole("AdminAndManager"),
+    },
+    {
+      name: "Tin tức",
+      path: "new-user",
+      icon: <FileDoneOutlined />,
+      element: <DisplayNew />,
+      hideInMenu: checkRole("AdminAndManager"),
     },
   ],
 };

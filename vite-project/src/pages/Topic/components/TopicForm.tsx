@@ -1,6 +1,14 @@
-import { Button, Col, FormInstance, Row, message } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  FormInstance,
+  InputNumber,
+  Row,
+  message,
+} from "antd";
 import { TopicType } from "../../../service/types";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ProForm,
   ProFormDigit,
@@ -26,6 +34,17 @@ const TopicForm: React.FC<FormProps> = ({
   initialData,
 }) => {
   const formRef = useRef<FormInstance<TopicType>>();
+  const [currentFormData, setCurrentFormData] = useState<TopicType | null>(
+    initialData
+  );
+
+  useEffect(() => {
+    // Đặt lại giá trị của form khi initialData thay đổi
+    if (initialData) {
+      formRef.current?.setFieldsValue(initialData);
+    }
+  }, [initialData]);
+
   const handleFinish = async (value) => {
     try {
       if (editingId) {
@@ -125,6 +144,35 @@ const TopicForm: React.FC<FormProps> = ({
             //   },
             // ]}
             hidden
+          />
+        </Col>
+        {/* <Col span={8}>
+          
+        <Form.Item label="Điểm tại cơ sở thực tập">
+        <InputNumber
+          // value={value}
+          min={0}
+          max={10}
+          step={0.1} // Cho phép nhập số thập phân
+        />
+      </Form.Item>
+        </Col> */}
+        <Col span={8}>
+          <ProFormDigit
+            name="scoresInternshipFacility"
+            label="Điểm tại cơ sở thực tập"
+            placeholder="Nhập điểm"
+            // rules={[
+            //   {
+            //     message: "Vui lòng không để trống",
+            //     required: true,
+            //   },
+            // ]}
+            min={1}
+            max={10}
+            fieldProps={{
+              inputMode: "decimal",
+            }}
           />
         </Col>
         <Col span={8}>

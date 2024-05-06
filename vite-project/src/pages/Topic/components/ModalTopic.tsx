@@ -90,6 +90,10 @@ const ModalTopic: React.FC<PropsTopic> = ({
           label="Mã Giáo viên hướng dẫn "
         />
         <ProDescriptions.Item
+          dataIndex="scoresInternshipFacility"
+          label="Điểm cơ sở thực tập"
+        />
+        <ProDescriptions.Item
           dataIndex="instructor"
           label="Điểm giáo viên hướng dẫn "
         />

@@ -46,13 +46,10 @@ const DisplayNew: React.FC = () => {
           filterType: "query",
         }}
         headerTitle="Danh sách tin tức"
-        // dataSource={newsData}
         request={async (params, sort, filter) =>
           await NewGetListApi(params, sort, filter)
         }
-        // showActions="hover"
         itemLayout="vertical"
-        // grid={{ gutter: 16, column: 2 }}
         metas={{
           title: {
             dataIndex: "title",
@@ -68,22 +65,6 @@ const DisplayNew: React.FC = () => {
           content: {
             dataIndex: "subject",
             title: "Bộ môn",
-            // valueType: "select",
-            // valueEnum: {
-            //   all: { text: "全部", status: "Default" },
-            //   open: {
-            //     text: "Công nghệ thông tin",
-            //     status: "Error",
-            //   },
-            //   closed: {
-            //     text: "An toàn thông tin",
-            //     status: "Success",
-            //   },
-            //   processing: {
-            //     text: "Trí tuệ nhân tạo",
-            //     status: "Processing",
-            //   },
-            // },
             render: (_, entity: NewsType) => {
               return (
                 <>
@@ -92,10 +73,17 @@ const DisplayNew: React.FC = () => {
               );
             },
           },
-
+          subTitle: {
+            dataIndex: "year",
+            // search: false,
+            title: "Năm bảo vệ",
+            render: (a, entity) => {
+              return entity.updateAt;
+            },
+          },
           description: {
             dataIndex: "description",
-            title: "Mo ta",
+            title: "Mô tả",
             // search: false,
             render: (_, entity) => {
               return (
@@ -104,14 +92,6 @@ const DisplayNew: React.FC = () => {
                   <Tag>{entity.year}</Tag>
                 </>
               );
-            },
-          },
-
-          subTitle: {
-            dataIndex: "updateAt",
-            search: false,
-            render: (a) => {
-              return a;
             },
           },
 

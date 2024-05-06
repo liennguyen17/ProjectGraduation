@@ -2,6 +2,8 @@ import {
   ActionType,
   ProConfigProvider,
   ProDescriptions,
+  ProForm,
+  ProFormText,
   ProLayout,
 } from "@ant-design/pro-components";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
@@ -12,7 +14,7 @@ import ProfileAccount from "../pages/ProfileUser/ProfileAccount";
 import { useContext, useEffect, useRef, useState } from "react";
 import { MasterDataFilterApi, UserProfile } from "../service/api";
 import { AppContext } from "../context/AppProvider";
-import { Button, Drawer } from "antd";
+import { Button, Col, Drawer, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import FormProfile from "../pages/ProfileUser/FormProfile";
 import { UserType } from "../service/types";
@@ -42,18 +44,12 @@ const Layout: React.FC = () => {
     navigate(pathRouter);
   };
 
-  //info
   const [open, setOpen] = useState(false);
-  // const [open1, setOpen1] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<UserType>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const actionRef = useRef<ActionType>();
-  // const { state, dispatch } = useContext(AppContext);
-
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
 
   const onClose = () => {
     dispatch({
@@ -63,6 +59,19 @@ const Layout: React.FC = () => {
       type: "setIsDrawerProfile",
     });
   };
+
+  const onClose2 = () => {
+    dispatch({
+      payload: {
+        isModalPassword: false,
+      },
+      type: "setIsDrawerProfile",
+    });
+  };
+
+  // const handleCancel = () => {
+  //   state.isModalPassword(false);
+  // };
 
   const onClose1 = () => {
     setIsDetailVisible(false);
@@ -77,7 +86,7 @@ const Layout: React.FC = () => {
     setData(data);
   };
 
-  useEffect(() => {
+  const handleFinish = useEffect(() => {
     const data = async () => {
       try {
         const res = await UserProfile();
@@ -204,6 +213,61 @@ const Layout: React.FC = () => {
             </Drawer>
           </ProDescriptions>
         </Drawer>
+        <Modal
+          width={400}
+          destroyOnClose
+          title="Đổi mật khẩu"
+          open={state.isModalPassword}
+          // onCancel={handleCancel}
+          footer={false}
+        >
+          <ProForm
+            submitter={{
+              resetButtonProps: false,
+              searchConfig: {
+                submitText: "Xác nhận",
+              },
+              render({ form }, dom) {
+                return (
+                  <div className="submitFootbar">
+                    <Button
+                      // danger
+                      onClick={onClose2}
+                    >
+                      Đóng
+                    </Button>
+                    {dom}
+                  </div>
+                );
+              },
+            }}
+            layout="vertical"
+          >
+            <Row gutter={24}>
+              <Col span={24}>
+                <ProFormText
+                  name="oldPassword"
+                  label="Mật khẩu hiện tại"
+                  placeholder="Nhập mật khẩu..."
+                />
+              </Col>
+              <Col span={24}>
+                <ProFormText
+                  name="newPassword"
+                  label="Mật khẩu mới"
+                  placeholder="Nhập mật khẩu ..."
+                />
+              </Col>
+              <Col span={24}>
+                <ProFormText
+                  name="confirmNewPassword"
+                  label="Nhập lại mật khẩu mới"
+                  placeholder="Nhập mật khẩu..."
+                />
+              </Col>
+            </Row>
+          </ProForm>
+        </Modal>
       </ProLayout>
     </ProConfigProvider>
   );

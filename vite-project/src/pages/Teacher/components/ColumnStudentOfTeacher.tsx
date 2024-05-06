@@ -5,6 +5,10 @@ export const ColumnStudentOfTeacher = [
     hideInTable: true,
   },
   {
+    title: "Kỳ học",
+    dataIndex: "semester",
+  },
+  {
     title: "Họ tên sinh viên",
     dataIndex: ["student", "name"],
   },

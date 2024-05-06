@@ -33,7 +33,6 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
   return (
     <ProForm
       style={{ flex: 1 }}
-      // onFinish={handleSubmit}
       onFinish={handleFinish}
       submitter={{
         resetButtonProps: false,

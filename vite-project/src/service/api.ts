@@ -3,6 +3,8 @@ import { message } from "antd";
 import { appInfo } from "../config/appInfo";
 import {
   ChangeNameTopicType,
+  CreateComment,
+  ListCommentTopicId,
   MasterData,
   News,
   NewsType,
@@ -555,7 +557,20 @@ export async function getListComment() {
     if (res.data?.success) {
       return res.data.data.items;
     } else {
-      throw new Error("Failed to fetch comment detail");
+      throw new Error("Lỗi khi lấy nhật ký");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function getListCommentTeacher() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/comments/teacher`);
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu nhật ký");
     }
   } catch (error) {
     console.error(error);
@@ -723,6 +738,21 @@ export const createStudentRegisterTopic = async (data: RegisterTopicType) => {
   }
 };
 
+export const createCommentTopic = async (data) => {
+  console.log("data comment:: ", data);
+  try {
+    const response = await axios.post(`${appInfo.apiUrl}/comments`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi tạo nhật ký:", error);
+    throw new Error("Có lỗi xảy ra khi tạo nhật ký");
+  }
+};
+
 export const studentChangeNameTopic = async (data: ChangeNameTopicType) => {
   try {
     const response = await axios.post(
@@ -754,6 +784,53 @@ export const TopicCreate = async (data: TopicTypeCreate) => {
     throw new Error("Có lỗi xảy ra khi tạo de tai");
   }
 };
+
+// ===========
+
+export const ListCommentForTopicId = async (topicId: number) => {
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/comments/topic`,
+      { topicId: topicId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu nhật ký");
+    }
+  } catch (error) {
+    console.error("Lỗi khi lấy dữ liệu nhật ký:", error);
+    throw new Error("Có lỗi xảy ra khi lấy dữ liệu nhật ký");
+  }
+};
+
+export const ListFileCommentForTopicId = async (topicId: number) => {
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/comments/topic`,
+      { topicId: topicId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu nhật ký");
+    }
+  } catch (error) {
+    console.error("Lỗi khi lấy dữ liệu nhật ký:", error);
+    throw new Error("Có lỗi xảy ra khi lấy dữ liệu nhật ký");
+  }
+};
+
 // =========================PUT=================
 
 export const editMasterData = async (data: MasterData) => {

@@ -1,14 +1,16 @@
 import { ReactNode, createContext, useReducer } from "react";
-import { setIsDrawerProfile, setListRole } from "./action";
+import { setIsDrawerProfile, setIsModalPassword, setListRole } from "./action";
 
 type PayloadType = {
   listRole?: Array<any>;
   isDrawerProfile?: boolean;
+  isModalPassword?: boolean;
 };
 
 export type AppState = {
   listRole?: Array<any>;
   isDrawerProfile?: boolean;
+  isModalPassword?: boolean;
 };
 
 export type ActionType = {
@@ -28,6 +30,7 @@ type AppContextProps = {
 const initialState = {
   listRole: [],
   isDrawerProfile: false,
+  isModalPassword: false,
 };
 
 export const AppContext = createContext<AppContextProps>({
@@ -41,6 +44,8 @@ function reducer(state: AppState, action: ActionType) {
       return setListRole(state, action);
     case "setIsDrawerProfile":
       return setIsDrawerProfile(state, action);
+    case "setIsModalPassword":
+      return setIsModalPassword(state, action);
     default:
       throw new Error();
   }

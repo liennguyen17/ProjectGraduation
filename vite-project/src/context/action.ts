@@ -4,6 +4,7 @@ export type AppState = {
 type PayloadType = {
   listRole?: Array<any>;
   isDrawerProfile?: boolean;
+  isModalPassword?: boolean;
 };
 
 export type ActionType = {
@@ -22,5 +23,12 @@ export const setIsDrawerProfile = (state: AppState, action: ActionType) => {
   return {
     ...state,
     isDrawerProfile: action.payload?.isDrawerProfile,
+  };
+};
+
+export const setIsModalPassword = (state: AppState, action: ActionType) => {
+  return {
+    ...state,
+    isModalPassword: action.payload?.isModalPassword,
   };
 };
