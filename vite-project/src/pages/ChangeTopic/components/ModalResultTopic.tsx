@@ -113,7 +113,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
           label="Ngày gửi đơn"
         />
         <ProDescriptions.Item span={3}>
-          <Divider>Kết quả</Divider>
+          <Divider>KẾT QUẢ ĐƠN ĐĂNG KÝ</Divider>
         </ProDescriptions.Item>
         <ProDescriptions.Item
           dataIndex="status"

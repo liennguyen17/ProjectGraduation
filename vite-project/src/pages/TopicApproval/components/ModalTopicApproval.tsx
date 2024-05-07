@@ -53,7 +53,7 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
   ]);
   return (
     <Modal
-      title="Đơn đăng ký đề tài khóa luận tốt nghiệp"
+      // title="Đơn đăng ký đề tài khóa luận tốt nghiệp"
       open={isModalOpen1}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -77,8 +77,13 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
         }}
       >
         <ProDescriptions.Item span={3}>
-          <Divider />
+          <Divider>ĐƠN ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</Divider>
         </ProDescriptions.Item>
+        <ProDescriptions.Item
+          dataIndex="nameTopic"
+          label="Tên đề tài "
+          span={3}
+        />
         <ProDescriptions.Item
           dataIndex={["student", "name"]}
           label="Họ tên sinh viên "
@@ -108,11 +113,7 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
           dataIndex="departmentManagement"
           label="Bộ môn quản lý "
         />
-        <ProDescriptions.Item
-          dataIndex="nameTopic"
-          label="Tên đề tài "
-          span={3}
-        />
+
         <ProDescriptions.Item
           dataIndex="nameInternshipFacility"
           label="Tên cơ sở thực tập "
@@ -133,8 +134,19 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
           label="Ngày gửi đơn "
           span={3}
         />
-        <ProDescriptions.Item dataIndex="status" label="Trạng thái " span={3} />
-        <ProDescriptions.Item dataIndex="note" label="Ghi chú " span={3} />
+        <ProDescriptions.Item span={3}>
+          <Divider>KẾT QUẢ PHÊ DUYỆT ĐƠN ĐĂNG KÝ</Divider>
+        </ProDescriptions.Item>
+        <ProDescriptions.Item
+          dataIndex="status"
+          label="Trạng thái đơn đăng ký đề tài"
+          span={3}
+        />
+        <ProDescriptions.Item
+          dataIndex="note"
+          label="Chú thích/nhắc nhở(nếu có)"
+          span={3}
+        />
 
         {/* <Button type="primary" onClick={handleCancel}>
           Đóng

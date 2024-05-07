@@ -69,7 +69,13 @@ const ChangeTopic = () => {
                   tốt nghiệp.
                 </span>
               </li>
-              <li>{/* <span>Mỗi đơn đăng ký chỉ được gửi 1 lần.</span> */}</li>
+              <li>
+                <span>
+                  Trường hợp gửi đơn: khoa không chấp thuận đề tài, đề tài thực
+                  tập tại cơ sở không được phát triển tiếp và một số lý do
+                  khác...
+                </span>
+              </li>
               {/* <li></li> */}
             </ul>
           </Paragraph>
@@ -105,6 +111,12 @@ const ChangeTopic = () => {
                 <span>
                   Kết quả sẽ được cập nhật sau khi phê duyệt đề tài của sinh
                   viên.
+                </span>
+              </li>
+              <li>
+                <span>
+                  Nếu 1 tuần mà sinh viên không nhận được kết quả lên văn phòng
+                  khoa để được hỗ trợ.
                 </span>
               </li>
             </ul>

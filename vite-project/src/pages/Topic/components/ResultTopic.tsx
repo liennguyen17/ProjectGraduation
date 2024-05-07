@@ -1,13 +1,14 @@
 import { PageContainer, ProDescriptions } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
-import { getTopicDetail } from "../../../service/api";
+import { getTopicDetail, studentViewTopicLogin } from "../../../service/api";
+import { Divider } from "antd";
 const ResultTopic: React.FC = () => {
   const [topicData, setTopicData] = useState([]);
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
         // Gọi API để lấy thông tin chi tiết của tin tức dựa trên id
-        const response = await getTopicDetail(1);
+        const response = await studentViewTopicLogin();
         setTopicData(response); // Giả sử API trả về dữ liệu trong response.data
         // setLoading(false);
       } catch (error) {
@@ -20,91 +21,81 @@ const ResultTopic: React.FC = () => {
 
   return (
     <>
-      <PageContainer subTitle="Kết quả khóa luận tốt nghiệp" title={false}>
+      <PageContainer
+        // subTitle="Kết quả khóa luận tốt nghiệp"
+        title={false}
+      >
         <ProDescriptions
-          title="Kết quả"
+          // title="Kết quả"
           column={2}
           dataSource={topicData}
-          columns={[
-            {
-              title: "Sinh viên",
-              key: "id",
-              dataIndex: ["student", "name"],
-              ellipsis: true,
-            },
-            {
-              title: "Mã sinh viên",
-              key: "userCode",
-              dataIndex: ["student", "userCode"],
-              ellipsis: true,
-            },
-            {
-              title: "Giáo viên hướng dẫn",
-              dataIndex: ["teacher", "name"],
-              ellipsis: true,
-            },
-            {
-              title: "Mã giáo viên hướng dẫn",
-              dataIndex: ["teacher", "userCode"],
-              ellipsis: true,
-            },
-            {
-              title: "Đề tài khóa luận tốt nghiệp",
-              dataIndex: "nameTopic",
-              ellipsis: true,
-            },
-            {
-              title: "Kỳ học",
-              dataIndex: "semester",
-              ellipsis: true,
-            },
-            {
-              title: "Bộ môn quản lý",
-              dataIndex: "departmentManagement",
-              ellipsis: true,
-            },
-            {
-              title: "Điểm giáo viên hướng dẫn",
-              dataIndex: "instructor",
-              ellipsis: true,
-            },
-            {
-              title: "Điểm giáo viên phản biện",
-              dataIndex: "reviewer",
-              ellipsis: true,
-            },
-            {
-              title: "Điểm thành viên hội đồng thứ nhất",
-              dataIndex: "boardMembers1",
-              ellipsis: true,
-            },
-            {
-              title: "Điểm thành viên hội đồng thứ hai",
-              dataIndex: "boardMembers2",
-              ellipsis: true,
-            },
-            {
-              title: "Điểm thành viên hội đồng thứ ba",
-              dataIndex: "boardMembers3",
-              ellipsis: true,
-            },
-            {
-              title: "Kết quả tổng điểm KLTN",
-              dataIndex: "boardMembers3",
-              ellipsis: true,
-            },
-            // {
-            //   title: "操作",
-            //   valueType: "option",
-            //   render: () => [
-            //     <a target="_blank" rel="noopener noreferrer" key="link">
-            //       Điểm của đơn vị thực tập <ArrowRightOutlined />
-            //     </a>,
-            //   ],
-            // },
-          ]}
         >
-          <ProDescriptions.Item></ProDescriptions.Item>
+          <ProDescriptions.Item span={3}>
+            <Divider>KẾT QUẢ KHÓA LUẬN TỐT NGHIỆP</Divider>
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            dataIndex="nameTopic"
+            label="Đề tài khóa luận tốt nghiệp"
+            span={3}
+          />
+          <ProDescriptions.Item
+            dataIndex={["student", "name"]}
+            label="Họ tên sinh viên "
+          />
+          <ProDescriptions.Item
+            dataIndex={["student", "userCode"]}
+            label="Mã sinh viên"
+          />
+
+          <ProDescriptions.Item
+            dataIndex={["teacher", "name"]}
+            label="Họ tên giảng viên hướng dẫn "
+          />
+          <ProDescriptions.Item
+            dataIndex={["teacher", "userCode"]}
+            label="Mã giảng viên hướng dẫn "
+          />
+          <ProDescriptions.Item
+            dataIndex="departmentManagement"
+            label="Bộ môn quản lý "
+          />
+          <ProDescriptions.Item dataIndex="semester" label="Học kỳ " />
+          <ProDescriptions.Item
+            dataIndex="nameInternshipFacility"
+            label="Tên cơ sở thực tập "
+          />
+          <ProDescriptions.Item
+            dataIndex="menterInternshipFacility"
+            label="Cán bộ hướng dẫn tại cơ sở thực tập "
+          />
+          <ProDescriptions.Item
+            dataIndex="scoresInternshipFacility"
+            label="Điểm cơ sở thực tập"
+          />
+          <ProDescriptions.Item
+            dataIndex="instructor"
+            label="Điểm giáo viên hướng dẫn "
+          />
+          <ProDescriptions.Item
+            dataIndex="reviewer"
+            label="Điểm giáo viên phản biện"
+          />
+          <ProDescriptions.Item
+            dataIndex="boardMembers1"
+            label="Điểm thành viên hội đồng thứ nhất"
+          />
+          <ProDescriptions.Item
+            dataIndex="boardMembers2"
+            label="Điểm thành viên hội đồng thứ hai"
+          />
+          <ProDescriptions.Item
+            dataIndex="boardMembers3"
+            label="Điểm thành viên hội đồng thứ ba"
+          />
+          <ProDescriptions.Item dataIndex="result" label="Tổng điểm" span={3} />
+          {/* <ProDescriptions.Item span={3}>
+            <Divider></Divider>
+          </ProDescriptions.Item> */}
         </ProDescriptions>
       </PageContainer>
     </>

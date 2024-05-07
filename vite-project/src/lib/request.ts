@@ -13,7 +13,7 @@ const login_path = "/auth/login";
 //Truoc khi call API
 axios.interceptors.request.use((req) => {
   //Noi 2 url voi nhau
-  console.log("req url:: ", req?.url);
+  // console.log("req url:: ", req?.url);
   const token = Cookies.get("access_token");
   //   const newUrl = base_url + req.url;
   const Authorization =

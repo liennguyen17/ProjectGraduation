@@ -1,6 +1,10 @@
 import { Button, Divider, Modal } from "antd";
 import { useEffect, useState } from "react";
-import { TopicGetListApi, getTopicDetail } from "../../../service/api";
+import {
+  TopicGetListApi,
+  getTopicDetail,
+  studentViewTopicLogin,
+} from "../../../service/api";
 import { ProDescriptions } from "@ant-design/pro-components";
 
 interface ModalTopicFormProps {
@@ -16,7 +20,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await getTopicDetail(1);
+        const response = await studentViewTopicLogin();
         setTopicData(response);
       } catch (error) {
         console.error("Error fetching topic detail:", error);
@@ -24,7 +28,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
     };
 
     fetchNewsDetail();
-  }, [1]);
+  }, []);
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -40,7 +44,7 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
       onCancel={handleCancel}
       destroyOnClose
       width={900}
-      title="KẾT QUẢ ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
+      // title="KẾT QUẢ ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
       footer={[
         <Button key="back" type="primary" onClick={handleCancel}>
           Đóng
@@ -57,13 +61,14 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
           });
         }}
       >
+        <ProDescriptions.Item span={3}>
+          <Divider>ĐƠN ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</Divider>
+        </ProDescriptions.Item>
         <ProDescriptions.Item
           dataIndex="nameTopic"
           label="Đề tài khóa luận tốt nghiệp"
           span={3}
         />
-        <ProDescriptions.Item dataIndex="status" label="Trạng thái" />
-        <ProDescriptions.Item dataIndex="note" label="Kết quả" />
         <ProDescriptions.Item
           dataIndex={["student", "name"]}
           label="Họ tên sinh viên "
@@ -95,8 +100,22 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
           label="Cán bộ hướng dẫn tại cơ sở thực tập "
         />
         <ProDescriptions.Item
+          span={3}
           dataIndex="phoneInstructorInternshipFacility"
           label="Số điện thoại cán bộ hướng dẫn tại cơ sở thực tập"
+        />
+        <ProDescriptions.Item span={3}>
+          <Divider>KẾT QUẢ ĐƠN ĐĂNG KÝ</Divider>
+        </ProDescriptions.Item>
+        <ProDescriptions.Item
+          span={3}
+          dataIndex="status"
+          label="Trạng thái đơn đăng ký đề tài"
+        />
+        <ProDescriptions.Item
+          span={3}
+          dataIndex="note"
+          label="Chú thích/nhắc nhở(nếu có)"
         />
       </ProDescriptions>
     </Modal>

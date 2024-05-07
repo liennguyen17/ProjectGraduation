@@ -3,6 +3,7 @@ import { message } from "antd";
 import { appInfo } from "../config/appInfo";
 import {
   ChangeNameTopicType,
+  ChangePassword,
   CreateComment,
   ListCommentTopicId,
   MasterData,
@@ -486,11 +487,35 @@ export async function ForgotPassword(email: string) {
     );
     if (res.data?.success) {
       return res.data;
-      // message.success(res.data.data);
     } else {
-      // message.error(
-      //   res.data.error || "Có lỗi xảy ra khi thực hiện chức năng quên mật khẩu"
-      // );
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    message.error("Có lỗi xảy ra khi kết nối đến máy chủ");
+  }
+}
+export async function ChangePasswordApi(values: ChangePassword) {
+  const { oldPassword, newPassword, confirmNewPassword } = values;
+  const requestData = {
+    oldPassword,
+    newPassword,
+    confirmNewPassword,
+  };
+  console.log("value:: ", requestData);
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/change/password`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data;
+    } else {
       return res.data;
     }
   } catch (error) {
@@ -601,6 +626,20 @@ export async function findTopicFromStudentLogin() {
       return res.data.data;
     } else {
       throw new Error("Lỗi hiện thị kết quả đăng ký gửi đơn đổi đề tài");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function studentViewTopicLogin() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/topic/student-view-topic`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Lỗi hiện thị kết quả đăng ký đề tài");
     }
   } catch (error) {
     console.error(error);
@@ -1089,31 +1128,27 @@ export async function filterUser(data) {
   }
 }
 
-// export async function NewGetListApi(params, sort, filter) {
-//   const requestData = {
-//     start: 0,
-//     limit: 50,
-//   };
-//   try {
-//     const res = await axios.post(
-//       "http://localhost:8080/news/filter",
-//       requestData,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     if (res.data?.success) {
-//       return res.data.data.items;
-//     } else {
-//       throw new Error("loi");
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
+export async function NewGetListApiHome() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
+  try {
+    const res = await axios.post(`${appInfo.apiUrl}/news/filter`, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("loi lay tin tuc");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 // =============filebase===========
 

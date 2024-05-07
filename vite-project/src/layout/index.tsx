@@ -12,12 +12,16 @@ import { layoutConfig } from "../config/layout";
 import { defaultRouter, workplace } from "../config/route";
 import ProfileAccount from "../pages/ProfileUser/ProfileAccount";
 import { useContext, useEffect, useRef, useState } from "react";
-import { MasterDataFilterApi, UserProfile } from "../service/api";
+import {
+  ChangePasswordApi,
+  MasterDataFilterApi,
+  UserProfile,
+} from "../service/api";
 import { AppContext } from "../context/AppProvider";
-import { Button, Col, Drawer, Modal, Row } from "antd";
+import { Button, Col, Drawer, Modal, Row, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import FormProfile from "../pages/ProfileUser/FormProfile";
-import { UserType } from "../service/types";
+import { ChangePassword, UserType } from "../service/types";
 
 const Layout: React.FC = () => {
   const navigate = useNavigate();
@@ -45,7 +49,7 @@ const Layout: React.FC = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<UserType>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -65,20 +69,25 @@ const Layout: React.FC = () => {
       payload: {
         isModalPassword: false,
       },
-      type: "setIsDrawerProfile",
+      type: "setIsModalPassword",
     });
   };
 
-  // const handleCancel = () => {
-  //   state.isModalPassword(false);
-  // };
+  const handleCloseModal = () => {
+    dispatch({
+      payload: {
+        isModalPassword: false,
+      },
+      type: "setIsModalPassword",
+    });
+  };
 
   const onClose1 = () => {
     setIsDetailVisible(false);
   };
 
   const handleUpdate = (data) => {
-    console.log("Dữ liệu cũ:", data);
+    // console.log("Dữ liệu cũ:", data);
     setIsDetailVisible(true);
     setEditingId(data.id);
     // onClose();  // muốn đóng draw cũ trước khi update
@@ -97,6 +106,25 @@ const Layout: React.FC = () => {
     };
     data();
   }, []);
+
+  const handleChangePassword = async (values: ChangePassword) => {
+    try {
+      const res = await ChangePasswordApi(values);
+      console.log(" change password:: ", res);
+      if (res.success) {
+        message.success("Đổi mật khẩu thành công.");
+        onClose2;
+        //goi lenh dong modal lai_hiện modal chưa đóng dc
+      } else {
+        message.error(res.error.message);
+        // message.error("Loi doi mat khau");
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      message.error("Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại sau!");
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <ProConfigProvider hashed={false}>
@@ -218,7 +246,7 @@ const Layout: React.FC = () => {
           destroyOnClose
           title="Đổi mật khẩu"
           open={state.isModalPassword}
-          // onCancel={handleCancel}
+          onCancel={handleCloseModal}
           footer={false}
         >
           <ProForm
@@ -242,27 +270,49 @@ const Layout: React.FC = () => {
               },
             }}
             layout="vertical"
+            onFinish={handleChangePassword}
           >
             <Row gutter={24}>
               <Col span={24}>
-                <ProFormText
+                <ProFormText.Password
                   name="oldPassword"
                   label="Mật khẩu hiện tại"
                   placeholder="Nhập mật khẩu..."
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: "Mật khẩu hiện tại không được bỏ trống",
+                    },
+                  ]}
                 />
               </Col>
               <Col span={24}>
-                <ProFormText
+                <ProFormText.Password
                   name="newPassword"
                   label="Mật khẩu mới"
                   placeholder="Nhập mật khẩu ..."
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: "Mật khẩu mới không được bỏ trống",
+                    },
+                  ]}
                 />
               </Col>
               <Col span={24}>
-                <ProFormText
+                <ProFormText.Password
                   name="confirmNewPassword"
-                  label="Nhập lại mật khẩu mới"
-                  placeholder="Nhập mật khẩu..."
+                  label="Xác nhận mật khẩu mới"
+                  placeholder="Nhập lại mật khẩu mới..."
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: "Xác nhận mật khẩu mới không được bỏ trống",
+                    },
+                  ]}
                 />
               </Col>
             </Row>

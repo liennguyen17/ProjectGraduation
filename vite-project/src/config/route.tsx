@@ -109,12 +109,12 @@ const checkRole = (roleName: string) => {
       break;
     default:
   }
-  console.log("resultCheckRole:: ", resultCheckRole);
+  // console.log("resultCheckRole:: ", resultCheckRole);
 
   return resultCheckRole;
 };
 
-console.log("profileAcc:: ", accountInfo);
+// console.log("profileAcc:: ", accountInfo);
 
 export const workplace: RouteObject | MenuDataItem = {
   path: "/",

@@ -25,7 +25,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
       // onCancel();
 
       const response = await ForgotPassword(email);
-      console.log(response);
+      // console.log(response);
       if (response.success) {
         message.success("Đổi mật khẩu thành công vui lòng check email.");
         onCancel();

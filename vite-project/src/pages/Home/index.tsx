@@ -3,23 +3,10 @@ import "./styles.css"; // Import file CSS riêng
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
-import { NewGetListApi } from "../../service/newsGetList";
-// import { NewGetListApi } from "../../service/newsGetList";
+import { NewGetListApiHome, NewsFilterApi } from "../../service/api";
+import { NewsTypeHome } from "../../service/types";
 
 const { Search } = Input;
-
-interface News {
-  id: number;
-  title: string;
-  description: string;
-  file: string;
-  image: string;
-  content: string;
-  year: number;
-  subject: string;
-  createAt: Date;
-  updateAt: Date;
-}
 
 const Home = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -31,12 +18,12 @@ const Home = () => {
   const handleViewDetail = (id: number) => {
     navigate(`/news/${id}`);
   };
-  const [newsData, setNewsData] = useState<News[]>([]);
+  const [newsData, setNewsData] = useState<NewsTypeHome[]>([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await NewGetListApi();
+        const res = await NewGetListApiHome();
         console.log("list news:: ", res);
         setNewsData(res);
       } catch (error) {
@@ -96,7 +83,7 @@ const Home = () => {
             Danh sách khóa luận tốt nghiệp
           </Title>
         </Divider>
-        <ProList<News>
+        <ProList<NewsTypeHome>
           // search={{}}
           pagination={{
             defaultPageSize: 10,
@@ -116,7 +103,7 @@ const Home = () => {
             },
             description: {
               dataIndex: "description",
-              render: (dom, entity: News) => {
+              render: (dom, entity) => {
                 return (
                   <>
                     <Tag>{entity.subject}</Tag>
@@ -128,7 +115,7 @@ const Home = () => {
 
             extra: {
               dataIndex: "image",
-              render: (dom, entity: News) => {
+              render: (dom, entity: NewsTypeHome) => {
                 console.log("image", entity);
                 // <img width={272} alt="logo" src={entity.image} />
                 return (
@@ -148,7 +135,7 @@ const Home = () => {
               },
             },
             actions: {
-              render: (_, entity: News) => [
+              render: (_, entity) => [
                 <Button
                   style={{ marginTop: "5px" }}
                   type="primary"

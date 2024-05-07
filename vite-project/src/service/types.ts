@@ -2,13 +2,26 @@ export interface NewsType {
   id: number;
   title: string;
   description: string;
-  file?: any;
-  image?: any;
+  file?: string; //any
+  image?: string; //any_7/5
   content: string;
   year: number;
   subject: string;
   createAt?: string;
   updateAt?: string;
+}
+
+export interface NewsTypeHome {
+  id: number;
+  title: string;
+  description: string;
+  file: string;
+  image: string;
+  content: string;
+  year: number;
+  subject: string;
+  createAt: Date;
+  updateAt: Date;
 }
 
 export interface NotificationType {
@@ -298,4 +311,10 @@ export interface CreateComment {
   file?: string;
   descriptionFile?: string;
   topicId: number;
+}
+
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }
