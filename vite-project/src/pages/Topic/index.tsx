@@ -6,7 +6,11 @@ import {
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
 import { dataTopic } from "./components/ColumTableTopic";
-import { TopicGetListApi, TopicGetListData } from "../../service/api";
+import {
+  TopicGetListApi,
+  TopicGetListData,
+  TopicGetListStatusApi,
+} from "../../service/api";
 import "./styles.css";
 import { TopicType } from "../../service/types";
 import ModalTopic from "./components/ModalTopic";
@@ -71,14 +75,14 @@ const Topic: React.FC = () => {
       <ProTable
         // dataSource={topicData}
         request={async (params, sort, filter) =>
-          await TopicGetListApi(params, sort, filter)
+          await TopicGetListStatusApi(params, sort, filter)
         }
         columns={columns}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
         cardBordered
-        headerTitle="Danh sách chấm điểm đề tài khóa luận tốt nghiệp"
+        headerTitle="Danh sách chấm điểm đề tài khóa luận tốt nghiệp<đã phê duyệt>"
         tableLayout="auto"
         search={{
           labelWidth: "auto",

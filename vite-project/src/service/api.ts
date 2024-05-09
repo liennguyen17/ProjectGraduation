@@ -59,6 +59,110 @@ export async function UserGetListApi(params, sort, filter) {
   }
 }
 
+export async function QuantityUserGetListApi() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.total;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function QuantityStudentGetListApi() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "STUDENT",
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.total;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function QuantityTeacherGetListApi() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "TEACHER",
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.total;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function QuantityManagerGetListApi() {
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "MANAGER",
+  };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.total;
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function StudentGetListApi(params, sort, filter) {
   const requestData = {
     start: 0,
@@ -301,6 +405,43 @@ export async function TopicGetListApi(params, sort, filter) {
     limit: 50,
     keywords: params?.keyword || "",
     status: params?.status || "",
+    nameTopic: params?.nameTopic || "",
+    semester: params?.semester || "",
+    departmentManagement: params?.departmentManagement || "",
+    teacher: params?.teacher,
+    student: params?.student,
+  };
+  console.log("request data:: ", requestData);
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/topic/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return {
+        data: res.data.data.items,
+      };
+    } else {
+      throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function TopicGetListStatusApi(params, sort, filter) {
+  console.log("params:: ", params);
+  const requestData = {
+    start: 0,
+    limit: 50,
+    keywords: params?.keyword || "",
+    status: "Đã phê duyệt",
     nameTopic: params?.nameTopic || "",
     semester: params?.semester || "",
     departmentManagement: params?.departmentManagement || "",
@@ -668,10 +809,11 @@ export async function getUserDetail(id: number) {
   try {
     // const res = await axios.get(`${appInfo.apiUrl}/topic/${id}`);
     const res = await axios.get(`${appInfo.apiUrl}/users/${id}`);
+    // console.log("data:: ", res);
     if (res.data?.success) {
       return res.data.data;
     } else {
-      throw new Error("Failed to fetch users detail");
+      throw new Error("Lỗi khi lấy dữ liệu");
     }
   } catch (error) {
     console.error(error);
@@ -1202,7 +1344,7 @@ export async function uploadFile(file) {
 
 export async function UserProfile() {
   try {
-    const response = await axios.get("http://localhost:8080/users/profile", {
+    const response = await axios.get(`${appInfo.apiUrl}/users/profile`, {
       // headers: {
       //   Authorization: `Bearer ${jwtToken}`,
       // },
@@ -1221,13 +1363,15 @@ export async function UserProfile() {
   }
 }
 
-// // Sử dụng hàm fetchUserProfile để lấy thông tin người dùng và xử lý dữ liệu khi đã nhận được
-// fetchUserProfile()
-//   .then((userData) => {
-//     console.log("User profile:", userData);
-//     // Xử lý dữ liệu người dùng ở đây nếu cần thiết
-//   })
-//   .catch((error) => {
-//     console.error("Error:", error);
-//     // Xử lý lỗi khi không thể lấy thông tin người dùng
-//   });
+export const getStatistics = async (semester: string) => {
+  try {
+    const response = await axios.post(
+      `${appInfo.apiUrl}/topic/statistics/success`,
+      { semester }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching statistics:", error);
+    throw error;
+  }
+};

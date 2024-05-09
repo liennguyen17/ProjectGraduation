@@ -195,7 +195,12 @@ const AllTopic: React.FC = () => {
                     />
                     <ProDescriptions.Item
                       dataIndex="result"
-                      label="Kết quả tổng điểm KLTN"
+                      label="Tổng điểm KLTN"
+                    />
+                    <ProDescriptions.Item
+                      dataIndex="success"
+                      label="Kết quả KLTN"
+                      style={{ fontSize: "18px", color: "#ff69b4" }}
                     />
                   </ProDescriptions>
                 </>

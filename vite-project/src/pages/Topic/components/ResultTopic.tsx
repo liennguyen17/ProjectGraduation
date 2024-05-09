@@ -1,9 +1,15 @@
-import { PageContainer, ProDescriptions } from "@ant-design/pro-components";
+import {
+  PageContainer,
+  ProDescriptions,
+  StatisticCard,
+} from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
 import { getTopicDetail, studentViewTopicLogin } from "../../../service/api";
 import { Divider } from "antd";
+import { CheckCircleTwoTone } from "@ant-design/icons";
 const ResultTopic: React.FC = () => {
   const [topicData, setTopicData] = useState([]);
+  const { Operation } = StatisticCard;
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
@@ -92,12 +98,69 @@ const ResultTopic: React.FC = () => {
             dataIndex="boardMembers3"
             label="Điểm thành viên hội đồng thứ ba"
           />
-          <ProDescriptions.Item dataIndex="result" label="Tổng điểm" span={3} />
-          {/* <ProDescriptions.Item span={3}>
-            <Divider></Divider>
-          </ProDescriptions.Item> */}
+          <ProDescriptions.Item
+            dataIndex="result"
+            label="Tổng điểm KLTN"
+            // span={3}
+          />
+          <ProDescriptions.Item
+            dataIndex="success"
+            label="Kết quả KLTN"
+            // span={3}
+          />
         </ProDescriptions>
       </PageContainer>
+      <div>
+        <Divider orientation="left" orientationMargin={25}>
+          <p style={{ color: "#484848", fontSize: "15px" }}>
+            <CheckCircleTwoTone twoToneColor="#52c41a" /> Công thức tính tổng
+            điểm KLTN
+          </p>
+        </Divider>
+        <div style={{ marginLeft: "25px", color: "#606060" }}>
+          <p>
+            Điểm cơ sở thực tập = 1, nếu điểm đánh giá của cơ sở thực tập của SV
+            &gt;= 8,5
+          </p>
+          <p>
+            Điểm hội đồng trung bình = (Điểm thành viên hội đồng thứ nhất + Điểm
+            thành viên hội đồng thứ hai + Điểm thành viên hội đồng thứ ba)/3
+          </p>
+          <p>
+            Tổng điểm KLTN = Điểm cơ sở thực tập + ( (Điểm hội đồng trung bình x
+            3) + Điểm giáo viên hướng dẫn + Điểm giáo viên phản biện)/5
+          </p>
+        </div>
+        {/* <StatisticCard.Group>
+          <StatisticCard
+            statistic={{
+              title: "Tổng điểm KLTN",
+              value: 8,
+            }}
+          />
+          <Operation>=</Operation>
+          <StatisticCard
+            statistic={{
+              title: "未发布",
+              value: 234,
+            }}
+          />
+          <Operation>+</Operation>
+          <StatisticCard
+            statistic={{
+              title: "发布中",
+              value: 112,
+            }}
+          />
+          <Operation>+</Operation>
+          <StatisticCard
+            statistic={{
+              title: "已发布",
+              value: 255,
+            }}
+          />
+        </StatisticCard.Group> */}
+      </div>
     </>
   );
 };

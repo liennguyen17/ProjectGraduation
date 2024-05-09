@@ -9,6 +9,15 @@ export const ColumnStudentOfTeacher = [
     dataIndex: "semester",
   },
   {
+    title: "Trạng thái đề tài",
+    dataIndex: "status",
+  },
+  {
+    title: "Đề tài khóa luận",
+    dataIndex: "nameTopic",
+  },
+
+  {
     title: "Họ tên sinh viên",
     dataIndex: ["student", "name"],
   },
@@ -16,10 +25,7 @@ export const ColumnStudentOfTeacher = [
     title: "Mã sinh viên",
     dataIndex: ["student", "userCode"],
   },
-  {
-    title: "Đề tài khóa luận",
-    dataIndex: "nameTopic",
-  },
+
   {
     title: "Email",
     dataIndex: ["student", "email"],

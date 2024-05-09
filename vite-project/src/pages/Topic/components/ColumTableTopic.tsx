@@ -106,6 +106,13 @@ ColumnProps): ProColumns<TopicType>[] => {
       hideInSearch: true,
     },
     {
+      title: "Kết quả",
+      dataIndex: "success",
+      align: "center",
+      width: "6%",
+      hideInSearch: true,
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createAt",
       align: "center",

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
+    "@ant-design/plots": "^2.2.2",
     "@ant-design/pro-components": "^2.6.48",
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^41.1.0",

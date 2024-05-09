@@ -38,6 +38,7 @@ import StudentOfTeacher from "../pages/Teacher/components/StudentOfTeacher";
 import DetailTopicStudent from "../pages/Teacher/components/DetailTopicStudent";
 import ResultTopicStudent from "../pages/Teacher/components/ResultTopicStudent";
 import ApprovalChangeTopic from "../pages/TopicApproval/approvalChangeTopic";
+import Statistics from "../pages/Statistics";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -189,6 +190,13 @@ export const workplace: RouteObject | MenuDataItem = {
           element: <AllTopic />,
         },
       ],
+    },
+    {
+      name: "Thống kê",
+      path: "statistics",
+      icon: <FileDoneOutlined />,
+      element: <Statistics />,
+      hideInMenu: checkRole("StudentAndTeacher"),
     },
     {
       name: "Quản lý tin tức",
