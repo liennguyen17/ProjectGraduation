@@ -46,6 +46,7 @@ const Topic: React.FC = () => {
     setIsModalOpen(true);
     setSelectedRecord(record);
     // setIsDetailVisible(true);
+    setEditingId(record.id);
   };
 
   const handleEdit = (record: TopicType) => {

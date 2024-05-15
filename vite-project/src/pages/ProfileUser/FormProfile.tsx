@@ -40,9 +40,11 @@ const FormProfile: React.FC<FormProps> = ({
         const res = await editUser(dataToUpdate);
         // setData(res);
         if (res.success) {
-          message.success("Chỉnh sửa thông tin thành công");
-          onClose();
           actionRef?.();
+          message.success("Chỉnh sửa thông tin thành công");
+
+          onClose();
+
           // window.location.reload();
         } else {
           message.error("Có lỗi xảy ra khi cập nhật thông tin");

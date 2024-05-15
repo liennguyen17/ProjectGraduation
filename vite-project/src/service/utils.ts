@@ -2,8 +2,10 @@ import {
   MasterDataFilterApi,
   StudentGetListData,
   TeacherGetListData,
+  getListTopicCommentStudentOfTeacher,
 } from "./api";
 import Cookies from "js-cookie";
+import { TopicType } from "./types";
 
 export const handleFilterMasterData = async (keywords: string) => {
   try {
@@ -46,6 +48,21 @@ export const handleFilterStudent = async () => {
   }
 };
 
+export const handleFilterStudentComment = async () => {
+  try {
+    const data = await getListTopicCommentStudentOfTeacher();
+    console.log("data:: ", data);
+
+    return data.map((data: TopicType) => ({
+      label: `${data.student.name} - ${data.student.userCode}`,
+      value: data.id,
+    }));
+  } catch (error) {
+    console.error("Error student data:", error);
+    return [];
+  }
+};
+
 export const saveCredentialCookie = ({
   accessToken,
   expires,
@@ -60,4 +77,9 @@ export const saveCredentialCookie = ({
 
 export const clearCredentialCookie = ({ name }: { name: string }) => {
   Cookies.remove(name);
+};
+
+export const getJwt = () => {
+  const jwt = Cookies.get("access_token");
+  return jwt;
 };

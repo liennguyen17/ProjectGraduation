@@ -39,6 +39,7 @@ import DetailTopicStudent from "../pages/Teacher/components/DetailTopicStudent";
 import ResultTopicStudent from "../pages/Teacher/components/ResultTopicStudent";
 import ApprovalChangeTopic from "../pages/TopicApproval/approvalChangeTopic";
 import Statistics from "../pages/Statistics";
+import DiaryStudent from "../pages/Student/components/DiaryStudent";
 
 //config defaultRouter
 export const defaultRouter: Record<string, string> = {
@@ -232,6 +233,13 @@ export const workplace: RouteObject | MenuDataItem = {
       path: "change-topic",
       icon: <FileDoneOutlined />,
       element: <ChangeTopic />,
+      hideInMenu: checkRole("ManagerAndTeacher"),
+    },
+    {
+      name: "Nhật ký",
+      path: "/diary/student",
+      icon: <FileDoneOutlined />,
+      element: <DiaryStudent />,
       hideInMenu: checkRole("ManagerAndTeacher"),
     },
 

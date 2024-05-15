@@ -14,6 +14,7 @@ type EditorProps = {
 const Editor: React.FC<EditorProps> = (props) => {
   const { initiateData, onBlur, onFocus, onChange, onReady } = props;
   // const [ready, setReady] = useState<boolean>(false)
+  console.log("initiateData ckeditor:: ", initiateData);
   return (
     <CKEditor
       //@ts-ignore

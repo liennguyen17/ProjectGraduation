@@ -6,18 +6,21 @@ import {
 import { Button, Col, Row, Tabs, Typography, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "./styles.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { LoginApi } from "../../service/api";
 import { useNavigate } from "react-router-dom";
 import { saveCredentialCookie } from "../../service/utils";
 import { ProfileAccount } from "../../service/types";
+import { AppContext } from "../../context/AppProvider";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { state, dispatch } = useContext(AppContext);
   const { Link } = Typography;
   const [forgotPasswordModalVisible, setForgotPasswordModalVisible] =
     useState(false);
+  const isLoginHome = state?.homeLogin;
 
   const handleForgotPassword = () => {
     setForgotPasswordModalVisible(true);
@@ -48,7 +51,14 @@ const Login: React.FC = () => {
         sessionStorage.setItem("profileAcc", JSON.stringify(profileAccount));
         message.success("Đăng nhập thành công.");
         // navigate("/users/user");
-        navigate("/");
+        isLoginHome ? navigate(isLoginHome) : navigate("/");
+        dispatch({
+          payload: {
+            homeLogin: "",
+          },
+          type: "setIsHomeLogin",
+        });
+        window.location.reload();
       } else {
         if (responseData.error && responseData.error.errors) {
           responseData.error.errors.forEach((error: any) => {

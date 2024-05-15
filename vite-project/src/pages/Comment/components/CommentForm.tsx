@@ -43,11 +43,11 @@ const CommentForm: React.FC<PropsForm> = ({ handleCancel, selectedRecord }) => {
 
   const handleFinish = async (value: CreateComment) => {
     try {
-      const topicId = selectedRecord?.topic.id;
-      console.log("id", topicId);
+      const topic = selectedRecord?.topic.id;
+      console.log("id", topic);
       const data = {
         ...value,
-        topicId: topicId,
+        topic: topic,
       };
       console.log("data abc:: ", data);
       const res = await createCommentTopic(data);

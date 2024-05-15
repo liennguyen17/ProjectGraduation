@@ -157,7 +157,7 @@ const NotificationForm: React.FC<FormProps> = ({
                   content: editor.getData() || "",
                 });
               }}
-              initiateData={initiateData?.content}
+              initiateData={initialData?.content}
             />
           </ProForm.Item>
         </Col>

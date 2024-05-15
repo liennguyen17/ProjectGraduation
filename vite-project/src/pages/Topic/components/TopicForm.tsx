@@ -73,6 +73,12 @@ const TopicForm: React.FC<FormProps> = ({
       message.error("Lỗi cập nhật điểm đề tài vui lòng thử lại sau.");
     }
   };
+
+  const validateDecimalNumber = (value: string) => {
+    const regex = /^(?:0|[1-9](?:\d)?)(?:\.\d{1,2})?$/;
+    return regex.test(value) && parseFloat(value) > 0 && parseFloat(value) < 10;
+  };
+
   return (
     <ProForm
       initialValues={initialData}
@@ -147,16 +153,28 @@ const TopicForm: React.FC<FormProps> = ({
           />
         </Col>
         {/* <Col span={8}>
-          
-        <Form.Item label="Điểm tại cơ sở thực tập">
-        <InputNumber
-          // value={value}
-          min={0}
-          max={10}
-          step={0.1} // Cho phép nhập số thập phân
-        />
-      </Form.Item>
+          <ProFormText
+            width="md"
+            name="decimalNumber"
+            label="Số thập phân (0 < x < 10)"
+            placeholder="Nhập số thập phân"
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
+          />
         </Col> */}
+
         <Col span={8}>
           <ProFormDigit
             name="scoresInternshipFacility"
@@ -175,7 +193,7 @@ const TopicForm: React.FC<FormProps> = ({
             }}
           />
         </Col>
-        <Col span={8}>
+        {/* <Col span={8}>
           <ProFormDigit
             name="instructor"
             label="Điểm giáo viên hướng dẫn"
@@ -188,6 +206,28 @@ const TopicForm: React.FC<FormProps> = ({
             // ]}
             min={1}
             max={10}
+          />
+        </Col> */}
+        <Col span={8}>
+          <ProFormText
+            width="md"
+            name="instructor"
+            label="Điểm giáo viên hướng dẫn"
+            placeholder="Nhập điểm"
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
           />
         </Col>
         <Col span={8}>

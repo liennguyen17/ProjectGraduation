@@ -310,7 +310,7 @@ export interface CreateComment {
   message?: string;
   file?: string;
   descriptionFile?: string;
-  topicId: number;
+  topic: number;
 }
 
 export interface ChangePassword {

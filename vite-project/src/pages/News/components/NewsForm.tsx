@@ -91,6 +91,7 @@ const NewsForm: React.FC<NewFormProps> = ({
     // const image = value?.image[0]?.response.data.downloadUrl;
 
     try {
+      console.log("value:: ", value);
       if (editingId) {
         const dataToUpdate = { ...value, id: editingId };
         const res = await editNews(dataToUpdate);
@@ -99,7 +100,10 @@ const NewsForm: React.FC<NewFormProps> = ({
           handleCancel();
           actionRef?.();
         } else {
-          message.error("Có lỗi xảy ra khi chỉnh sửa tin tức");
+          const errorText = res?.error?.errors[0]?.message;
+          message.error(
+            `${errorText}` || "Có lỗi xảy ra khi chỉnh sửa tin tức"
+          );
         }
       } else {
         const res = await createNews(value);
@@ -237,7 +241,7 @@ const NewsForm: React.FC<NewFormProps> = ({
                   content: editor.getData() || "",
                 });
               }}
-              initiateData={initiateData?.kbBody}
+              initiateData={initialData?.content}
             />
           </ProForm.Item>
         </Col>

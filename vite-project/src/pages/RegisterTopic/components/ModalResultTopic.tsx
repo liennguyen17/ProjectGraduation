@@ -53,13 +53,13 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
     >
       <ProDescriptions
         column={2}
-        // dataSource={topicData}
-        request={async () => {
-          return Promise.resolve({
-            success: true,
-            data: topicData,
-          });
-        }}
+        dataSource={topicData}
+        // request={async () => {
+        //   return Promise.resolve({
+        //     success: true,
+        //     data: topicData,
+        //   });
+        // }}
       >
         <ProDescriptions.Item span={3}>
           <Divider>ĐƠN ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</Divider>

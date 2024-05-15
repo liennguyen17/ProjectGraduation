@@ -1,10 +1,14 @@
 export type AppState = {
   listRole?: Array<any>;
+  isDrawerProfile?: boolean;
+  isModalPassword?: boolean;
+  homeLogin?: string;
 };
 type PayloadType = {
   listRole?: Array<any>;
   isDrawerProfile?: boolean;
   isModalPassword?: boolean;
+  homeLogin?: string;
 };
 
 export type ActionType = {
@@ -30,5 +34,12 @@ export const setIsModalPassword = (state: AppState, action: ActionType) => {
   return {
     ...state,
     isModalPassword: action.payload?.isModalPassword,
+  };
+};
+
+export const setIsHomeLogin = (state: AppState, action: ActionType) => {
+  return {
+    ...state,
+    homeLogin: action.payload?.homeLogin,
   };
 };

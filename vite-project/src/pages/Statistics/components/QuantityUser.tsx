@@ -120,7 +120,7 @@ const QuantityUser: React.FC = ({}) => {
             icon: (
               <img
                 style={imgStyle}
-                src="https://png.pngtree.com/png-clipart/20190614/original/pngtree-male-student-icon-png-image_3715083.jpg"
+                src="https://png.pngtree.com/png-clipart/20231124/original/pngtree-graduation-blue-glossy-icon-on-white-background-www-graduation-icon-picture-image_13281313.png"
                 alt="icon"
               />
             ),

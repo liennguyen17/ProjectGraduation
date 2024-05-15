@@ -1,20 +1,32 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getNewsDetail } from "../../service/api";
 import { PageContainer, ProSkeleton } from "@ant-design/pro-components";
 import { Button, Divider, Modal } from "antd";
 import { News } from "../../service/types";
 import { DownloadOutlined } from "@ant-design/icons";
+import { getJwt } from "../../service/utils";
+import { AppContext } from "../../context/AppProvider";
 
 const NewsDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [newsDetail, setNewsDetail] = useState<News | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const { dispatch } = useContext(AppContext);
   const navigate = useNavigate();
+  const pathName = window.location.pathname;
+  console.log("pathName:: ", pathName);
   const handleLoginClick = () => {
+    dispatch({
+      payload: {
+        homeLogin: pathName,
+      },
+      type: "setIsHomeLogin",
+    });
     navigate("/auth/login");
   };
+
+  const jwt = getJwt();
 
   useEffect(() => {
     const fetchNewsDetail = async () => {
@@ -40,6 +52,7 @@ const NewsDetailPage = () => {
     // Đóng cửa sổ thông báo
     setModalVisible(false);
   };
+  console.log("newDetails:: ", newsDetail);
 
   return (
     <PageContainer style={{ margin: "0 100px" }}>
@@ -53,16 +66,19 @@ const NewsDetailPage = () => {
 
             <h3>
               Tài liệu tham khảo:{" "}
-              <a onClick={handleDownloadFile}>
-                <DownloadOutlined /> Tài liệu
-              </a>
-              {/* <a
-                href={newsDetail.file}
-                target="_blank"
-                // onClick={handleDownloadFile}
-              >
-                <DownloadOutlined /> Tài liệu
-              </a> */}
+              {jwt ? (
+                <a
+                  href={newsDetail.file}
+                  target="_blank"
+                  // onClick={handleDownloadFile}
+                >
+                  <DownloadOutlined /> Tài liệu
+                </a>
+              ) : (
+                <a onClick={handleDownloadFile}>
+                  <DownloadOutlined /> Tài liệu
+                </a>
+              )}
             </h3>
             <h4>Sinh viên thuộc bộ môn: {newsDetail.subject}</h4>
             <h4>Năm bảo vệ: {newsDetail.year}</h4>

@@ -46,9 +46,11 @@ const TopicApproval: React.FC = () => {
   };
 
   const handleViewDetail = (record: TopicType) => {
+    console.log("record:: ", record);
     setIsModalOpen1(true);
     setSelectedRecord(record);
     setIsDetailVisible(true);
+    setEditingId(record.id);
   };
 
   const handleEditApproval = (record: TopicType) => {

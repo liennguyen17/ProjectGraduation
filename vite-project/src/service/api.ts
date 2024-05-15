@@ -743,12 +743,38 @@ export async function getListCommentTeacher() {
     throw error;
   }
 }
+export async function getListCommentStudent() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/comments/student`);
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu nhật ký");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 export async function getListTopicStudentOfTeacher() {
   try {
     const res = await axios.get(`${appInfo.apiUrl}/users/topic/teacher`);
     if (res.data?.success) {
       return { data: res.data.data.items };
+    } else {
+      throw new Error("Failed to fetch comment detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function getListTopicCommentStudentOfTeacher() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/users/topic/teacher`);
+    if (res.data?.success) {
+      return res.data.data.items;
     } else {
       throw new Error("Failed to fetch comment detail");
     }
@@ -1052,15 +1078,16 @@ export const editUser = async (data: UserType) => {
 
 export const editNews = async (data: NewsType) => {
   try {
-    const response = await axios.put(`${appInfo.apiUrl}/users`, data, {
+    const response = await axios.put(`${appInfo.apiUrl}/news`, data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
+    console.log(response);
     if (response.data.success) {
       return response.data;
     } else {
-      throw new Error(response.data.error.message);
+      return response?.data;
     }
   } catch (error) {
     console.error("Lỗi khi tạo tin tức:", error);
@@ -1375,3 +1402,33 @@ export const getStatistics = async (semester: string) => {
     throw error;
   }
 };
+
+export async function StudentStatisticApi() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/users/statistics/student`);
+    if (res.data?.success) {
+      return res.data;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu sinh viên");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getStudentsBySubject() {
+  try {
+    const res = await axios.get(
+      `${appInfo.apiUrl}/users/statistics/student/subject`
+    );
+    if (res.data?.success) {
+      return res.data;
+    } else {
+      throw new Error("Lỗi khi lấy dữ liệu sinh viên");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

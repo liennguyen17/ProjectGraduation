@@ -1,19 +1,15 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
-import { getListComment, getListCommentTeacher } from "../../service/api";
-import { Avatar, Button, Space, Tag } from "antd";
-import DrawerDiary from "./components/DrawerDiary";
-import DrawerFile from "./components/DrawerFile";
-import { dataComment } from "../../service/types";
-import CommentForm from "./components/CommentForm";
-import ModalCreateDiary from "./components/ModalCreateDiary";
+import { Avatar, Button, Divider, Space, Tag } from "antd";
+import { getListCommentStudent } from "../../../service/api";
+import { dataComment } from "../../../service/types";
+import { ArrowRightOutlined, DoubleRightOutlined } from "@ant-design/icons";
 
-const Comment: React.FC = () => {
+const DiaryStudent: React.FC = () => {
   // const [open, setOpen] = useState(false);
   // const [openFile, setOpenFile] = useState(false);
   const [openDiary, setOpenDiary] = useState(false);
   const [openFile, setOpenFile] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [commentsData, setCommentData] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState<dataComment | null>(
     null
@@ -26,8 +22,8 @@ const Comment: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await getListCommentTeacher();
-        console.log("list comments:: ", res);
+        const res = await getListCommentStudent();
+        // console.log("list comments:: ", res);
         setCommentData(res);
       } catch (error) {
         console.error("loi lay du lieu:", error);
@@ -53,37 +49,33 @@ const Comment: React.FC = () => {
   const onCloseFile = () => {
     setOpenFile(false);
   };
-  const showModal = () => {
-    setIsModalOpen(true);
-    selectedRecord;
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <PageContainer
-      // subTitle=">Nhật ký"
-      title={false}
+      // subTitle="Nhật ký"
+      title="Nhật ký từ giáo viên hướng dẫn"
     >
       <ProList<dataComment>
-        // request={async (params, sort, filter) =>
-        //   await TopicGetListApi(params, sort, filter)
-        // }
-
-        dataSource={commentsData}
-        headerTitle="Danh sách nhật ký"
         toolBarRender={() => {
           return [
-            <Button key="3" type="primary" onClick={showModal}>
-              Tạo nhật ký
+            <Button key="3" type="primary">
+              Nộp file
+            </Button>,
+            <Button key="3" type="primary">
+              Danh sách file
             </Button>,
           ];
         }}
+        dataSource={commentsData}
         metas={{
           title: {
             render: (_, entity) => {
-              return entity.topic.student.name;
+              return (
+                <Space size={0}>
+                  {/* <Tag color="blue">{entity.topic.student.name}</Tag> */}
+                  GV:{entity.topic.teacher.name}
+                </Space>
+              );
             },
           },
           avatar: {
@@ -105,20 +97,20 @@ const Comment: React.FC = () => {
             },
             search: false,
           },
-          actions: {
-            render: (_, entity) => [
-              <Button type="primary" onClick={() => showDrawerDiary(entity)}>
-                Xem nhật ký
-              </Button>,
-              <Button type="primary" onClick={() => showDrawerFile(entity)}>
-                File
-              </Button>,
-            ],
-            search: false,
-          },
+          //   actions: {
+          //     render: (_, entity) => [
+          //       <Button type="primary" onClick={() => showDrawerDiary(entity)}>
+          //         Xem nhật ký
+          //       </Button>,
+          //       <Button type="primary" onClick={() => showDrawerFile(entity)}>
+          //         File
+          //       </Button>,
+          //     ],
+          //     search: false,
+          //   },
         }}
       ></ProList>
-      <DrawerDiary
+      {/* <DrawerDiary
         onClose={onCloseDiary}
         open={openDiary}
         selectedRecord={selectedRecord}
@@ -127,9 +119,8 @@ const Comment: React.FC = () => {
         onClose={onCloseFile}
         open={openFile}
         selectedRecord={selectedRecord}
-      />
-      <ModalCreateDiary open={isModalOpen} onClose={handleCancel} />
+      /> */}
     </PageContainer>
   );
 };
-export default Comment;
+export default DiaryStudent;

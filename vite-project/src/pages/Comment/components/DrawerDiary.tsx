@@ -38,7 +38,7 @@ const DrawerDiary: React.FC<DrawerProps> = ({
       }
     };
     getData();
-  }, [selectedRecord]);
+  }, [selectedRecord?.topic.id]);
 
   const handleCancel = () => {
     setIsModalOpen(false);

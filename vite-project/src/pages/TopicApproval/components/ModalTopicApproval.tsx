@@ -10,7 +10,7 @@ import "../../../index.css";
 interface PropsTopic {
   isModalOpen1: boolean;
   setIsModalOpen1: (isOpen: boolean) => void;
-  editingId: number | null;
+  editingId: number;
   selectedRecord: TopicType | null;
 }
 
@@ -23,7 +23,7 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
 }) => {
   const [data, setData] = useState([]);
   const actionRef = useRef<ProDescriptionsActionType>();
-
+  console.log("editingid:: ", editingId);
   const handleOk = () => {
     setIsModalOpen1(false);
   };
@@ -32,12 +32,11 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
     setIsModalOpen1(false);
   };
   useEffect(() => {
+    console.log("change");
     const responseData = async () => {
       try {
-        if (selectedRecord) {
-          const response = await getTopicDetail(selectedRecord.id);
-          setData(response);
-        }
+        const response = await getTopicDetail(editingId);
+        setData(response);
       } catch (error) {
         console.error("Error fetching topic detail:", error);
       }
@@ -47,10 +46,7 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
     // }
 
     responseData();
-  }, [
-    // isModalOpen1,
-    selectedRecord,
-  ]);
+  }, [editingId]);
   return (
     <Modal
       // title="Đơn đăng ký đề tài khóa luận tốt nghiệp"
@@ -68,13 +64,14 @@ const ModalTopicApproval: React.FC<PropsTopic> = ({
       <ProDescriptions<TopicType>
         actionRef={actionRef}
         title={false}
-        request={async () => {
-          // console.log("data", data);
-          return Promise.resolve({
-            success: true,
-            data: data,
-          });
-        }}
+        // request={async () => {
+        //   // console.log("data", data);
+        //   return Promise.resolve({
+        //     success: true,
+        //     data: data,
+        //   });
+        // }}
+        dataSource={data}
       >
         <ProDescriptions.Item span={3}>
           <Divider>ĐƠN ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</Divider>

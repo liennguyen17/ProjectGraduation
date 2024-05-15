@@ -55,11 +55,25 @@ const ModalResultTopic: React.FC<ModalTopicFormProps> = ({
     >
       <ProDescriptions
         column={2}
+        // dataSource={topicData}
+        // request={async () => {
+        //   return Promise.resolve({
+        //     success: true,
+        //     data: topicData,
+        //   });
+        // }}
         request={async () => {
-          return Promise.resolve({
-            success: true,
-            data: topicData,
-          });
+          try {
+            const res = await findTopicFromStudentLogin();
+            setTopicData(res);
+
+            return {
+              success: true,
+              data: res,
+            };
+          } catch (error) {
+            throw new Error("lien lien");
+          }
         }}
       >
         <ProDescriptions.Item span={3}>

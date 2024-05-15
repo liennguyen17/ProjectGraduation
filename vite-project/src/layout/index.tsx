@@ -53,7 +53,7 @@ const Layout: React.FC = () => {
   const [data, setData] = useState<UserType>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const actionRef = useRef<ActionType>();
+  const actionRefDes = useRef<ActionType>();
 
   const onClose = () => {
     dispatch({
@@ -104,7 +104,7 @@ const Layout: React.FC = () => {
         console.error("Loi lay du lieu: ", error);
       }
     };
-    data();
+    // data();
   }, []);
 
   const handleChangePassword = async (values: ChangePassword) => {
@@ -170,9 +170,9 @@ const Layout: React.FC = () => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Đóng
               </Button>
-              <Button style={{ marginRight: 8 }} type="primary">
+              {/* <Button style={{ marginRight: 8 }} type="primary">
                 File
-              </Button>
+              </Button> */}
               <Button
                 icon={<EditOutlined />}
                 type="primary"
@@ -185,13 +185,19 @@ const Layout: React.FC = () => {
         >
           <ProDescriptions
             request={async () => {
-              // console.log("data", data);
-              return Promise.resolve({
-                success: true,
-                data: data,
-              });
+              try {
+                const res = await UserProfile();
+                setData(res);
+
+                return {
+                  success: true,
+                  data: res,
+                };
+              } catch (error) {
+                throw new Error("lien lien");
+              }
             }}
-            actionRef={actionRef}
+            actionRef={actionRefDes}
           >
             <ProDescriptions.Item dataIndex="name" label="Họ và tên" span={3} />
             <ProDescriptions.Item
@@ -236,7 +242,7 @@ const Layout: React.FC = () => {
                 setData={setData}
                 editingId={editingId}
                 onClose={onClose1}
-                actionRef={() => actionRef.current?.reload}
+                actionRef={() => actionRefDes.current?.reload()}
               />
             </Drawer>
           </ProDescriptions>

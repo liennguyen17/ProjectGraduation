@@ -120,15 +120,15 @@ const AllTopic: React.FC = () => {
                 <>
                   <ProDescriptions
                     // column={2}
-                    // dataSource={entity}
+                    dataSource={entity}
                     // layout="vertical"
-                    request={async () => {
-                      // console.log("data", data);
-                      return Promise.resolve({
-                        success: true,
-                        data: entity,
-                      });
-                    }}
+                    // request={async () => {
+                    //   // console.log("data", data);
+                    //   return Promise.resolve({
+                    //     success: true,
+                    //     data: entity,
+                    //   });
+                    // }}
                   >
                     <ProDescriptions.Item
                       dataIndex="nameTopic"

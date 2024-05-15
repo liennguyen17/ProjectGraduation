@@ -23,7 +23,8 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
         message.success("Gửi đơn đăng ký đề tài thành công.");
         handleCancel();
       } else {
-        message.error("Có lỗi trong quá trình đăng ký.");
+        const errorText = res?.error?.message;
+        message.error(`${errorText}` || "Có lỗi xảy ra khi đăng ký đề tài");
       }
     } catch (error) {
       message.error("Có lỗi trong quá trình đăng ký.");

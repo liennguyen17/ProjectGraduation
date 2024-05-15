@@ -10,7 +10,7 @@ import { TopicType } from "../../../service/types";
 interface PropsTopic {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  editingId: number | null;
+  editingId: number;
   selectedRecord: TopicType | null;
 }
 
@@ -18,6 +18,7 @@ const ModalTopic: React.FC<PropsTopic> = ({
   isModalOpen,
   setIsModalOpen,
   selectedRecord,
+  editingId,
 }) => {
   const [data, setData] = useState([]);
   const actionRef = useRef<ProDescriptionsActionType>();
@@ -28,18 +29,24 @@ const ModalTopic: React.FC<PropsTopic> = ({
 
   useEffect(() => {
     const responseData = async () => {
+      // try {
+      //   if (selectedRecord) {
+      //     const response = await getTopicDetail(selectedRecord.id);
+      //     setData(response);
+      //   }
+      // } catch (error) {
+      //   console.error("Error fetching topic detail:", error);
+      // }
       try {
-        if (selectedRecord) {
-          const response = await getTopicDetail(selectedRecord.id);
-          setData(response);
-        }
+        const response = await getTopicDetail(editingId);
+        setData(response);
       } catch (error) {
         console.error("Error fetching topic detail:", error);
       }
     };
 
     responseData();
-  }, [selectedRecord]);
+  }, [editingId]);
 
   return (
     <Modal
@@ -58,13 +65,7 @@ const ModalTopic: React.FC<PropsTopic> = ({
       <ProDescriptions<TopicType>
         actionRef={actionRef}
         title={false}
-        request={async () => {
-          console.log("data", data);
-          return Promise.resolve({
-            success: true,
-            data: data,
-          });
-        }}
+        dataSource={data}
       >
         <ProDescriptions.Item span={3}>
           <Divider />
