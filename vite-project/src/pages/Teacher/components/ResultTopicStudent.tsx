@@ -1,6 +1,7 @@
 import {
   ActionType,
   PageContainer,
+  ProDescriptions,
   ProTable,
 } from "@ant-design/pro-components";
 import { useEffect, useRef, useState } from "react";
@@ -11,7 +12,7 @@ import {
 import { TopicType } from "../../../service/types";
 import { ColumnResultTopicStudent } from "./ColumnResultTopicStudent";
 import TopicForm from "../../Topic/components/TopicForm";
-import { Modal } from "antd";
+import { Divider, Modal } from "antd";
 import ModalTopic from "../../Topic/components/ModalTopic";
 
 const ResultTopicStudent: React.FC = () => {
@@ -27,7 +28,7 @@ const ResultTopicStudent: React.FC = () => {
   const handleViewDetail = (record: TopicType) => {
     setIsModalOpen(true);
     setSelectedRecord(record);
-    // setIsDetailVisible(true);
+    setEditingId(record.id);
   };
 
   const handleEdit = (record: TopicType) => {
@@ -66,23 +67,8 @@ const ResultTopicStudent: React.FC = () => {
         cardBordered
         headerTitle="Danh sách chấm điểm đề tài khóa luận tốt nghiệp"
         tableLayout="auto"
-        // search={{
-        //   labelWidth: "auto",
-        //   filterType: "query",
-        //   style: {
-        //     paddingBlock: 12,
-        //   },
-        // }}
         search={false}
         scroll={{ x: "max-content" }}
-        // options={{
-        //   search: {
-        //     placeholder: "Nhập từ khóa tìm kiếm...",
-        //     style: { width: 400 },
-        //   },
-        //   density: false,
-        //   setting: true,
-        // }}
         cardProps={{
           bodyStyle: {
             paddingBottom: 0,
@@ -112,6 +98,25 @@ const ResultTopicStudent: React.FC = () => {
         width="65%"
         footer={false}
       >
+        <ProDescriptions
+          column={2}
+          request={async () => {
+            return Promise.resolve({
+              success: true,
+              data: selectedRecord,
+            });
+          }}
+        >
+          <ProDescriptions.Item span={3}>
+            <Divider>
+              Điểm đề tài khóa luận tốt nghiệp: {selectedRecord?.nameTopic}
+            </Divider>
+          </ProDescriptions.Item>
+          <ProDescriptions.Item>
+            Sinh viên thực hiện: {selectedRecord?.student.name} - MSV:
+            {selectedRecord?.student.userCode}
+          </ProDescriptions.Item>
+        </ProDescriptions>
         <TopicForm
           actionRef={() => actionRef.current?.reload()}
           handleCancel={handleCancel}

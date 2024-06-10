@@ -25,6 +25,8 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
       } else {
         const errorText = res?.error?.message;
         message.error(`${errorText}` || "Có lỗi xảy ra khi đăng ký đề tài");
+        // const errorText = res?.error?.errors[0]?.message;
+        // message.error(`${errorText}` || "Có lỗi xảy ra khi tạo tin tức");
       }
     } catch (error) {
       message.error("Có lỗi trong quá trình đăng ký.");
@@ -85,6 +87,20 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
           />
         </Col>
         <Col span={12}>
+          <ProFormSelect
+            label="Bộ môn quản lý"
+            name="departmentManagement"
+            request={() => handleFilterMasterData("subject")}
+            placeholder="Vui lòng chọn bộ môn quản lý"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn bộ môn quản lý!",
+              },
+            ]}
+          />
+        </Col>
+        <Col span={12}>
           <ProFormText
             name="nameInternshipFacility"
             label="Tên cơ sở thực tập"
@@ -124,6 +140,10 @@ const FormRegisterTopic: React.FC<PropsForm> = ({ handleCancel }) => {
                 required: true,
                 message:
                   "Vui lòng nhập số điện thoại cán bộ hướng dẫn tại cơ sở thực tập!",
+              },
+              {
+                pattern: /^[0-9]{10}$/,
+                message: "Số điện thoại không hợp lệ!",
               },
             ]}
             // width="lg"

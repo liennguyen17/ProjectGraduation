@@ -125,11 +125,11 @@ export const columnNotification = ({
       dataIndex: "description",
       width: "20%",
     },
-    {
-      title: "Người tạo",
-      dataIndex: "user",
-      width: "5%",
-    },
+    // {
+    //   title: "Người tạo",
+    //   dataIndex: "user",
+    //   width: "5%",
+    // },
     {
       title: "Nội dung",
       dataIndex: "content",
@@ -162,14 +162,17 @@ export const columnNotification = ({
       dataIndex: "createAt",
       align: "center",
       hideInSearch: true,
+      width: "10%",
     },
     {
       title: "Ngày cập nhật",
       dataIndex: "updateAt",
       align: "center",
       hideInSearch: true,
+      width: "10%",
     },
     {
+      width: "10%",
       title: "Thao tác",
       dataIndex: "operation",
       align: "center",

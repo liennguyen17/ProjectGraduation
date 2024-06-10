@@ -41,7 +41,7 @@ const DrawerNotification: React.FC<DrawerProps> = ({
   }, [selectedRecord]);
   return (
     <Drawer
-      title="Chi tiết tin tức"
+      title="Chi tiết thông báo"
       onClose={() => onClose(false)}
       visible={open}
       width={"80%"}

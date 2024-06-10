@@ -30,7 +30,8 @@ const FormTeacher: React.FC<PropsForm> = ({
         handleCancel();
         actionRef?.();
       } else {
-        message.error("Có lỗi xảy ra khi tạo user");
+        const errorText = res?.error?.errors[0]?.message;
+        message.error(`${errorText}` || "Có lỗi xảy ra khi tạo người dùng");
       }
     } catch (error) {
       message.error("Lỗi tạo user, vui lòng thử lại sau.");
@@ -77,7 +78,17 @@ const FormTeacher: React.FC<PropsForm> = ({
         </Col>
 
         <Col span={8}>
-          <ProFormText label="Mã giảng viên" name="userCode" />
+          <ProFormText
+            label="Mã giảng viên"
+            name="userCode"
+            required
+            rules={[
+              {
+                required: true,
+                message: "Mã giảng viên không được bỏ trống",
+              },
+            ]}
+          />
         </Col>
 
         <Col span={8}>
@@ -119,7 +130,14 @@ const FormTeacher: React.FC<PropsForm> = ({
           <ProFormText label="Địa chỉ" name="address" />
         </Col>
         <Col span={8}>
-          <ProFormText label="Email" name="email" />
+          <ProFormText
+            label="Email"
+            name="email"
+            required
+            rules={[
+              { required: true, message: "Vui lòng không bỏ trống email" },
+            ]}
+          />
         </Col>
         <Col span={8}>
           <ProFormSelect

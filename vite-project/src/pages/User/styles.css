@@ -1,3 +1,7 @@
 .pro-table-container .ant-table-tbody > tr {
   margin-bottom: 100px; /* Điều chỉnh khoảng cách giữa các hàng */
 }
+
+.button-upload-toolbar > .ant-form-item {
+  margin-bottom: 0;
+}

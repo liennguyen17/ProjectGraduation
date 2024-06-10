@@ -4,6 +4,7 @@ import { Avatar, Button, Divider, Space, Tag } from "antd";
 import { getListCommentStudent } from "../../../service/api";
 import { dataComment } from "../../../service/types";
 import { ArrowRightOutlined, DoubleRightOutlined } from "@ant-design/icons";
+import DrawerFile from "./DrawerFile";
 
 const DiaryStudent: React.FC = () => {
   // const [open, setOpen] = useState(false);
@@ -42,6 +43,10 @@ const DiaryStudent: React.FC = () => {
     setSelectedRecord(record);
   };
 
+  const showDrawerFile1 = () => {
+    setOpenFile(true);
+  };
+
   const onCloseDiary = () => {
     setOpenDiary(false);
   };
@@ -61,7 +66,7 @@ const DiaryStudent: React.FC = () => {
             <Button key="3" type="primary">
               Nộp file
             </Button>,
-            <Button key="3" type="primary">
+            <Button key="3" type="primary" onClick={() => showDrawerFile1()}>
               Danh sách file
             </Button>,
           ];
@@ -114,12 +119,12 @@ const DiaryStudent: React.FC = () => {
         onClose={onCloseDiary}
         open={openDiary}
         selectedRecord={selectedRecord}
-      />
+      /> */}
       <DrawerFile
         onClose={onCloseFile}
         open={openFile}
         selectedRecord={selectedRecord}
-      /> */}
+      />
     </PageContainer>
   );
 };

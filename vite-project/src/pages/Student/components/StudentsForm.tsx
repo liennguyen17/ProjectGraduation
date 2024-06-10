@@ -8,7 +8,6 @@ import {
   ProFormUploadButton,
 } from "@ant-design/pro-components";
 import { Card, Col, Divider, Row } from "antd";
-import Paragraph from "antd/es/skeleton/Paragraph";
 import Editor from "../../Editor";
 import { GlobalOutlined } from "@ant-design/icons";
 import { useRef } from "react";
@@ -37,18 +36,6 @@ const StudentsForm: React.FC<PostsFormProps> = ({
           submitText: "Xác nhận",
         },
         resetButtonProps: false,
-        // render: (_, dom) => {
-        //   return (
-        //     <FooterToolbar portalDom={false} style={{ width: "100%" }}>
-        //       <Row justify="end" gutter={[12, 12]}>
-        //         <Col>
-        //           <Button onClick={onCancel}>Hủy</Button>
-        //         </Col>
-        //         <Col>{dom}</Col>
-        //       </Row>
-        //     </FooterToolbar>
-        //   );
-        // },
       }}
     >
       <Row style={{ flex: 1 }} gutter={16}>
@@ -69,14 +56,7 @@ const StudentsForm: React.FC<PostsFormProps> = ({
               },
             ]}
           />
-          {/* <ProForm.Item
-            label="Đường dẫn"
-            name="slug"
-            style={{ padding: "0 8px" }}
-            //   transform={(value) => {}}
-          >
-            <Paragraph>{}</Paragraph>
-          </ProForm.Item> */}
+
           <ProFormTextArea
             label="Mô tả ngắn"
             name="dedescription"

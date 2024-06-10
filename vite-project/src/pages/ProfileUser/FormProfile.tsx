@@ -48,6 +48,10 @@ const FormProfile: React.FC<FormProps> = ({
           // window.location.reload();
         } else {
           message.error("Có lỗi xảy ra khi cập nhật thông tin");
+          // const errorText = res?.error?.errors[0]?.message;
+          // message.error(
+          //   `${errorText}` || "Có lỗi xảy ra khi cập nhật thông tin"
+          // );
         }
       } else {
         return [];

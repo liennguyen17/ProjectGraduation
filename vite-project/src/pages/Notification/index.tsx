@@ -121,7 +121,7 @@ const Notification: React.FC = () => {
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
         dateFormatter="string"
-        rowSelection={{}}
+        // rowSelection={{}}
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> Tạo thông báo

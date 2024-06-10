@@ -11,10 +11,15 @@ import { createCommentTopic, uploadFile } from "../../../service/api";
 
 interface PropsForm {
   handleCancel: () => void;
+  handleOk: () => void;
   selectedRecord: dataComment | null;
 }
 
-const CommentForm: React.FC<PropsForm> = ({ handleCancel, selectedRecord }) => {
+const CommentForm: React.FC<PropsForm> = ({
+  handleCancel,
+  handleOk,
+  selectedRecord,
+}) => {
   const [listFile1, setListFile1] = useState([]);
   const [fieldFile11, setFieldFile1] = useState("");
 
@@ -54,6 +59,7 @@ const CommentForm: React.FC<PropsForm> = ({ handleCancel, selectedRecord }) => {
       console.log("first nhat ky", res);
       if (res.success) {
         message.success("Tạo nhật ký thành công.");
+        handleOk();
         handleCancel();
       } else {
         message.error("Có lỗi trong quá trình tạo nhật ký.");

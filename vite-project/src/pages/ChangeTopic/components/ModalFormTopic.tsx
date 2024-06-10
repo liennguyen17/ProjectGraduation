@@ -24,7 +24,7 @@ const ModalFormTopic: React.FC<ModalTopicFormProps> = ({
       onOk={handleOk}
       onCancel={handleCancel}
       destroyOnClose
-      width="70%"
+      width="60%"
       title="ĐƠN XIN ĐỔI TÊN ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP"
       footer={false}
     >

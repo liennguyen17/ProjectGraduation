@@ -30,12 +30,12 @@ export const columsNews = ({
     {
       title: "Tiêu đề",
       dataIndex: "title",
-      width: "100px",
+      width: "13%",
     },
     {
       title: "Mô tả",
       dataIndex: "description",
-      width: "350px",
+      width: "18%",
       // hideInSearch: true,
     },
     {

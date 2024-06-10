@@ -1,33 +1,35 @@
-import { ProList, idIDIntl } from "@ant-design/pro-components";
-import { Avatar, Button, Divider, Drawer, Modal, Typography } from "antd";
+import { ProList } from "@ant-design/pro-components";
+import { Avatar, Button, Divider, Drawer, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { ListCommentForTopicId, getListComment } from "../../../service/api";
+import {
+  DoubleRightOutlined,
+  DownloadOutlined,
+  FileOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { dataComment } from "../../../service/types";
-import { DoubleRightOutlined } from "@ant-design/icons";
-import CommentForm from "./CommentForm";
 
-interface DrawerProps {
+interface DrawerFileProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
   selectedRecord: dataComment | null;
 }
 const { Text } = Typography;
 
-const DrawerDiary: React.FC<DrawerProps> = ({
+const DrawerFile: React.FC<DrawerFileProps> = ({
   open,
   onClose,
   selectedRecord,
 }) => {
   const [commentsData, setCommentData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isReload, setIsReload] = useState<boolean>(false);
-
   useEffect(() => {
     const getData = async () => {
       try {
         console.log("first", selectedRecord);
         if (selectedRecord) {
           const topicId = selectedRecord.topic.id;
+          console.log("topicId: {}", topicId);
           const res = await ListCommentForTopicId(topicId);
 
           console.log("id topic", topicId);
@@ -39,58 +41,48 @@ const DrawerDiary: React.FC<DrawerProps> = ({
       }
     };
     getData();
-  }, [selectedRecord?.topic.id, isReload]);
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleOk = () => {
-    setIsReload(!isReload);
-  };
-
-  const showModal = () => {
-    setIsModalOpen(true);
-    selectedRecord;
-  };
+  }, [selectedRecord]);
 
   return (
     <Drawer
-      title="Nhật ký"
+      title="File"
       onClose={() => onClose(false)}
       visible={open}
       width={700}
-      extra={
-        <Button type="primary" onClick={showModal}>
-          Tạo nhật ký
-        </Button>
-      }
+      // extra={
+      //   <Button type="primary">
+      //     <UploadOutlined />
+      //     File
+      //   </Button>
+      // }
     >
-      <Divider orientation="left" orientationMargin="0">
-        <DoubleRightOutlined style={{ color: "hotpink", fontSize: "18px" }} />{" "}
+      {/* <Divider orientation="left" orientationMargin="0">
+        <DoubleRightOutlined style={{ color: "hotpink", fontSize: "16px" }} />{" "}
         Sinh viên: {selectedRecord?.topic.student.name} - MSV:{" "}
         {selectedRecord?.topic.student.userCode}
-      </Divider>
+      </Divider> */}
 
       <ProList<dataComment>
         dataSource={commentsData}
-        // toolBarRender={() => {
-        //   return [
-        //     <Button key="3" type="primary">
-        //       Tạo nhật ký
-        //     </Button>,
-        //   ];
-        // }}
-
-        headerTitle="Danh sách nhật ký đã gửi"
+        headerTitle="Danh sách file đã nộp"
         metas={{
           title: {
-            dataIndex: "message",
+            dataIndex: "descriptionFile",
+            // render: (_, row) => {
+            //   return <Text>{row.topic.nameTopic}</Text>;
+            // },
           },
           avatar: {
-            render: () => {
+            render: (_, row) => {
               return <Avatar src="/images/user.jpg" />;
             },
+          },
+          description: {
+            render: (_, row) => (
+              <a href={row.file} target="_blank" rel="noopener noreferrer">
+                <DownloadOutlined /> lưu file
+              </a>
+            ),
           },
           actions: {
             dataIndex: "createAt",
@@ -106,22 +98,7 @@ const DrawerDiary: React.FC<DrawerProps> = ({
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
       ></ProList>
-      <Modal
-        width={500}
-        footer={false}
-        destroyOnClose
-        title="Tạo nhật ký"
-        open={isModalOpen}
-        onOk={handleCancel}
-        onCancel={handleCancel}
-      >
-        <CommentForm
-          handleCancel={handleCancel}
-          handleOk={handleOk}
-          selectedRecord={selectedRecord}
-        ></CommentForm>
-      </Modal>
     </Drawer>
   );
 };
-export default DrawerDiary;
+export default DrawerFile;

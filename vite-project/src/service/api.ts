@@ -51,7 +51,30 @@ export async function UserGetListApi(params, sort, filter) {
         data: res.data.data.items,
       };
     } else {
-      throw new Error("Loi");
+      throw new Error("Lỗi lấy dữ liệu!");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function DataUserApi() {
+  const requestData = { start: 0, limit: 50 };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi lấy dữ liệu!");
     }
   } catch (error) {
     console.error(error);
@@ -200,6 +223,29 @@ export async function StudentGetListApi(params, sort, filter) {
   }
 }
 
+export async function DataStudentApi() {
+  const requestData = { start: 0, limit: 50, role: "STUDENT" };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi lấy dữ liệu!");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function TeacherGetListApi(params, sort, filter) {
   const requestData = {
     start: 0,
@@ -229,6 +275,29 @@ export async function TeacherGetListApi(params, sort, filter) {
       return { data: res.data.data.items };
     } else {
       throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function DataTeacherApi() {
+  const requestData = { start: 0, limit: 50, role: "TEACHER" };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi lấy dữ liệu!");
     }
   } catch (error) {
     console.error(error);
@@ -318,6 +387,29 @@ export async function ManageGetListApi(params, sort, filter) {
       return { data: res.data.data.items };
     } else {
       throw new Error("Loi");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function DataManageApi() {
+  const requestData = { start: 0, limit: 50, role: "MANAGER" };
+  try {
+    const res = await axios.post(
+      `${appInfo.apiUrl}/users/filter`,
+      requestData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Lỗi lấy dữ liệu!");
     }
   } catch (error) {
     console.error(error);
@@ -913,7 +1005,7 @@ export const createNews = async (data: NewsType) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Lỗi khi tạo news:", error);
+    // console.error("Lỗi khi tạo news:", error);
     throw new Error("Có lỗi xảy ra khi tạo news");
   }
 };
@@ -1068,7 +1160,8 @@ export const editUser = async (data: UserType) => {
     if (response.data.success) {
       return response.data;
     } else {
-      throw new Error(response.data.error.message);
+      return response?.data;
+      // throw new Error(response.data.error.message);
     }
   } catch (error) {
     console.error("Lỗi khi tạo user:", error);

@@ -40,40 +40,30 @@ const FormUser: React.FC<PropsForm> = ({
           handleCancel();
           actionRef?.();
         } else {
-          message.error("Có lỗi xảy ra khi chỉnh sửa user");
+          const errorText = res?.error?.errors[0]?.message;
+          message.error(
+            `${errorText}` || "Có lỗi xảy ra khi chỉnh sửa người dùng"
+          );
+          // message.error("Có lỗi xảy ra khi chỉnh sửa user");
         }
       } else {
         const res = await createUser(value);
         if (res.success) {
           message.success("Tạo user thành công");
-          // handleCreateSuccess();
           handleCancel();
           actionRef?.();
         } else {
-          message.error("Có lỗi xảy ra khi tạo user");
+          const errorText = res?.error?.errors[0]?.message;
+          message.error(`${errorText}` || "Có lỗi xảy ra khi tạo người dùng");
         }
       }
     } catch (error) {
-      console.log(error);
-      message.error(error);
+      message.error("Có lỗi xảy ra khi tạo/chỉnh sửa người dùng");
     }
   };
 
-  // const handleSubject = async (keywords: string) => {
-  //   try {
-  //     const subject = await MasterDataFilterApi(keywords);
-  //     return subject.map((subject: any) => ({
-  //       label: subject.name,
-  //       value: subject.id,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Loi lay du lieu subject:", error);
-  //     return [];
-  //   }
-  // };
   return (
     <ProForm
-      // actionRef={actionRef}
       initialValues={initialData ? initialData : undefined}
       formRef={formRef}
       grid
@@ -118,7 +108,13 @@ const FormUser: React.FC<PropsForm> = ({
           <ProFormText
             label="Mã người dùng"
             name="userCode"
-            // disabled={!!editingId}
+            required
+            rules={[
+              {
+                required: true,
+                message: "Mã người dùng không được bỏ trống",
+              },
+            ]}
           />
         </Col>
 
@@ -147,21 +143,21 @@ const FormUser: React.FC<PropsForm> = ({
           />
         </Col>
         <Col span={8}>
-          <ProFormText
-            label="Số điện thoại"
-            name="phone"
-            rules={[
-              { max: 15, message: "Vui lòng không nhập quá 15 kí tự" },
-              // { required: true, message: "Vui lòng không bỏ trống" },
-            ]}
-            // required
-          />
+          <ProFormText label="Số điện thoại" name="phone" />
         </Col>
         <Col span={8}>
           <ProFormText label="Địa chỉ" name="address" />
         </Col>
         <Col span={8}>
-          <ProFormText label="Email" name="email" />
+          <ProFormText
+            label="Email"
+            name="email"
+            required
+            rules={[
+              { required: true, message: "Vui lòng không bỏ trống email" },
+            ]}
+            // required
+          />
         </Col>
         <Col span={8}>
           <ProFormSelect

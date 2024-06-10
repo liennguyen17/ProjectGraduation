@@ -1,13 +1,18 @@
 import {
   ActionType,
   PageContainer,
+  ProFormUploadButton,
   ProTable,
 } from "@ant-design/pro-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columTeacher } from "./components/ColumTeacher";
-import { TeacherGetListApi, deleteUser } from "../../service/api";
+import {
+  DataTeacherApi,
+  TeacherGetListApi,
+  deleteUser,
+} from "../../service/api";
 import { UserType } from "../../service/types";
-import { Button, Modal, message } from "antd";
+import { Button, Modal, Space, message, notification } from "antd";
 import ModalFormUser from "../User/components/ModalFormUser";
 import DrawerUser from "../User/components/DrawerUser";
 import {
@@ -16,7 +21,9 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import FormTeacher from "./components/FormTeacher";
-
+import { utils, writeFileXLSX } from "xlsx";
+import { getJwt } from "../../service/utils";
+import "./styles.css";
 const Teacher: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<any>();
@@ -28,6 +35,8 @@ const Teacher: React.FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [recordToDeleteName, setRecordToDeleteName] = useState("");
+
+  const [userData, setUserData] = useState([]);
 
   const handleViewDetail = (record: UserType) => {
     setSelectedRecord(record);
@@ -85,6 +94,41 @@ const Teacher: React.FC = () => {
     handleDelete,
   });
 
+  const jwt = getJwt();
+
+  useEffect(() => {
+    const dataUser = async () => {
+      try {
+        const res = await DataTeacherApi();
+        setUserData(res);
+        console.log("data user: {}", res);
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu: ", error);
+      }
+    };
+    dataUser();
+  }, []);
+
+  const renameColumn = userData.map((item) => ({
+    "Họ và tên": item.name,
+    "Mã giảng viên": item.userCode,
+    "Ngày sinh": item.dob,
+    "Địa chỉ": item.address,
+    "Vai trò": item.role,
+    "Số điện thoại": item.phone,
+    Email: item.email,
+    "Bộ môn": item.subject,
+    "Ngày tạo": item.createAt,
+    "Ngày cập nhật": item.updateAt,
+  }));
+
+  const hanldeExportFile = () => {
+    const ws = utils.json_to_sheet(renameColumn);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "Người dùng");
+    writeFileXLSX(wb, "Danh sách giảng viên hướng dẫn.xlsx");
+  };
+
   return (
     <PageContainer
       childrenContentStyle={{
@@ -99,7 +143,6 @@ const Teacher: React.FC = () => {
         // dataSource={teacherData}
         formRef={formRef}
         columns={columns}
-        rowSelection={{}}
         actionRef={actionRef}
         cardBordered
         headerTitle="Danh sách giảng viên hướng dẫn"
@@ -143,22 +186,57 @@ const Teacher: React.FC = () => {
         scroll={{ x: "max-content", y: "calc(100vh-245px)" }}
         dateFormatter="string"
         toolBarRender={() => [
+          <div className="button-upload-toolbar">
+            <ProFormUploadButton
+              // icon={<ImportOutlined />}
+              title="Nhập danh sách"
+              name="file"
+              fieldProps={{
+                multiple: false,
+                showUploadList: false,
+                headers: {
+                  Authorization: jwt ? `Bearer ${jwt}` : undefined,
+                },
+                onChange: (file) => {
+                  console.log(file);
+                  const { response, status } = file.file;
+                  if (response?.success) {
+                    notification.success({
+                      message: `Upload ${file.file.name} thành công`,
+                    });
+                    // handleGetCustomer();
+                    // getCustomer();
+                  } else if (response?.success === false) {
+                    notification.open({
+                      message: "Lỗi khi tải file",
+                      description: "Click vào để xem chi tiết lỗi",
+                      duration: 0,
+                      btn: (
+                        <Space>
+                          <Button
+                            type="primary"
+                            size="small"
+                            onClick={() => {
+                              const downloadLink = document.createElement("a");
+                              downloadLink.href = `${response?.error?.message}`;
+                              downloadLink.click();
+                            }}
+                          >
+                            Xem chi tiết
+                          </Button>
+                        </Space>
+                      ),
+                    });
+                  }
+                },
+              }}
+              action="http://localhost:8080/excel/import"
+            />
+          </div>,
           <Button type="primary" key="primary" onClick={showModal1}>
             <PlusOutlined /> Tạo giảng viên
           </Button>,
-
-          <Button
-            type="primary"
-            key="primary"
-            // onClick={showModal}
-          >
-            <ImportOutlined /> Nhập danh sách
-          </Button>,
-          <Button
-            type="primary"
-            key="primary"
-            // onClick={showModal}
-          >
+          <Button type="primary" key="primary" onClick={hanldeExportFile}>
             <ExportOutlined /> Xuất danh sách
           </Button>,
         ]}

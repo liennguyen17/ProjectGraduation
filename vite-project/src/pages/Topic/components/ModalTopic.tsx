@@ -50,7 +50,7 @@ const ModalTopic: React.FC<PropsTopic> = ({
 
   return (
     <Modal
-      title="Điểm đề tài khóa luận tốt nghiệp"
+      // title="Điểm đề tài khóa luận tốt nghiệp"
       open={isModalOpen}
       // onOk={handleOk}
       onCancel={handleCancel}
@@ -68,7 +68,7 @@ const ModalTopic: React.FC<PropsTopic> = ({
         dataSource={data}
       >
         <ProDescriptions.Item span={3}>
-          <Divider />
+          <Divider>Điểm đề tài khóa luận tốt nghiệp</Divider>
         </ProDescriptions.Item>
         <ProDescriptions.Item
           dataIndex={["student", "name"]}
@@ -115,6 +115,7 @@ const ModalTopic: React.FC<PropsTopic> = ({
           label="Điểm thành viên hội đồng thứ ba"
         />
         <ProDescriptions.Item dataIndex="result" label="Tổng điểm" />
+        <ProDescriptions.Item dataIndex="success" label="Kết quả" />
       </ProDescriptions>
     </Modal>
   );

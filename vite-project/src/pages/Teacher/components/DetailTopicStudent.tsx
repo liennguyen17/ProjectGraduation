@@ -87,7 +87,7 @@ const DetailTopicStudent: React.FC = () => {
         actionRef={actionRef}
         formRef={formRef}
         cardBordered
-        headerTitle="Thông tin đề tài của sinh viên"
+        headerTitle="Thông tin thực tập của sinh viên"
         size="small"
         tableLayout="auto"
         rowKey="id" //truyen id

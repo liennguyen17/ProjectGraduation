@@ -133,7 +133,7 @@ const News: React.FC = () => {
             `${range[0]}-${range[1]} trên ${total} mục`,
         }}
         dateFormatter="string"
-        rowSelection={{}}
+        // rowSelection={{}}
       ></ProTable>
       <ModalNewsForm
         isModalOpen={isModalOpen}

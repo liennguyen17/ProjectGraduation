@@ -110,7 +110,7 @@ const ResultTopic: React.FC = () => {
           />
         </ProDescriptions>
       </PageContainer>
-      <div>
+      {/* <div>
         <Divider orientation="left" orientationMargin={25}>
           <p style={{ color: "#484848", fontSize: "15px" }}>
             <CheckCircleTwoTone twoToneColor="#52c41a" /> Công thức tính tổng
@@ -131,36 +131,8 @@ const ResultTopic: React.FC = () => {
             3) + Điểm giáo viên hướng dẫn + Điểm giáo viên phản biện)/5
           </p>
         </div>
-        {/* <StatisticCard.Group>
-          <StatisticCard
-            statistic={{
-              title: "Tổng điểm KLTN",
-              value: 8,
-            }}
-          />
-          <Operation>=</Operation>
-          <StatisticCard
-            statistic={{
-              title: "未发布",
-              value: 234,
-            }}
-          />
-          <Operation>+</Operation>
-          <StatisticCard
-            statistic={{
-              title: "发布中",
-              value: 112,
-            }}
-          />
-          <Operation>+</Operation>
-          <StatisticCard
-            statistic={{
-              title: "已发布",
-              value: 255,
-            }}
-          />
-        </StatisticCard.Group> */}
-      </div>
+        
+      </div> */}
     </>
   );
 };

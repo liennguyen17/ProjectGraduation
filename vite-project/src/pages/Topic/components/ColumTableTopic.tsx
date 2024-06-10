@@ -25,6 +25,7 @@ ColumnProps): ProColumns<TopicType>[] => {
     {
       title: "Tên đề tài",
       dataIndex: "nameTopic",
+      width: "13%",
     },
 
     // {

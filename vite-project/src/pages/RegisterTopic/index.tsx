@@ -65,7 +65,7 @@ const RegistrationTopic = () => {
           }}
         >
           <Paragraph>
-            <Text strong>Chú ý:</Text>
+            {/* <Text strong>Chú ý:</Text> */}
             <ul>
               <li>
                 <span>
@@ -74,7 +74,9 @@ const RegistrationTopic = () => {
                 </span>
               </li>
               <li>
-                <span>Mỗi đơn đăng ký chỉ được gửi 1 lần.</span>
+                <span>
+                  Đơn đăng ký đề tài chỉ được gửi một lần trong mỗi kỳ.
+                </span>
               </li>
               {/* <li></li> */}
             </ul>

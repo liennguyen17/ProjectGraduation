@@ -112,7 +112,9 @@ const NewsForm: React.FC<NewFormProps> = ({
           handleCancel();
           actionRef?.();
         } else {
-          message.error("Có lỗi xảy ra khi tạo tin tức");
+          const errorText = res?.error?.errors[0]?.message;
+          message.error(`${errorText}` || "Có lỗi xảy ra khi tạo tin tức");
+          // message.error("Có lỗi xảy ra khi tạo tin tức");
         }
       }
     } catch (error) {
