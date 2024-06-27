@@ -34,7 +34,20 @@ const ResultTopic: React.FC = () => {
         <ProDescriptions
           // title="Kết quả"
           column={2}
-          dataSource={topicData}
+          // dataSource={topicData}
+          request={async () => {
+            try {
+              const res = await studentViewTopicLogin();
+              // setTopicData(res);
+
+              return {
+                success: true,
+                data: res,
+              };
+            } catch (error) {
+              throw new Error("lien lien");
+            }
+          }}
         >
           <ProDescriptions.Item span={3}>
             <Divider>KẾT QUẢ KHÓA LUẬN TỐT NGHIỆP</Divider>

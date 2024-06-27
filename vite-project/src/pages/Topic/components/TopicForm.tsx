@@ -176,21 +176,30 @@ const TopicForm: React.FC<FormProps> = ({
         </Col> */}
 
         <Col span={8}>
-          <ProFormDigit
+          {/* <ProFormDigit */}
+          <ProFormText
             name="scoresInternshipFacility"
             label="Điểm tại cơ sở thực tập"
             placeholder="Nhập điểm"
-            // rules={[
-            //   {
-            //     message: "Vui lòng không để trống",
-            //     required: true,
-            //   },
-            // ]}
-            min={1}
-            max={10}
-            fieldProps={{
-              inputMode: "decimal",
-            }}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
+            // min={1}
+            // max={10}
+            // fieldProps={{
+            //   inputMode: "decimal",
+            // }}
           />
         </Col>
         {/* <Col span={8}>
@@ -231,39 +240,91 @@ const TopicForm: React.FC<FormProps> = ({
           />
         </Col>
         <Col span={8}>
-          <ProFormDigit
+          {/* <ProFormDigit */}
+          <ProFormText
             name="reviewer"
             label="Điểm giáo viên phản biện"
             placeholder="Nhập điểm"
-            min={1}
-            max={10}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
           />
         </Col>
         <Col span={8}>
-          <ProFormDigit
+          {/* <ProFormDigit */}
+          <ProFormText
             name="boardMembers1"
             label="Điểm thành viên hội đồng thứ nhất"
             placeholder="Nhập điểm"
-            min={1}
-            max={10}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
           />
         </Col>
         <Col span={8}>
-          <ProFormDigit
+          {/* <ProFormDigit */}
+          <ProFormText
             name="boardMembers2"
             label="Điểm thành viên hội đồng thứ hai"
             placeholder="Nhập điểm"
-            min={1}
-            max={10}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
           />
         </Col>
         <Col span={8}>
-          <ProFormDigit
+          {/* <ProFormDigit */}
+          <ProFormText
             name="boardMembers3"
             label="Điểm thành viên hội đồng thứ ba"
             placeholder="Nhập điểm"
-            min={1}
-            max={10}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || validateDecimalNumber(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Giá trị phải là số thập phân từ 0 đến 10 (ví dụ: 1.23)"
+                    )
+                  );
+                },
+              },
+            ]}
           />
         </Col>
       </Row>

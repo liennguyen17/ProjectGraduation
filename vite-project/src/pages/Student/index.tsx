@@ -63,11 +63,26 @@ const Student: React.FC = () => {
     setRecordToDeleteName(record.name);
   };
 
+  // const handleConfirmDelete = async () => {
+  //   try {
+  //     const res = await deleteUser([selectedRecord?.id]);
+  //     console.log("delete::", res);
+  //     message.success(res.data);
+
+  //     setIsConfirmDeleteOpen(false);
+  //   } catch (error) {
+  //     console.error("Lỗi xóa dữ liệu::", error);
+  //   }
+  // };
+
   const handleConfirmDelete = async () => {
     try {
       const res = await deleteUser([selectedRecord?.id]);
       console.log("delete::", res);
       message.success(res.data);
+      if (actionRef && actionRef.current) {
+        actionRef.current.reload();
+      }
 
       setIsConfirmDeleteOpen(false);
     } catch (error) {
@@ -110,7 +125,7 @@ const Student: React.FC = () => {
 
   const renameColumn = userData.map((item) => ({
     "Họ và tên": item.name,
-    "Mã sinh viên": item.userCode,
+    "Mã người dùng": item.userCode,
     Lớp: item.className,
     "Ngày sinh": item.dob,
     "Địa chỉ": item.address,

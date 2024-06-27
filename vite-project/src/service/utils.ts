@@ -2,7 +2,9 @@ import {
   MasterDataFilterApi,
   StudentGetListData,
   TeacherGetListData,
+  getListTopicComment,
   getListTopicCommentStudentOfTeacher,
+  getListTopicCommentTeacher,
 } from "./api";
 import Cookies from "js-cookie";
 import { TopicType } from "./types";
@@ -55,6 +57,36 @@ export const handleFilterStudentComment = async () => {
 
     return data.map((data: TopicType) => ({
       label: `${data.student.name} - ${data.student.userCode}`,
+      value: data.id,
+    }));
+  } catch (error) {
+    console.error("Error student data:", error);
+    return [];
+  }
+};
+
+export const handleFilterTeacherComment = async () => {
+  try {
+    const data = await getListTopicCommentTeacher();
+    console.log("data:: ", data);
+
+    return data.map((data: TopicType) => ({
+      label: `${data.nameTopic} - ${data.teacher.userCode}`,
+      value: data.id,
+    }));
+  } catch (error) {
+    console.error("Error student data:", error);
+    return [];
+  }
+};
+
+export const handleFilterTeacherTopicComment = async () => {
+  try {
+    const data = await getListTopicComment();
+    console.log("data:: ", data);
+
+    return data.map((data: TopicType) => ({
+      label: `${data.nameTopic} - ${data.teacher.userCode}`,
       value: data.id,
     }));
   } catch (error) {

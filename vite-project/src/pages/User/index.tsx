@@ -68,6 +68,15 @@ const User: React.FC = () => {
       if (actionRef && actionRef.current) {
         actionRef.current.reload();
       }
+      // if (res.error.code === 8) {
+      //   // Lỗi ràng buộc khóa ngoại
+      //   // throw new Error(
+      //   //   "Không thể xóa người dùng này vì họ đang được tham chiếu bởi các bản ghi khác."
+      //   // );
+      //   message.error("Sinh viên đã được thêm đề tài không thể xóa.");
+      //   setIsConfirmDeleteOpen(false);
+      // }
+
       setIsConfirmDeleteOpen(false);
     } catch (error) {
       console.error("Lỗi xóa dữ liệu::", error);
@@ -198,6 +207,7 @@ const User: React.FC = () => {
                     });
                     // handleGetCustomer();
                     // getCustomer();
+                    actionRef.current?.reload();
                   } else if (response?.success === false) {
                     notification.open({
                       message: "Lỗi khi tải file",

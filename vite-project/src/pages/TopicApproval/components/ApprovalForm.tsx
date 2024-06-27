@@ -1,5 +1,9 @@
 import { Button, Col, FormInstance, Row, message } from "antd";
-import { TopicEdit, TopicType } from "../../../service/types";
+import {
+  ApprovalTopicType,
+  TopicEdit,
+  TopicType,
+} from "../../../service/types";
 import { useEffect, useRef } from "react";
 import {
   ProForm,
@@ -7,7 +11,7 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 import { handleFilterMasterData } from "../../../service/utils";
-import { editTopic } from "../../../service/api";
+import { editTopic, editTopicApproval } from "../../../service/api";
 interface FormProps {
   handleCancel: () => void;
   editingId: number | null;
@@ -29,7 +33,7 @@ const ApprovalForm: React.FC<FormProps> = ({
     }
   }, [initialData]);
 
-  const handleFinish = async (value: TopicEdit) => {
+  const handleFinish = async (value: ApprovalTopicType) => {
     try {
       // console.log("initialData:: ", initialData);
       // console.log("value:: ", value);
@@ -43,7 +47,8 @@ const ApprovalForm: React.FC<FormProps> = ({
           studentId: studentId,
           teacherId: teacherId,
         };
-        const res = await editTopic(dataToUpdate);
+        // const res = await editTopic(dataToUpdate);
+        const res = await editTopicApproval(dataToUpdate);
         // console.log("data gui di:: ", res);
         if (res.success) {
           message.success("Phê duyệt đề tài thành công.");

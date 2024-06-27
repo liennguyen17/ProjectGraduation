@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Modal, Typography } from "antd";
+import { Button, Card, Typography } from "antd";
 import ModalFormTopic from "./components/ModalFormTopic";
-import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  DownloadOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import ModalResultTopic from "./components/ModalResultTopic";
-import axios from "axios";
+import { generatePdf } from "../../service/api";
 
 const RegistrationTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,39 +25,24 @@ const RegistrationTopic = () => {
   };
 
   const { Paragraph, Text } = Typography;
-
-  const jwtToken =
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw";
-
-  const handleDownloadPdf = async () => {
+  const handleTopicPdf = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/topic/generate-pdf",
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const res = await generatePdf();
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([res]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "don_xin_xac_nhan.pdf");
+      link.setAttribute("download", "don_xin_xac_nhan_co_so_thuc_tap.pdf");
       document.body.appendChild(link);
       link.click();
     } catch (error) {
-      console.error("Error downloading PDF:", error);
+      console.error("Error generating PDF:", error);
+      throw error;
     }
   };
 
   return (
-    <PageContainer
-      subTitle="Đăng ký đề tài"
-      // title="sljfa;lsajf"
-      title={false}
-    >
+    <PageContainer subTitle="Đăng ký đề tài" title={false}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Card
           bordered={false}
@@ -121,18 +110,17 @@ const RegistrationTopic = () => {
             <Button type="primary" onClick={showModal1}>
               <CheckOutlined />
               Xem kết quả
-              {/* <CheckCircleTwoTone twoToneColor="#52c41a" /> */}
             </Button>
           </div>
         </Card>
 
-        {/* <Card
+        <Card
           bordered={false}
           title="Tải đơn đăng ký"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
         >
           <Paragraph>
-            <Text strong>Chú ý:</Text>
+            {/* <Text strong>Chú ý:</Text> */}
             <ul>
               <li>
                 <span>
@@ -144,12 +132,11 @@ const RegistrationTopic = () => {
           </Paragraph>
 
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button type="primary" onClick={handleDownloadPdf}>
+            <Button type="primary" onClick={handleTopicPdf}>
               <DownloadOutlined /> Pdf
-              
             </Button>
           </div>
-        </Card> */}
+        </Card>
       </div>
 
       <ModalFormTopic
@@ -160,6 +147,7 @@ const RegistrationTopic = () => {
       <ModalResultTopic
         isModalOpen={isModalOpen1}
         setIsModalOpen={setIsModalOpen1}
+        // actionRef={() => actionRef.current?.reload()}
       />
     </PageContainer>
   );

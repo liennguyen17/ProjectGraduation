@@ -71,31 +71,39 @@ const DrawerFile: React.FC<DrawerFileProps> = ({
             //   return <Text>{row.topic.nameTopic}</Text>;
             // },
           },
-          avatar: {
-            render: (_, row) => {
-              return <Avatar src="/images/user.jpg" />;
-            },
-          },
+          // avatar: {
+          //   render: (_, row) => {
+          //     return <Avatar src="/images/user.jpg" />;
+          //   },
+          // },
+          // description: {
+          //   render: (_, row) => (
+          //     <a href={row.file} target="_blank" rel="noopener noreferrer">
+          //       <DownloadOutlined /> lưu file
+          //     </a>
+          //   ),
+          // },
           description: {
-            render: (_, row) => (
-              <a href={row.file} target="_blank" rel="noopener noreferrer">
-                <DownloadOutlined /> lưu file
-              </a>
-            ),
+            render: (_, row) =>
+              row.file ? (
+                <a href={row.file} target="_blank" rel="noopener noreferrer">
+                  <DownloadOutlined /> lưu file
+                </a>
+              ) : null,
           },
-          actions: {
-            dataIndex: "createAt",
-            render: (_, row) => {
-              return <Text>{row.createAt}</Text>;
-            },
-          },
+          // actions: {
+          //   dataIndex: "createAt",
+          //   render: (_, row) => {
+          //     return <Text>{row.createAt}</Text>;
+          //   },
+          // },
         }}
-        pagination={{
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} trên ${total} mục`,
-        }}
+        // pagination={{
+        //   defaultPageSize: 10,
+        //   showSizeChanger: true,
+        //   showTotal: (total, range) =>
+        //     `${range[0]}-${range[1]} trên ${total} mục`,
+        // }}
       ></ProList>
     </Drawer>
   );

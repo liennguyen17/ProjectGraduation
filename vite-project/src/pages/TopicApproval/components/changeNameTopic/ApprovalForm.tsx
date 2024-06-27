@@ -34,7 +34,7 @@ const ApprovalForm: React.FC<FormProps> = ({
 
   const handleFinish = async (value: TopicEditChangeName) => {
     try {
-      console.log("initialData:: ", initialData);
+      console.log("initialData change name:: ", initialData);
       // console.log("value:: ", value);
       if (editingId) {
         const topic = initialData.topic.id;

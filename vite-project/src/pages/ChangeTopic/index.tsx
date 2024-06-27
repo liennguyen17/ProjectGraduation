@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Typography } from "antd";
-import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  DownloadOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import ModalFormTopic from "./components/ModalFormTopic";
 import ModalResultTopic from "./components/ModalResultTopic";
+import { generatePdf, generatePdfChangeTopic } from "../../service/api";
 
 const ChangeTopic = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +50,22 @@ const ChangeTopic = () => {
       link.click();
     } catch (error) {
       console.error("Error downloading PDF:", error);
+    }
+  };
+
+  const handleTopicPdf = async () => {
+    try {
+      const res = await generatePdfChangeTopic();
+
+      const url = window.URL.createObjectURL(new Blob([res]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "don_xin_doi_de_tai.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      throw error;
     }
   };
 
@@ -150,13 +171,13 @@ const ChangeTopic = () => {
           </div>
         </Card> */}
 
-        {/* <Card
+        <Card
           bordered={false}
           title="Tải đơn đăng ký"
           style={{ width: "30%", backgroundColor: "rgb(162, 242, 227)" }}
         >
           <Paragraph>
-            <Text strong>Chú ý:</Text>
+            {/* <Text strong>Chú ý:</Text> */}
             <ul>
               <li>
                 <span>
@@ -168,11 +189,11 @@ const ChangeTopic = () => {
           </Paragraph>
 
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button type="primary" onClick={handleDownloadPdf}>
+            <Button type="primary" onClick={handleTopicPdf}>
               <DownloadOutlined /> Pdf
             </Button>
           </div>
-        </Card> */}
+        </Card>
       </div>
 
       <ModalFormTopic

@@ -143,6 +143,14 @@ export interface TopicApproval {
   note: string;
 }
 
+export interface ApprovalTopicType {
+  id: number;
+  studentId?: number;
+  teacherId?: number;
+  status: string;
+  note: string;
+}
+
 export interface TopicEdit {
   id: number;
   studentId?: number;

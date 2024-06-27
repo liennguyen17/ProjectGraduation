@@ -2,19 +2,15 @@ import { message } from "antd";
 // import axios from "axios";
 import { appInfo } from "../config/appInfo";
 import {
+  ApprovalTopicType,
   ChangeNameTopicType,
   ChangePassword,
-  CreateComment,
-  ListCommentTopicId,
   MasterData,
-  News,
   NewsType,
   NotificationType,
   RegisterTopicType,
-  TopicApproval,
   TopicEdit,
   TopicEditChangeName,
-  TopicType,
   TopicTypeCreate,
   UserType,
 } from "./types";
@@ -25,6 +21,7 @@ export async function UserGetListApi(params, sort, filter) {
   const requestData = {
     start: 0,
     limit: 50,
+    deleted: "false",
     role: params?.role || "",
     keywords: params?.keyword || "",
     email: params?.email || "",
@@ -60,7 +57,7 @@ export async function UserGetListApi(params, sort, filter) {
 }
 
 export async function DataUserApi() {
-  const requestData = { start: 0, limit: 50 };
+  const requestData = { start: 0, limit: 50, deleted: "false" };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
@@ -86,6 +83,7 @@ export async function QuantityUserGetListApi() {
   const requestData = {
     start: 0,
     limit: 50,
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -112,6 +110,7 @@ export async function QuantityStudentGetListApi() {
     start: 0,
     limit: 50,
     role: "STUDENT",
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -138,6 +137,7 @@ export async function QuantityTeacherGetListApi() {
     start: 0,
     limit: 50,
     role: "TEACHER",
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -164,6 +164,7 @@ export async function QuantityManagerGetListApi() {
     start: 0,
     limit: 50,
     role: "MANAGER",
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -191,6 +192,7 @@ export async function StudentGetListApi(params, sort, filter) {
     start: 0,
     limit: 50,
     role: "STUDENT",
+    deleted: "false",
     keywords: params?.keyword || "",
     email: params?.email || "",
     phone: params?.phone || "",
@@ -224,7 +226,12 @@ export async function StudentGetListApi(params, sort, filter) {
 }
 
 export async function DataStudentApi() {
-  const requestData = { start: 0, limit: 50, role: "STUDENT" };
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "STUDENT",
+    deleted: "false",
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
@@ -251,6 +258,7 @@ export async function TeacherGetListApi(params, sort, filter) {
     start: 0,
     limit: 50,
     role: "TEACHER",
+    deleted: "false",
     keywords: params?.keyword || "",
     email: params?.email || "",
     phone: params?.phone || "",
@@ -283,7 +291,12 @@ export async function TeacherGetListApi(params, sort, filter) {
 }
 
 export async function DataTeacherApi() {
-  const requestData = { start: 0, limit: 50, role: "TEACHER" };
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "TEACHER",
+    deleted: "false",
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
@@ -310,6 +323,7 @@ export async function TeacherGetListData() {
     start: 0,
     limit: 50,
     role: "TEACHER",
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -336,6 +350,7 @@ export async function StudentGetListData() {
     start: 0,
     limit: 50,
     role: "STUDENT",
+    deleted: "false",
   };
   try {
     const res = await axios.post(
@@ -363,6 +378,7 @@ export async function ManageGetListApi(params, sort, filter) {
     start: 0,
     limit: 50,
     role: "MANAGER",
+    deleted: "false",
     keywords: params?.keyword || "",
     email: params?.email || "",
     phone: params?.phone || "",
@@ -395,7 +411,12 @@ export async function ManageGetListApi(params, sort, filter) {
 }
 
 export async function DataManageApi() {
-  const requestData = { start: 0, limit: 50, role: "MANAGER" };
+  const requestData = {
+    start: 0,
+    limit: 50,
+    role: "MANAGER",
+    deleted: "false",
+  };
   try {
     const res = await axios.post(
       `${appInfo.apiUrl}/users/filter`,
@@ -876,6 +897,34 @@ export async function getListTopicCommentStudentOfTeacher() {
   }
 }
 
+export async function getListTopicCommentTeacher() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/topic/v1/student`);
+    if (res.data?.success) {
+      return res.data.data.items;
+    } else {
+      throw new Error("Failed to fetch comment detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getListTopicComment() {
+  try {
+    const res = await axios.get(`${appInfo.apiUrl}/topic/student`);
+    if (res.data?.success) {
+      return res.data.data;
+    } else {
+      throw new Error("Failed to fetch comment detail");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // -------get by login------------------------------------
 
 export async function findTopicFromStudentLogin() {
@@ -1224,6 +1273,24 @@ export const editTopic = async (data: TopicEdit) => {
   }
 };
 
+export const editTopicApproval = async (data: ApprovalTopicType) => {
+  try {
+    const response = await axios.put(`${appInfo.apiUrl}/topic/update`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error(response.data.error.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi phê duyệt đăng ký đề tài:", error);
+    throw new Error("Có lỗi xảy ra khi phê duyệt đăng ký đề tài");
+  }
+};
+
 export const editTopicChangeName = async (data: TopicEditChangeName) => {
   try {
     const response = await axios.put(
@@ -1300,9 +1367,36 @@ export const deleteUser = async (ids) => {
       );
     }
   } catch (error) {
-    throw new Error("Có lỗi xảy ra khi xóa Master Data");
+    throw new Error("Có lỗi xảy ra khi xóa người dùng");
   }
 };
+
+// export const deleteUser = async (ids) => {
+//   try {
+//     const response = await axios.delete(`${appInfo.apiUrl}/users`, {
+//       data: {
+//         ids: ids,
+//       },
+//     });
+
+//     if (response.data.success) {
+//       return response.data;
+//     } else {
+//       if (response.data.error.code === 8) {
+//         // Lỗi ràng buộc khóa ngoại
+//         throw new Error(
+//           "Không thể xóa người dùng này vì họ đang được tham chiếu bởi các bản ghi khác."
+//         );
+//       } else {
+//         throw new Error(
+//           response.data.error.message || response.data.error.errors.message
+//         );
+//       }
+//     }
+//   } catch (error) {
+//     throw new Error("Có lỗi xảy ra khi xóa người dùng: " + error.message);
+//   }
+// };
 
 export const deleteNews = async (ids) => {
   try {
@@ -1444,20 +1538,39 @@ export async function uploadFile(file) {
 // ===========================
 // const jwtToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw";
 
-// // Function to call the PDF generation endpoint with JWT
-// async function generatePdfWithJwt() {
-//   try {
-//     const response = await axios.get(`${appInfo.apiUrl}/topic/generate-pdf`, {
-//       headers: {
-//         Authorization: `Bearer ${jwtToken}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error generating PDF:', error);
-//     throw error;
-//   }
-// }
+// Function to call the PDF generation endpoint with JWT
+export async function generatePdf() {
+  try {
+    const response = await axios.get(`${appInfo.apiUrl}/topic/generate-pdf`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      responseType: "blob",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    throw error;
+  }
+}
+
+export async function generatePdfChangeTopic() {
+  try {
+    const response = await axios.get(
+      `${appInfo.apiUrl}/topic/generate-pdf-change-topic`,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "blob",
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    throw error;
+  }
+}
 
 // const jwtToken =
 //   "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2YW5lMTExMiIsIlhBVVRIT1IiOiJTVFVERU5UIiwiaWF0IjoxNzEyODAxMTAzLCJleHAiOjE3MTI4MzcxMDN9.PQY0HbR9yIBjrlY2jZKJI9XmktXniNRpCi-beqWoe1IGHPGIiA7aKyN86vz4bGcvJ125VANA4zJuSD810gKVJw"; // Thay thế bằng JWT token của bạn

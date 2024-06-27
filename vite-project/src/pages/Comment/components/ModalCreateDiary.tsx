@@ -17,10 +17,15 @@ import { CreateComment } from "../../../service/types";
 
 interface ModalProps {
   open: boolean;
+  handleOk: () => void;
   onClose: () => void;
 }
 
-const ModalCreateDiary: React.FC<ModalProps> = ({ open, onClose }) => {
+const ModalCreateDiary: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  handleOk,
+}) => {
   const [listFile1, setListFile1] = useState([]);
   const [fieldFile11, setFieldFile1] = useState("");
 
@@ -55,6 +60,7 @@ const ModalCreateDiary: React.FC<ModalProps> = ({ open, onClose }) => {
       if (res.success) {
         message.success("Tạo nhật ký thành công.");
         onClose();
+        handleOk();
       } else {
         message.error("Có lỗi trong quá trình tạo nhật ký.");
       }

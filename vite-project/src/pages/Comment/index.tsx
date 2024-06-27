@@ -18,6 +18,7 @@ const Comment: React.FC = () => {
   const [selectedRecord, setSelectedRecord] = useState<dataComment | null>(
     null
   );
+  const [isReload, setIsReload] = useState<boolean>(false);
   // const handleViewDetail = (record: dataComment) => {
   //   setSelectedRecord(record);
   //   setOpenDiary(true);
@@ -34,7 +35,7 @@ const Comment: React.FC = () => {
       }
     };
     getData();
-  }, []);
+  }, [isReload]);
 
   const showDrawerDiary = (record: dataComment) => {
     setOpenDiary(true);
@@ -59,6 +60,10 @@ const Comment: React.FC = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleOk = () => {
+    setIsReload(!isReload);
   };
 
   return (
@@ -128,7 +133,11 @@ const Comment: React.FC = () => {
         open={openFile}
         selectedRecord={selectedRecord}
       />
-      <ModalCreateDiary open={isModalOpen} onClose={handleCancel} />
+      <ModalCreateDiary
+        open={isModalOpen}
+        onClose={handleCancel}
+        handleOk={handleOk}
+      />
     </PageContainer>
   );
 };

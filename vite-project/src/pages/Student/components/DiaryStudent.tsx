@@ -1,31 +1,36 @@
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
-import { Avatar, Button, Divider, Space, Tag } from "antd";
+import { Avatar, Button, Modal, Space, Tag } from "antd";
 import { getListCommentStudent } from "../../../service/api";
 import { dataComment } from "../../../service/types";
-import { ArrowRightOutlined, DoubleRightOutlined } from "@ant-design/icons";
+
 import DrawerFile from "./DrawerFile";
+import FormFile from "./FormFile";
 
 const DiaryStudent: React.FC = () => {
-  // const [open, setOpen] = useState(false);
-  // const [openFile, setOpenFile] = useState(false);
-  const [openDiary, setOpenDiary] = useState(false);
   const [openFile, setOpenFile] = useState(false);
   const [commentsData, setCommentData] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState<dataComment | null>(
     null
   );
-  // const handleViewDetail = (record: dataComment) => {
-  //   setSelectedRecord(record);
-  //   setOpenDiary(true);
-  // };
+  const [isReload, setIsReload] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+    selectedRecord;
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const getData = async () => {
       try {
         const res = await getListCommentStudent();
-        // console.log("list comments:: ", res);
+        console.log("list comments:: ", res);
         setCommentData(res);
+        console.log("abc:: ", commentsData);
+        // setSelectedRecord(res);
       } catch (error) {
         console.error("loi lay du lieu:", error);
       }
@@ -33,26 +38,29 @@ const DiaryStudent: React.FC = () => {
     getData();
   }, []);
 
-  const showDrawerDiary = (record: dataComment) => {
-    setOpenDiary(true);
-    setSelectedRecord(record);
-  };
+  // const showDrawerDiary = (record: dataComment) => {
+  //   setOpenDiary(true);
+  //   setSelectedRecord(record);
+  // };
 
-  const showDrawerFile = (record: dataComment) => {
-    setOpenFile(true);
-    setSelectedRecord(record);
-  };
+  // const showDrawerFile = (record: dataComment) => {
+  //   setOpenFile(true);
+  //   setSelectedRecord(record);
+  // };
 
   const showDrawerFile1 = () => {
     setOpenFile(true);
   };
 
-  const onCloseDiary = () => {
-    setOpenDiary(false);
-  };
+  // const onCloseDiary = () => {
+  //   setOpenDiary(false);
+  // };
 
   const onCloseFile = () => {
     setOpenFile(false);
+  };
+  const handleOk = () => {
+    setIsReload(!isReload);
   };
 
   return (
@@ -63,7 +71,7 @@ const DiaryStudent: React.FC = () => {
       <ProList<dataComment>
         toolBarRender={() => {
           return [
-            <Button key="3" type="primary">
+            <Button key="3" type="primary" onClick={showModal}>
               Nộp file
             </Button>,
             <Button key="3" type="primary" onClick={() => showDrawerFile1()}>
@@ -124,7 +132,24 @@ const DiaryStudent: React.FC = () => {
         onClose={onCloseFile}
         open={openFile}
         selectedRecord={selectedRecord}
+        // commentsData={commentsData}
       />
+      <Modal
+        width={500}
+        footer={false}
+        destroyOnClose
+        title="Nộp file"
+        open={isModalOpen}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+      >
+        <FormFile
+          handleCancel={handleCancel}
+          handleOk={handleOk}
+          // selectedRecord={selectedRecord}
+          // commentsData={commentsData}
+        ></FormFile>
+      </Modal>
     </PageContainer>
   );
 };

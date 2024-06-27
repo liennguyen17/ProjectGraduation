@@ -2,18 +2,14 @@ import { ProList } from "@ant-design/pro-components";
 import { Avatar, Button, Divider, Drawer, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { ListCommentForTopicId, getListComment } from "../../../service/api";
-import {
-  DoubleRightOutlined,
-  DownloadOutlined,
-  FileOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import { dataComment } from "../../../service/types";
 
 interface DrawerFileProps {
   open: boolean;
   onClose: (isOpen: boolean) => void;
   selectedRecord: dataComment | null;
+  // commentsData: dataComment | null;
 }
 const { Text } = Typography;
 
@@ -41,7 +37,7 @@ const DrawerFile: React.FC<DrawerFileProps> = ({
       }
     };
     getData();
-  }, [selectedRecord]);
+  }, [selectedRecord?.topic.id]);
 
   return (
     <Drawer

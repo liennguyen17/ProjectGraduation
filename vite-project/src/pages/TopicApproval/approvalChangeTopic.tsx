@@ -6,7 +6,6 @@ import {
 import { useRef, useState } from "react";
 
 import { Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import { TopicChangeNameGetListApi } from "../../service/api";
 import { ChangeTopicType } from "../../service/types";
 import { topicApprovalChangeName } from "./components/changeNameTopic/ColumnChangeTopic";

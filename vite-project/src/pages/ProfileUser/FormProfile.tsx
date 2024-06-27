@@ -42,16 +42,12 @@ const FormProfile: React.FC<FormProps> = ({
         if (res.success) {
           actionRef?.();
           message.success("Chỉnh sửa thông tin thành công");
-
           onClose();
-
-          // window.location.reload();
         } else {
-          message.error("Có lỗi xảy ra khi cập nhật thông tin");
-          // const errorText = res?.error?.errors[0]?.message;
-          // message.error(
-          //   `${errorText}` || "Có lỗi xảy ra khi cập nhật thông tin"
-          // );
+          const errorText = res?.error?.errors[0]?.message;
+          message.error(
+            `${errorText}` || "Có lỗi xảy ra khi cập nhật thông tin người dùng"
+          );
         }
       } else {
         return [];
